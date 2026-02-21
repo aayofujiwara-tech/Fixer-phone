@@ -18,7 +18,7 @@ export function useSpeechSynthesis() {
 
   // テキスト読み上げ
   const speak = useCallback(
-    (text: string, lang: 'ja' | 'en', onEnd?: () => void) => {
+    (text: string, lang: 'ja' | 'en', onEnd?: () => void, rate?: number) => {
       if (!isSupported) return;
 
       // 既存の読み上げを停止
@@ -29,11 +29,11 @@ export function useSpeechSynthesis() {
 
       if (lang === 'ja') {
         utterance.lang = 'ja-JP';
-        utterance.rate = 1.15;  // 自然なスピード
-        utterance.pitch = 0.85; // 少し低め、落ち着いた声
+        utterance.rate = rate ?? 1.15;
+        utterance.pitch = 0.85;
       } else {
         utterance.lang = 'en-US';
-        utterance.rate = 1.0;
+        utterance.rate = rate ?? 1.0;
         utterance.pitch = 0.9;
       }
 

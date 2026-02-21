@@ -20,17 +20,31 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
   const [isThinking, setIsThinking] = useState(true);
   const [autoMode, setAutoMode] = useState(true);
   const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>('ja');
+  const [jaSpeed, setJaSpeed] = useState(3);
+  const [enSpeed, setEnSpeed] = useState(3);
 
   const { speak, stop, isSpeaking } = useSpeechSynthesis();
   const timer = useCallTimer();
   const { lang, t } = useLanguage();
 
+  const SPEED_LEVELS: Record<number, number> = {
+    1: 0.7,
+    2: 0.85,
+    3: 1.0,
+    4: 1.2,
+    5: 1.5,
+  };
+
   // 自動進行タイマー管理
   const autoTimersRef = useRef<number[]>([]);
   const autoActiveRef = useRef(false);
-  // 選択言語の最新値（TTS effect内でstale closureにならないよう）
+  // 選択言語・速度の最新値（TTS effect内でstale closureにならないよう）
   const selectedLangRef = useRef(selectedLang);
   selectedLangRef.current = selectedLang;
+  const jaSpeedRef = useRef(jaSpeed);
+  jaSpeedRef.current = jaSpeed;
+  const enSpeedRef = useRef(enSpeed);
+  enSpeedRef.current = enSpeed;
   // stale closure回避: 常に最新のhandleEndCall相当を参照
   const handleEndCallRef = useRef<() => void>(() => {});
 
@@ -102,18 +116,20 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
     const ttsLang = selectedLangRef.current;
     const text = ttsLang === 'ja' ? leader.ja : leader.en;
 
-    // 0.5秒待ってリーダー読み上げ（選択言語のみ）
+    const rate = ttsLang === 'ja' ? SPEED_LEVELS[jaSpeedRef.current] : SPEED_LEVELS[enSpeedRef.current];
+
+    // 0.3秒待ってリーダー読み上げ（選択言語のみ）
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
       speak(text, ttsLang, () => {
         if (!autoActiveRef.current) return;
-        // 読み上げ完了 → 0.5秒待ってフィクサーセリフを表示
+        // 読み上げ完了 → 0.3秒待ってフィクサーセリフを表示
         addAutoTimer(() => {
           if (!autoActiveRef.current) return;
           setShowFixerLine(true);
-        }, 500);
-      });
-    }, 500);
+        }, 300);
+      }, rate);
+    }, 300);
 
     return () => clearAutoTimers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -130,12 +146,14 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
     const ttsLang = selectedLangRef.current;
     const text = ttsLang === 'ja' ? fixer.ja : fixer.en;
 
-    // 0.5秒待ってから選択言語のみ読み上げ
+    const rate = ttsLang === 'ja' ? SPEED_LEVELS[jaSpeedRef.current] : SPEED_LEVELS[enSpeedRef.current];
+
+    // 0.2秒待ってから選択言語のみ読み上げ
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
       speak(text, ttsLang, () => {
         if (!autoActiveRef.current) return;
-        // 読み上げ完了 → 2秒待って次へ
+        // 読み上げ完了 → 0.8秒待って次へ
         addAutoTimer(() => {
           if (!autoActiveRef.current) return;
           if (lastPair) {
@@ -143,9 +161,9 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
           } else {
             setCurrentLineIndex(prev => prev + 1);
           }
-        }, 2000);
-      });
-    }, 500);
+        }, 800);
+      }, rate);
+    }, 200);
 
     return () => clearAutoTimers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -195,7 +213,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
   const speakJa = () => {
     if (pair.fixer) {
       clearAutoTimers();
-      speak(pair.fixer.ja, 'ja');
+      speak(pair.fixer.ja, 'ja', undefined, SPEED_LEVELS[jaSpeed]);
     }
   };
 
@@ -203,7 +221,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
   const speakEn = () => {
     if (pair.fixer) {
       clearAutoTimers();
-      speak(pair.fixer.en, 'en');
+      speak(pair.fixer.en, 'en', undefined, SPEED_LEVELS[enSpeed]);
     }
   };
 
@@ -258,28 +276,70 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
               </div>
             </div>
           </div>
-          {/* TTS言語切替 */}
-          <div className="flex gap-1">
-            <button
-              onClick={() => setSelectedLang('ja')}
-              className={`px-2 py-1 rounded text-xs font-mono transition-all ${
-                selectedLang === 'ja'
-                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
-                  : 'bg-gray-800 text-gray-600 border border-gray-700'
-              }`}
-            >
-              🇯🇵
-            </button>
-            <button
-              onClick={() => setSelectedLang('en')}
-              className={`px-2 py-1 rounded text-xs font-mono transition-all ${
-                selectedLang === 'en'
-                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
-                  : 'bg-gray-800 text-gray-600 border border-gray-700'
-              }`}
-            >
-              🇺🇸
-            </button>
+          {/* TTS言語切替 + 速度調整 */}
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex gap-1">
+              <button
+                onClick={() => setSelectedLang('ja')}
+                className={`px-2 py-1 rounded text-xs font-mono transition-all ${
+                  selectedLang === 'ja'
+                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                    : 'bg-gray-800 text-gray-600 border border-gray-700'
+                }`}
+              >
+                🇯🇵
+              </button>
+              <button
+                onClick={() => setSelectedLang('en')}
+                className={`px-2 py-1 rounded text-xs font-mono transition-all ${
+                  selectedLang === 'en'
+                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                    : 'bg-gray-800 text-gray-600 border border-gray-700'
+                }`}
+              >
+                🇺🇸
+              </button>
+            </div>
+            {/* TTS速度調整 */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-0.5">
+                <span className="text-[10px]">🇯🇵</span>
+                <button
+                  onClick={() => setJaSpeed(s => Math.max(1, s - 1))}
+                  className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
+                  disabled={jaSpeed <= 1}
+                >
+                  ◀
+                </button>
+                <span className="text-accent text-[10px] font-mono w-3 text-center">{jaSpeed}</span>
+                <button
+                  onClick={() => setJaSpeed(s => Math.min(5, s + 1))}
+                  className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
+                  disabled={jaSpeed >= 5}
+                >
+                  ▶
+                </button>
+              </div>
+              <span className="text-gray-700 text-[10px]">|</span>
+              <div className="flex items-center gap-0.5">
+                <span className="text-[10px]">🇺🇸</span>
+                <button
+                  onClick={() => setEnSpeed(s => Math.max(1, s - 1))}
+                  className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
+                  disabled={enSpeed <= 1}
+                >
+                  ◀
+                </button>
+                <span className="text-accent text-[10px] font-mono w-3 text-center">{enSpeed}</span>
+                <button
+                  onClick={() => setEnSpeed(s => Math.min(5, s + 1))}
+                  className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
+                  disabled={enSpeed >= 5}
+                >
+                  ▶
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
