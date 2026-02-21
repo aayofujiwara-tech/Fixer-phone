@@ -125,13 +125,19 @@ const scenarioPools: Record<string, ScenarioPool> = {
  * @returns Scenario | null（該当国のプールがなければnull）
  */
 export function getRandomScenario(countryId: string, mood: 'serious' | 'comedy'): Scenario | null {
+  console.log('=== POOL: getRandomScenario ===');
+  console.log('countryId:', countryId, 'mood:', mood);
+
   const pool = scenarioPools[countryId];
+  console.log('pool exists:', !!pool);
   if (!pool) return null;
 
   const scenarios = pool[mood];
+  console.log('scenarios count:', scenarios?.length ?? 0);
   if (!scenarios || scenarios.length === 0) return null;
 
   const index = Math.floor(Math.random() * scenarios.length);
+  console.log('selected index:', index, 'title:', scenarios[index].scenario_title_ja);
   return scenarios[index];
 }
 

@@ -41,6 +41,8 @@ export function useScenarioGenerator() {
 
   // フォールバックシナリオをセット（API失敗時に使用）
   const setFallback = useCallback((fallback: Scenario) => {
+    console.log('=== GENERATOR: setFallback called ===');
+    console.log('fallback scenario:', fallback.scenario_title_ja);
     setScenario(fallback);
     setError(null);
     setIsLoading(false);

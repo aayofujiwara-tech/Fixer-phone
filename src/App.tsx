@@ -21,10 +21,14 @@ function App() {
   // 通話開始
   const handleStart = useCallback(
     async (country: Country, mood: Mood) => {
+      console.log('=== APP: handleStart called ===');
+      console.log('country:', country.id, 'mood:', mood);
+
       setSelectedCountry(country);
       setScreen('loading');
 
       const apiKey = getApiKey();
+      console.log('=== APP: apiKey exists:', !!apiKey);
 
       if (apiKey) {
         // APIキーがある場合: Claude APIで生成を試みる
@@ -36,11 +40,14 @@ function App() {
       } else {
         // APIキーがない場合: シナリオプールから選択
         const poolScenario = getRandomScenario(country.id, mood);
+        console.log('=== APP: poolScenario:', poolScenario ? poolScenario.scenario_title_ja : 'null');
         if (poolScenario) {
           setFallback(poolScenario);
+          console.log('=== APP: setFallback called with pool scenario');
         } else {
           // プールにもない場合はデフォルトフォールバック
           setFallback(fallbackScenario);
+          console.log('=== APP: setFallback called with default fallback');
         }
       }
     },

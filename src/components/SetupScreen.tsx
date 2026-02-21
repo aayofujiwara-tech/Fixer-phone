@@ -25,6 +25,12 @@ export function SetupScreen({ onStart }: Props) {
   }, []);
 
   const handleStart = () => {
+    console.log('=== SETUP: handleStart ===');
+    console.log('selectedCountry:', selectedCountry?.id);
+    console.log('mood:', mood);
+    console.log('apiKey in state:', apiKey ? '(set)' : '(empty)');
+    console.log('apiKey in localStorage:', getApiKey() ? '(set)' : '(empty)');
+
     if (!selectedCountry) return;
 
     // APIキーがあれば保存
@@ -32,6 +38,7 @@ export function SetupScreen({ onStart }: Props) {
       setApiKey(apiKey.trim());
     }
 
+    console.log('=== SETUP: calling onStart ===');
     onStart(selectedCountry, mood);
   };
 

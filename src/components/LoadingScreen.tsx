@@ -16,6 +16,8 @@ export function LoadingScreen({ isReady, onComplete }: Props) {
   const [isTyping, setIsTyping] = useState(true);
   const { lang } = useLanguage();
 
+  console.log('=== LOADING: render ===', { isReady, currentIndex, isTyping });
+
   const otherLang = lang === 'ja' ? 'en' : 'ja';
 
   const getPrimaryText = (idx: number) => translations[messageKeys[idx]][lang];
