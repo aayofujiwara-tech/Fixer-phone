@@ -29,11 +29,11 @@ export function useSpeechSynthesis() {
 
       if (lang === 'ja') {
         utterance.lang = 'ja-JP';
-        utterance.rate = 0.9;  // 少しゆっくり、重厚感
-        utterance.pitch = 0.8; // 低め、落ち着いた声
+        utterance.rate = 1.15;  // 自然なスピード
+        utterance.pitch = 0.85; // 少し低め、落ち着いた声
       } else {
         utterance.lang = 'en-US';
-        utterance.rate = 0.85;
+        utterance.rate = 1.0;
         utterance.pitch = 0.9;
       }
 

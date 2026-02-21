@@ -95,6 +95,15 @@ export const translations = {
     en: 'YOUR LINE:',
   },
 
+  autoModeOn: {
+    ja: '自動進行中',
+    en: 'Auto Mode',
+  },
+  autoModeOff: {
+    ja: '手動モード',
+    en: 'Manual Mode',
+  },
+
   // CallEndScreen
   callTerminated: {
     ja: 'CALL TERMINATED',

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import type { Country, Scenario } from '../types';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
 import { useCallTimer } from '../hooks/useCallTimer';
@@ -17,10 +17,17 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
   const [showLeaderLine, setShowLeaderLine] = useState(false);
   const [showFixerLine, setShowFixerLine] = useState(false);
   const [isThinking, setIsThinking] = useState(true);
+  const [autoMode, setAutoMode] = useState(true);
 
   const { speak, stop, isSpeaking } = useSpeechSynthesis();
   const timer = useCallTimer();
   const { lang, t } = useLanguage();
+
+  // 自動進行タイマー管理
+  const autoTimersRef = useRef<number[]>([]);
+  const autoActiveRef = useRef(false);
+  // stale closure回避: 常に最新のhandleEndCall相当を参照
+  const handleEndCallRef = useRef<() => void>(() => {});
 
   // タイマーを開始
   useEffect(() => {
@@ -31,7 +38,6 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
   // 現在のセリフペア（leaderとfixer）を取得
   const getCurrentPair = useCallback(() => {
-    // pairIndex: 0 = lines[0]+lines[1], 1 = lines[2]+lines[3], etc.
     const pairIndex = currentLineIndex;
     const leaderIdx = pairIndex * 2;
     const fixerIdx = pairIndex * 2 + 1;
@@ -44,6 +50,27 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
   const pair = getCurrentPair();
   const totalPairs = Math.floor(scenario.lines.length / 2);
   const isLastPair = currentLineIndex >= totalPairs - 1;
+
+  // 自動タイマー追加（IDをrefに保存）
+  const addAutoTimer = (fn: () => void, delay: number) => {
+    const id = window.setTimeout(fn, delay);
+    autoTimersRef.current.push(id);
+  };
+
+  // 全自動タイマークリア + TTS停止
+  const clearAutoTimers = () => {
+    autoActiveRef.current = false;
+    autoTimersRef.current.forEach(id => clearTimeout(id));
+    autoTimersRef.current = [];
+    stop();
+  };
+
+  // handleEndCallRefを常に最新に保つ
+  handleEndCallRef.current = () => {
+    clearAutoTimers();
+    timer.stop();
+    onEnd(timer.seconds);
+  };
 
   // 新しいセリフペア表示時の演出
   useEffect(() => {
@@ -59,7 +86,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
       // 相手セリフ表示後、自分のセリフをスライドイン
       const fixerTimer = setTimeout(() => {
         setShowFixerLine(true);
-      }, 2000);
+      }, 1000);
 
       return () => clearTimeout(fixerTimer);
     }, 1500 + Math.random() * 1500);
@@ -67,11 +94,54 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
     return () => clearTimeout(thinkTimer);
   }, [currentLineIndex]);
 
+  // 自動進行: 自分のセリフ表示後に自動読み上げ→次へ
+  useEffect(() => {
+    if (!autoMode || !showFixerLine || !pair.fixer) return;
+
+    autoActiveRef.current = true;
+    const fixer = pair.fixer;
+    const lastPair = isLastPair;
+
+    // 0.5秒待ってから日本語読み上げ
+    addAutoTimer(() => {
+      if (!autoActiveRef.current) return;
+      speak(fixer.ja, 'ja', () => {
+        if (!autoActiveRef.current) return;
+        // 日本語完了 → 1秒待って英語読み上げ
+        addAutoTimer(() => {
+          if (!autoActiveRef.current) return;
+          speak(fixer.en, 'en', () => {
+            if (!autoActiveRef.current) return;
+            // 英語完了 → 2秒待って次へ
+            addAutoTimer(() => {
+              if (!autoActiveRef.current) return;
+              if (lastPair) {
+                handleEndCallRef.current();
+              } else {
+                setCurrentLineIndex(prev => prev + 1);
+              }
+            }, 2000);
+          });
+        }, 1000);
+      });
+    }, 500);
+
+    return () => clearAutoTimers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoMode, showFixerLine, pair.fixer]);
+
+  // コンポーネントアンマウント時のクリーンアップ
+  useEffect(() => {
+    return () => {
+      autoTimersRef.current.forEach(id => clearTimeout(id));
+    };
+  }, []);
+
   // 次のセリフペアへ
   const handleNext = () => {
-    stop();
+    clearAutoTimers();
     if (isLastPair) {
-      handleEndCall();
+      handleEndCallRef.current();
     } else {
       setCurrentLineIndex((prev) => prev + 1);
     }
@@ -79,7 +149,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
   // 前のセリフペアへ
   const handlePrev = () => {
-    stop();
+    clearAutoTimers();
     if (currentLineIndex > 0) {
       setCurrentLineIndex((prev) => prev - 1);
     }
@@ -87,21 +157,21 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
   // 通話終了
   const handleEndCall = () => {
-    stop();
-    timer.stop();
-    onEnd(timer.seconds);
+    handleEndCallRef.current();
   };
 
-  // 日本語読み上げ
+  // 日本語読み上げ（手動）
   const speakJa = () => {
     if (pair.fixer) {
+      clearAutoTimers();
       speak(pair.fixer.ja, 'ja');
     }
   };
 
-  // 英語読み上げ
+  // 英語読み上げ（手動）
   const speakEn = () => {
     if (pair.fixer) {
+      clearAutoTimers();
       speak(pair.fixer.en, 'en');
     }
   };
@@ -110,6 +180,9 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
   const countryDisplay = lang === 'ja'
     ? `${country.name}${country.leader}`
     : `${country.nameEn} ${country.leaderEn}`;
+
+  // 自動モード中はボタンの透明度を下げる
+  const manualButtonOpacity = autoMode ? 'opacity-40' : '';
 
   return (
     <div className="min-h-dvh bg-dark flex flex-col">
@@ -195,9 +268,29 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
       {/* コントロールエリア */}
       <div className="p-4 space-y-3 border-t border-gray-800">
+        {/* 自動/手動切替 */}
+        <div className="flex items-center justify-between">
+          <span className="text-gray-400 text-xs font-mono">
+            {autoMode ? t('autoModeOn') : t('autoModeOff')}
+          </span>
+          <button
+            onClick={() => {
+              if (autoMode) clearAutoTimers();
+              setAutoMode(!autoMode);
+            }}
+            className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
+              autoMode
+                ? 'bg-accent/20 text-accent border border-accent/50'
+                : 'bg-gray-800 text-gray-500 border border-gray-700'
+            }`}
+          >
+            {autoMode ? 'AUTO' : 'MANUAL'}
+          </button>
+        </div>
+
         {/* 読み上げボタン */}
         {showFixerLine && pair.fixer && (
-          <div className="flex gap-3 animate-fade-in">
+          <div className={`flex gap-3 animate-fade-in ${manualButtonOpacity}`}>
             <button
               onClick={speakJa}
               disabled={isSpeaking}
@@ -224,7 +317,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
         )}
 
         {/* ナビゲーション */}
-        <div className="flex gap-3">
+        <div className={`flex gap-3 ${manualButtonOpacity}`}>
           <button
             onClick={handlePrev}
             disabled={currentLineIndex === 0}
