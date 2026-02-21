@@ -21,22 +21,15 @@ export function SetupScreen({ onStart }: Props) {
     const savedKey = getApiKey();
     if (savedKey) {
       setApiKeyState(savedKey);
-    } else {
-      setShowApiKeyInput(true);
     }
   }, []);
 
   const handleStart = () => {
     if (!selectedCountry) return;
 
-    // APIキーを保存
+    // APIキーがあれば保存
     if (apiKey.trim()) {
       setApiKey(apiKey.trim());
-    }
-
-    if (!apiKey.trim() && !getApiKey()) {
-      setShowApiKeyInput(true);
-      return;
     }
 
     onStart(selectedCountry, mood);
@@ -144,34 +137,41 @@ export function SetupScreen({ onStart }: Props) {
           </div>
         </section>
 
-        {/* APIキー入力 */}
-        {showApiKeyInput && (
-          <section className="animate-fade-in">
-            <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
-              {t('apiKeyLabel')}
-            </h2>
-            <input
-              type="password"
-              value={apiKey}
-              onChange={(e) => setApiKeyState(e.target.value)}
-              placeholder="sk-ant-..."
-              className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono text-sm focus:border-accent focus:outline-none"
-            />
-            <p className="text-gray-600 text-xs mt-2 font-mono">
-              {t('apiKeyHint')}
+        {/* APIキーなしの場合のデモモード表示 */}
+        {!apiKey.trim() && !getApiKey() && (
+          <div className="text-center animate-fade-in">
+            <p className="text-gray-500 text-xs font-mono">
+              {lang === 'ja' ? 'デモモードで開始します（事前生成シナリオ）' : 'Starting in demo mode (pre-generated scenarios)'}
             </p>
-          </section>
+          </div>
         )}
 
-        {/* APIキー設定済みの場合の切替 */}
-        {!showApiKeyInput && getApiKey() && (
+        {/* APIキー入力（折りたたみ可能） */}
+        <section>
           <button
-            onClick={() => setShowApiKeyInput(true)}
-            className="text-gray-600 text-xs font-mono hover:text-gray-400 transition-colors"
+            onClick={() => setShowApiKeyInput(!showApiKeyInput)}
+            className="text-gray-600 text-xs font-mono hover:text-gray-400 transition-colors flex items-center gap-1"
           >
-            {t('changeApiKey')}
+            <span className="text-[10px]">{showApiKeyInput ? '▼' : '▶'}</span>
+            {getApiKey()
+              ? t('changeApiKey')
+              : lang === 'ja' ? 'API キー設定（上級者向け）' : 'API Key Settings (Advanced)'}
           </button>
-        )}
+          {showApiKeyInput && (
+            <div className="mt-3 animate-fade-in">
+              <input
+                type="password"
+                value={apiKey}
+                onChange={(e) => setApiKeyState(e.target.value)}
+                placeholder="sk-ant-..."
+                className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono text-sm focus:border-accent focus:outline-none"
+              />
+              <p className="text-gray-600 text-xs mt-2 font-mono">
+                {t('apiKeyHint')}
+              </p>
+            </div>
+          )}
+        </section>
       </div>
 
       {/* 通話開始ボタン */}

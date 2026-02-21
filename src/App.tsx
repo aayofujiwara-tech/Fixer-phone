@@ -3,6 +3,8 @@ import type { AppScreen, Country, Mood } from './types';
 import { useScenarioGenerator } from './hooks/useScenarioGenerator';
 import { useLanguage } from './i18n/LanguageContext';
 import { fallbackScenario } from './lib/scenarios';
+import { getRandomScenario } from './lib/scenarioPool';
+import { getApiKey } from './lib/claude';
 import { SetupScreen } from './components/SetupScreen';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CallScreen } from './components/CallScreen';
@@ -22,13 +24,27 @@ function App() {
       setSelectedCountry(country);
       setScreen('loading');
 
-      try {
-        await generate(country, mood);
-      } catch {
-        // エラー時はloading画面に留まり、エラーを表示する
+      const apiKey = getApiKey();
+
+      if (apiKey) {
+        // APIキーがある場合: Claude APIで生成を試みる
+        try {
+          await generate(country, mood);
+        } catch {
+          // エラー時はloading画面に留まり、エラーを表示する
+        }
+      } else {
+        // APIキーがない場合: シナリオプールから選択
+        const poolScenario = getRandomScenario(country.id, mood);
+        if (poolScenario) {
+          setFallback(poolScenario);
+        } else {
+          // プールにもない場合はデフォルトフォールバック
+          setFallback(fallbackScenario);
+        }
       }
     },
-    [generate]
+    [generate, setFallback]
   );
 
   // ローディング完了 → 通話画面へ
