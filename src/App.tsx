@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import type { AppScreen, Country, Mood } from './types';
 import { useScenarioGenerator } from './hooks/useScenarioGenerator';
 import { useLanguage } from './i18n/LanguageContext';
+import { fallbackScenario } from './lib/scenarios';
 import { SetupScreen } from './components/SetupScreen';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CallScreen } from './components/CallScreen';
@@ -12,7 +13,7 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [callDuration, setCallDuration] = useState(0);
 
-  const { scenario, isLoading, error, generate, reset } = useScenarioGenerator();
+  const { scenario, isLoading, error, generate, reset, setFallback } = useScenarioGenerator();
   const { t } = useLanguage();
 
   // 通話開始
@@ -24,8 +25,7 @@ function App() {
       try {
         await generate(country, mood);
       } catch {
-        // エラー時はSetupScreenに戻る
-        setScreen('setup');
+        // エラー時はloading画面に留まり、エラーを表示する
       }
     },
     [generate]
@@ -35,6 +35,11 @@ function App() {
   const handleLoadingComplete = useCallback(() => {
     setScreen('call');
   }, []);
+
+  // フォールバックシナリオで通話開始
+  const handleUseFallback = useCallback(() => {
+    setFallback(fallbackScenario);
+  }, [setFallback]);
 
   // 通話終了
   const handleCallEnd = useCallback((duration: number) => {
@@ -72,12 +77,20 @@ function App() {
                 <div className="text-red-400/70 text-xs font-mono mb-3">
                   {error}
                 </div>
-                <button
-                  onClick={handleRestart}
-                  className="px-6 py-2 bg-red-600 text-white rounded-lg font-mono text-sm hover:bg-red-500"
-                >
-                  {t('reconnect')}
-                </button>
+                <div className="flex gap-3 justify-center">
+                  <button
+                    onClick={handleRestart}
+                    className="px-4 py-2 bg-gray-700 text-gray-200 rounded-lg font-mono text-sm hover:bg-gray-600"
+                  >
+                    {t('reconnect')}
+                  </button>
+                  <button
+                    onClick={handleUseFallback}
+                    className="px-4 py-2 bg-accent text-dark rounded-lg font-mono text-sm font-bold hover:bg-accent/90"
+                  >
+                    {t('useFallback')}
+                  </button>
+                </div>
               </div>
             </div>
           )}

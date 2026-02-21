@@ -157,8 +157,12 @@ export const translations = {
     en: 'Connection unstable',
   },
   reconnect: {
-    ja: '再接続',
-    en: 'Reconnect',
+    ja: '戻る',
+    en: 'Go Back',
+  },
+  useFallback: {
+    ja: 'デモモードで通話',
+    en: 'Use Demo Mode',
   },
 
   // Error messages

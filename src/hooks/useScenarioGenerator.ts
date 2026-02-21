@@ -39,5 +39,12 @@ export function useScenarioGenerator() {
     setIsLoading(false);
   }, []);
 
-  return { scenario, isLoading, error, generate, reset };
+  // フォールバックシナリオをセット（API失敗時に使用）
+  const setFallback = useCallback((fallback: Scenario) => {
+    setScenario(fallback);
+    setError(null);
+    setIsLoading(false);
+  }, []);
+
+  return { scenario, isLoading, error, generate, reset, setFallback };
 }
