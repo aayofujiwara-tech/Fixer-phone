@@ -19,7 +19,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
   const [showFixerLine, setShowFixerLine] = useState(false);
   const [isThinking, setIsThinking] = useState(true);
   const [autoMode, setAutoMode] = useState(true);
-  const [practiceLang, setPracticeLang] = useState<'ja' | 'en'>('ja');
+  const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>('ja');
 
   const { speak, stop, isSpeaking } = useSpeechSynthesis();
   const timer = useCallTimer();
@@ -28,6 +28,9 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
   // 自動進行タイマー管理
   const autoTimersRef = useRef<number[]>([]);
   const autoActiveRef = useRef(false);
+  // 選択言語の最新値（TTS effect内でstale closureにならないよう）
+  const selectedLangRef = useRef(selectedLang);
+  selectedLangRef.current = selectedLang;
   // stale closure回避: 常に最新のhandleEndCall相当を参照
   const handleEndCallRef = useRef<() => void>(() => {});
 
@@ -89,30 +92,25 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
     return () => clearTimeout(thinkTimer);
   }, [currentLineIndex]);
 
-  // リーダーのセリフ表示後: 日英TTS自動読み上げ → フィクサーセリフ表示
+  // リーダーのセリフ表示後: 選択言語のみTTS読み上げ → フィクサーセリフ表示
   // 練習モード・自動進行モード共通
   useEffect(() => {
     if (!showLeaderLine || !pair.leader) return;
 
     autoActiveRef.current = true;
     const leader = pair.leader;
+    const ttsLang = selectedLangRef.current;
+    const text = ttsLang === 'ja' ? leader.ja : leader.en;
 
-    // 0.5秒待ってリーダー日本語読み上げ
+    // 0.5秒待ってリーダー読み上げ（選択言語のみ）
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
-      speak(leader.ja, 'ja', () => {
+      speak(text, ttsLang, () => {
         if (!autoActiveRef.current) return;
-        // 日本語完了 → 0.5秒待って英語読み上げ
+        // 読み上げ完了 → 0.5秒待ってフィクサーセリフを表示
         addAutoTimer(() => {
           if (!autoActiveRef.current) return;
-          speak(leader.en, 'en', () => {
-            if (!autoActiveRef.current) return;
-            // 英語完了 → 0.5秒待ってフィクサーセリフを表示
-            addAutoTimer(() => {
-              if (!autoActiveRef.current) return;
-              setShowFixerLine(true);
-            }, 500);
-          });
+          setShowFixerLine(true);
         }, 500);
       });
     }, 500);
@@ -129,28 +127,23 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
     autoActiveRef.current = true;
     const fixer = pair.fixer;
     const lastPair = isLastPair;
+    const ttsLang = selectedLangRef.current;
+    const text = ttsLang === 'ja' ? fixer.ja : fixer.en;
 
-    // 0.5秒待ってから日本語読み上げ
+    // 0.5秒待ってから選択言語のみ読み上げ
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
-      speak(fixer.ja, 'ja', () => {
+      speak(text, ttsLang, () => {
         if (!autoActiveRef.current) return;
-        // 日本語完了 → 1秒待って英語読み上げ
+        // 読み上げ完了 → 2秒待って次へ
         addAutoTimer(() => {
           if (!autoActiveRef.current) return;
-          speak(fixer.en, 'en', () => {
-            if (!autoActiveRef.current) return;
-            // 英語完了 → 2秒待って次へ
-            addAutoTimer(() => {
-              if (!autoActiveRef.current) return;
-              if (lastPair) {
-                handleEndCallRef.current();
-              } else {
-                setCurrentLineIndex(prev => prev + 1);
-              }
-            }, 2000);
-          });
-        }, 1000);
+          if (lastPair) {
+            handleEndCallRef.current();
+          } else {
+            setCurrentLineIndex(prev => prev + 1);
+          }
+        }, 2000);
       });
     }, 500);
 
@@ -253,15 +246,40 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
             )}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{country.flag}</span>
-          <div>
-            <div className="text-white text-sm font-bold">
-              {countryDisplay}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xl">{country.flag}</span>
+            <div>
+              <div className="text-white text-sm font-bold">
+                {countryDisplay}
+              </div>
+              <div className="text-gray-400 text-xs font-mono">
+                「{scenarioTitle}」
+              </div>
             </div>
-            <div className="text-gray-400 text-xs font-mono">
-              「{scenarioTitle}」
-            </div>
+          </div>
+          {/* TTS言語切替 */}
+          <div className="flex gap-1">
+            <button
+              onClick={() => setSelectedLang('ja')}
+              className={`px-2 py-1 rounded text-xs font-mono transition-all ${
+                selectedLang === 'ja'
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                  : 'bg-gray-800 text-gray-600 border border-gray-700'
+              }`}
+            >
+              🇯🇵
+            </button>
+            <button
+              onClick={() => setSelectedLang('en')}
+              className={`px-2 py-1 rounded text-xs font-mono transition-all ${
+                selectedLang === 'en'
+                  ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                  : 'bg-gray-800 text-gray-600 border border-gray-700'
+              }`}
+            >
+              🇺🇸
+            </button>
           </div>
         </div>
       </div>
@@ -314,38 +332,14 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
                 {t('yourLine')}
               </div>
 
-              {/* 言語切替トグル */}
-              <div className="flex justify-center gap-2 mb-3">
-                <button
-                  onClick={() => setPracticeLang('ja')}
-                  className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
-                    practiceLang === 'ja'
-                      ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
-                      : 'bg-gray-800 text-gray-600 border border-gray-700'
-                  }`}
-                >
-                  🇯🇵 日本語
-                </button>
-                <button
-                  onClick={() => setPracticeLang('en')}
-                  className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
-                    practiceLang === 'en'
-                      ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
-                      : 'bg-gray-800 text-gray-600 border border-gray-700'
-                  }`}
-                >
-                  🇺🇸 English
-                </button>
-              </div>
-
               {/* メインの言語（大きく表示） */}
               <div className="text-white text-base leading-relaxed mb-2">
-                {practiceLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
+                {selectedLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
               </div>
 
               {/* サブの言語（小さく薄く表示 = カンニング用） */}
               <div className="text-gray-500 text-xs leading-relaxed">
-                {practiceLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
+                {selectedLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
               </div>
 
               {/* 「読めた！次へ」ボタン */}
