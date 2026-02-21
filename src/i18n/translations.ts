@@ -111,6 +111,10 @@ export const translations = {
     ja: 'ランダム',
     en: 'Random',
   },
+  ttsSpeedLabel: {
+    ja: '読み上げ速度',
+    en: 'TTS Speed',
+  },
   callModeLabel: {
     ja: '通話モード',
     en: 'Call Mode',

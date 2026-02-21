@@ -7,10 +7,14 @@ import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   onStart: (country: Country, mood: Mood, callMode: CallMode, scenarioIndex: number | null) => void;
+  jaSpeed: number;
+  enSpeed: number;
+  onJaSpeedChange: (speed: number) => void;
+  onEnSpeedChange: (speed: number) => void;
 }
 
 // 設定画面
-export function SetupScreen({ onStart }: Props) {
+export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSpeedChange }: Props) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [mood, setMood] = useState<Mood>('serious');
   const [callMode, setCallMode] = useState<CallMode>('auto');
@@ -224,6 +228,54 @@ export function SetupScreen({ onStart }: Props) {
                 {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
               </div>
             </button>
+          </div>
+        </section>
+
+        {/* TTS速度調整 */}
+        <section>
+          <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
+            {t('ttsSpeedLabel')}
+          </h2>
+          <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center gap-1">
+              <span className="text-sm">🇯🇵</span>
+              <button
+                onClick={() => onJaSpeedChange(Math.max(1, jaSpeed - 1))}
+                className="text-gray-500 text-xs px-1 hover:text-gray-300 disabled:opacity-30"
+                disabled={jaSpeed <= 1}
+              >
+                ◀
+              </button>
+              <span className="text-accent text-sm font-mono w-4 text-center">{jaSpeed}</span>
+              <button
+                onClick={() => onJaSpeedChange(Math.min(5, jaSpeed + 1))}
+                className="text-gray-500 text-xs px-1 hover:text-gray-300 disabled:opacity-30"
+                disabled={jaSpeed >= 5}
+              >
+                ▶
+              </button>
+            </div>
+
+            <span className="text-gray-700 text-xs">|</span>
+
+            <div className="flex items-center gap-1">
+              <span className="text-sm">🇺🇸</span>
+              <button
+                onClick={() => onEnSpeedChange(Math.max(1, enSpeed - 1))}
+                className="text-gray-500 text-xs px-1 hover:text-gray-300 disabled:opacity-30"
+                disabled={enSpeed <= 1}
+              >
+                ◀
+              </button>
+              <span className="text-accent text-sm font-mono w-4 text-center">{enSpeed}</span>
+              <button
+                onClick={() => onEnSpeedChange(Math.min(5, enSpeed + 1))}
+                className="text-gray-500 text-xs px-1 hover:text-gray-300 disabled:opacity-30"
+                disabled={enSpeed >= 5}
+              >
+                ▶
+              </button>
+            </div>
           </div>
         </section>
 

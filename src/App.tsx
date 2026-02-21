@@ -15,6 +15,8 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [callDuration, setCallDuration] = useState(0);
   const [callMode, setCallMode] = useState<CallMode>('auto');
+  const [jaSpeed, setJaSpeed] = useState(3);
+  const [enSpeed, setEnSpeed] = useState(3);
 
   const { scenario, isLoading, error, generate, reset, setFallback } = useScenarioGenerator();
   const { t } = useLanguage();
@@ -83,7 +85,13 @@ function App() {
   return (
     <div className="max-w-[480px] mx-auto">
       {screen === 'setup' && (
-        <SetupScreen onStart={handleStart} />
+        <SetupScreen
+          onStart={handleStart}
+          jaSpeed={jaSpeed}
+          enSpeed={enSpeed}
+          onJaSpeedChange={setJaSpeed}
+          onEnSpeedChange={setEnSpeed}
+        />
       )}
 
       {screen === 'loading' && (
@@ -128,6 +136,10 @@ function App() {
           scenario={scenario}
           callMode={callMode}
           onEnd={handleCallEnd}
+          jaSpeed={jaSpeed}
+          enSpeed={enSpeed}
+          onJaSpeedChange={setJaSpeed}
+          onEnSpeedChange={setEnSpeed}
         />
       )}
 

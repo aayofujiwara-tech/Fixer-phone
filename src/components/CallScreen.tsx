@@ -10,18 +10,20 @@ interface Props {
   scenario: Scenario;
   callMode: CallMode;
   onEnd: (duration: number) => void;
+  jaSpeed: number;
+  enSpeed: number;
+  onJaSpeedChange: (speed: number) => void;
+  onEnSpeedChange: (speed: number) => void;
 }
 
 // 通話メイン画面
-export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
+export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpeed, onJaSpeedChange, onEnSpeedChange }: Props) {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [showLeaderLine, setShowLeaderLine] = useState(false);
   const [showFixerLine, setShowFixerLine] = useState(false);
   const [isThinking, setIsThinking] = useState(true);
   const [autoMode, setAutoMode] = useState(true);
   const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>('ja');
-  const [jaSpeed, setJaSpeed] = useState(3);
-  const [enSpeed, setEnSpeed] = useState(3);
 
   const { speak, stop, isSpeaking } = useSpeechSynthesis();
   const timer = useCallTimer();
@@ -305,7 +307,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
               <div className="flex items-center gap-0.5">
                 <span className="text-[10px]">🇯🇵</span>
                 <button
-                  onClick={() => setJaSpeed(s => Math.max(1, s - 1))}
+                  onClick={() => onJaSpeedChange(Math.max(1, jaSpeed - 1))}
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={jaSpeed <= 1}
                 >
@@ -313,7 +315,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
                 </button>
                 <span className="text-accent text-[10px] font-mono w-3 text-center">{jaSpeed}</span>
                 <button
-                  onClick={() => setJaSpeed(s => Math.min(5, s + 1))}
+                  onClick={() => onJaSpeedChange(Math.min(5, jaSpeed + 1))}
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={jaSpeed >= 5}
                 >
@@ -324,7 +326,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
               <div className="flex items-center gap-0.5">
                 <span className="text-[10px]">🇺🇸</span>
                 <button
-                  onClick={() => setEnSpeed(s => Math.max(1, s - 1))}
+                  onClick={() => onEnSpeedChange(Math.max(1, enSpeed - 1))}
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={enSpeed <= 1}
                 >
@@ -332,7 +334,7 @@ export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
                 </button>
                 <span className="text-accent text-[10px] font-mono w-3 text-center">{enSpeed}</span>
                 <button
-                  onClick={() => setEnSpeed(s => Math.min(5, s + 1))}
+                  onClick={() => onEnSpeedChange(Math.min(5, enSpeed + 1))}
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={enSpeed >= 5}
                 >
