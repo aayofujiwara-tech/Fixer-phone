@@ -1,0 +1,109 @@
+import type { Scenario } from '../../types';
+
+export const cnSerious: Scenario[] = [
+  // ===== SERIOUS 1: 台湾海峡・瀬戸際の密約 =====
+  {
+    scenario_title_ja: '台湾海峡・瀬戸際の密約',
+    scenario_title_en: 'Taiwan Strait — Brinkmanship Pact',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、台湾海峡に我が軍の空母打撃群が展開した。アメリカの第七艦隊も動いている。一触即発だ。', en: 'Fixer, our carrier strike group has deployed to the Taiwan Strait. The US Seventh Fleet is also moving. We\'re on the brink.' },
+      { speaker: 'fixer', ja: '主席、両軍の距離は海里で50を切っています。しかし、この危機は「演出」に転換できます。', en: 'Chairman, both forces are within 50 nautical miles. However, this crisis can be turned into a "performance."' },
+      { speaker: 'leader', ja: '演出だと？国家の威信がかかっている。人民は強い指導者を求めている。', en: 'A performance? National prestige is at stake. The people demand a strong leader.' },
+      { speaker: 'fixer', ja: 'だからこそです。「強さを見せた上で引く」のが最上の策です。ワシントンに秘密チャンネルを持っています。48時間以内に「同時撤退」のシナリオを成立させます。', en: 'Exactly why. "Showing strength then stepping back" is the supreme strategy. I have a secret channel to Washington. Within 48 hours, I can arrange a "simultaneous withdrawal" scenario.' },
+      { speaker: 'leader', ja: '軍の強硬派が納得しない。彼らは実戦を望んでいる。', en: 'The military hardliners won\'t accept it. They want actual combat.' },
+      { speaker: 'fixer', ja: '強硬派には別の「戦果」を与えます。南シナ海の新たな人工島建設の承認です。メディアはそちらに注目し、台湾海峡からの撤退は「戦略的再配置」として報じられます。', en: 'We give the hardliners a different "victory." Approval for a new artificial island in the South China Sea. Media attention shifts there, and the Taiwan Strait withdrawal gets reported as "strategic repositioning."' },
+      { speaker: 'leader', ja: 'アメリカ側の条件は何だ？', en: 'What are the American conditions?' },
+      { speaker: 'fixer', ja: '半導体の輸出規制の部分的緩和です。彼らもAI競争で我が国の市場が必要です。経済的相互依存こそが最強の抑止力です。', en: 'Partial easing of semiconductor export restrictions. They need our market for the AI race too. Economic interdependence is the strongest deterrent.' },
+      { speaker: 'leader', ja: '…孫子の兵法だな。「戦わずして勝つ」か。', en: '...Sun Tzu\'s Art of War. "To win without fighting."' },
+      { speaker: 'fixer', ja: 'その通りです。主席が歴史に名を刻むのは、戦争によってではなく、戦争を回避した知恵によってです。', en: 'Precisely. Chairman, your name will be written in history not through war, but through the wisdom of avoiding it.' },
+    ],
+  },
+  // ===== SERIOUS 2: 一帯一路の債務危機封じ込め =====
+  {
+    scenario_title_ja: '一帯一路の債務危機封じ込め',
+    scenario_title_en: 'Belt and Road Debt Crisis Containment',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、アフリカ3カ国が一帯一路の融資の返済を拒否した。ドミノ倒しが始まりかけている。', en: 'Fixer, three African nations have refused to repay Belt and Road loans. A domino effect is about to begin.' },
+      { speaker: 'fixer', ja: '把握しています。さらに5カ国が返済猶予を求める動きを見せています。西側メディアはすでに「債務の罠外交」と書き立てています。', en: 'I\'m aware. Five more countries are moving to request deferrals. Western media is already running stories about "debt-trap diplomacy."' },
+      { speaker: 'leader', ja: '一帯一路は我が政権の看板政策だ。崩壊すれば、国内の批判も避けられない。', en: 'Belt and Road is our administration\'s flagship policy. If it collapses, domestic criticism will be unavoidable.' },
+      { speaker: 'fixer', ja: '「債務」を「投資」に転換します。返済不能な融資を現地インフラの共同運営権に切り替えるのです。港湾、鉄道、通信網…実質的な支配権を債権より価値ある形で確保できます。', en: 'We convert "debt" into "investment." Switch unrepayable loans into joint operation rights for local infrastructure. Ports, railways, telecom networks... We secure effective control in a form more valuable than the debt itself.' },
+      { speaker: 'leader', ja: '相手国が同意するか？国際社会の反発は？', en: 'Will the other countries agree? What about international backlash?' },
+      { speaker: 'fixer', ja: '相手国にとっても債務帳消しは魅力的です。国際社会には「途上国支援の新モデル」としてパッケージングします。IMFの元高官を顧問に迎え入れる交渉も進めています。', en: 'Debt cancellation is attractive for them too. We\'ll package it for the international community as a "new model for developing nation support." I\'m also in negotiations to bring in a former IMF senior official as an advisor.' },
+      { speaker: 'leader', ja: 'IMFの人間を取り込むのか。大胆だな。', en: 'Co-opting an IMF insider. Bold move.' },
+      { speaker: 'fixer', ja: '「敵の参謀を味方にする」のは古典的な手法です。彼が顧問に就任すれば、西側の批判は激減します。人事一つで地政学が変わるのです。', en: '"Turning the enemy\'s strategist into an ally" is a classic move. Once he takes the advisory role, Western criticism will plummet. One appointment can change geopolitics.' },
+      { speaker: 'leader', ja: 'いつまでに全体の枠組みをまとめられる？', en: 'How soon can you put together the overall framework?' },
+      { speaker: 'fixer', ja: '来月の国連総会までに。主席がステージ上で「新時代の南南協力」を宣言する瞬間を、私が演出いたします。', en: 'By next month\'s UN General Assembly. I will orchestrate the moment when you declare "A New Era of South-South Cooperation" on that stage.' },
+    ],
+  },
+  // ===== SERIOUS 3: AI覇権と半導体封鎖の突破 =====
+  {
+    scenario_title_ja: 'AI覇権と半導体封鎖の突破',
+    scenario_title_en: 'AI Supremacy and Breaking the Semiconductor Blockade',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、アメリカの新たな半導体規制が発動された。最先端チップの入手が完全に遮断される。', en: 'Fixer, the new American semiconductor restrictions have taken effect. Access to cutting-edge chips will be completely blocked.' },
+      { speaker: 'fixer', ja: '想定通りです。しかし主席、封鎖には必ず迂回路があります。3つのルートを同時に開拓中です。', en: 'As anticipated. But Chairman, every blockade has a detour. I\'m developing three routes simultaneously.' },
+      { speaker: 'leader', ja: '我々の自主開発は何年で追いつける？正直に言え。', en: 'How many years until our domestic development catches up? Be honest.' },
+      { speaker: 'fixer', ja: '最先端プロセスは5年。しかし、AIに関しては別のアプローチがあります。ハードで負けても、アルゴリズムとデータ量で勝てばいいのです。', en: 'Five years for cutting-edge processes. However, for AI there\'s a different approach. Even if we lose on hardware, we can win with algorithms and data volume.' },
+      { speaker: 'leader', ja: '具体的に何を提案する？', en: 'What specifically are you proposing?' },
+      { speaker: 'fixer', ja: '14億人のデータを活用した独自の大規模言語モデルの開発です。すでにトップクラスの研究者30名を国内外から極秘に招聘しています。プロジェクト名は「龍脳」。', en: 'Development of a proprietary large language model leveraging the data of 1.4 billion people. I\'ve already secretly recruited 30 top-tier researchers from home and abroad. Project codename: "Dragon Brain."' },
+      { speaker: 'leader', ja: '研究者の中にアメリカ国籍の者はいるのか？問題にならないか？', en: 'Are there any American nationals among the researchers? Won\'t that cause problems?' },
+      { speaker: 'fixer', ja: '全員が二重国籍を放棄済みの華人系です。法的リスクはゼロです。さらに、中東の投資ファンドを通じてオランダの光学機器メーカーとの技術提携も進めています。', en: 'All are ethnic Chinese who have renounced dual citizenship. Zero legal risk. Additionally, I\'m advancing a technology partnership with a Dutch optical equipment manufacturer through a Middle Eastern investment fund.' },
+      { speaker: 'leader', ja: 'ASMLか。アメリカが黙っていないだろう。', en: 'ASML. The Americans won\'t stay silent.' },
+      { speaker: 'fixer', ja: '直接取引ではありません。技術の「学術交流」という形です。大学間連携プログラムとして処理すれば、規制の対象外です。主席、チェスではなく囲碁で考えてください。一手ではなく、布石です。', en: 'It\'s not a direct deal. It\'s framed as "academic exchange" of technology. Processed as an inter-university partnership program, it falls outside regulations. Chairman, think in terms of Go, not chess. Not a single move, but strategic positioning.' },
+    ],
+  },
+];
+
+export const cnComedy: Scenario[] = [
+  // ===== COMEDY 1: パンダ外交の逆襲 =====
+  {
+    scenario_title_ja: 'パンダ外交の逆襲',
+    scenario_title_en: 'Revenge of Panda Diplomacy',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、大問題だ。日本に貸し出したパンダのリンリンが、上野動物園で「脱走」した。', en: 'Fixer, big problem. Linlin, the panda we loaned to Japan, has "escaped" from Ueno Zoo.' },
+      { speaker: 'fixer', ja: '脱走ではありません、主席。リンリンは現在、秋葉原のメイドカフェで目撃されています。', en: 'It\'s not an escape, Chairman. Linlin has been spotted at a maid café in Akihabara.' },
+      { speaker: 'leader', ja: '…パンダがメイドカフェだと？我が国の国宝がメイド服を着せられているのか！？', en: '...A panda at a maid café? Is our national treasure being dressed in a maid outfit!?' },
+      { speaker: 'fixer', ja: 'いえ、お客として竹の代わりにパフェを食べているようです。店のSNSフォロワーが1時間で100万人増えました。', en: 'No, Linlin appears to be eating a parfait instead of bamboo — as a customer. The shop\'s social media followers increased by one million in one hour.' },
+      { speaker: 'leader', ja: 'これは国際問題だ！すぐに回収しろ！', en: 'This is an international incident! Retrieve the panda immediately!' },
+      { speaker: 'fixer', ja: '主席、お待ちください。これは逆に外交カードになります。「パンダも愛する日中友好」としてPRすれば、両国関係の改善に使えます。日本のネット世論は今、中国に対して過去最高の好感度です。', en: 'Chairman, please wait. This could actually become a diplomatic card. If we spin it as "Panda-approved Japan-China Friendship," we can use it to improve bilateral relations. Japanese internet sentiment toward China is at an all-time high right now.' },
+      { speaker: 'leader', ja: '…パンダ一頭で外交問題が解決するというのか？', en: '...You\'re saying a single panda can solve diplomatic issues?' },
+      { speaker: 'fixer', ja: '歴史的に、パンダは核兵器より多くの外交成果を上げています。リンリンの秋葉原訪問を「文化交流プログラム」として公式認定しましょう。', en: 'Historically, pandas have achieved more diplomatic results than nuclear weapons. Let\'s officially certify Linlin\'s Akihabara visit as a "Cultural Exchange Program."' },
+      { speaker: 'leader', ja: 'リンリンの帰国はどうする？', en: 'What about bringing Linlin back?' },
+      { speaker: 'fixer', ja: 'リンリンが自主的に帰国するよう、四川省から最高級の竹を空輸します。ただし…メイドカフェのパフェの方が好きだった場合の対策も必要です。', en: 'We\'ll airlift premium bamboo from Sichuan Province to lure Linlin home voluntarily. However... we also need a contingency plan in case Linlin prefers the maid café parfaits.' },
+    ],
+  },
+  // ===== COMEDY 2: 万里の長城Wi-Fi化計画 =====
+  {
+    scenario_title_ja: '万里の長城Wi-Fi化計画',
+    scenario_title_en: 'The Great Wall Wi-Fi Project',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、技術部門から「万里の長城を世界最大のWi-Fiアンテナにする」という提案が上がってきた。', en: 'Fixer, the tech department has submitted a proposal to turn the Great Wall into the world\'s largest Wi-Fi antenna.' },
+      { speaker: 'fixer', ja: '拝見しました。6,000キロの石壁に導電性コーティングを施し、全土にWi-Fi電波を届けるという…壮大な計画ですね。', en: 'I\'ve reviewed it. Applying conductive coating to 6,000 kilometers of stone wall to deliver Wi-Fi signals nationwide... A grand plan indeed.' },
+      { speaker: 'leader', ja: 'コストは？', en: 'What\'s the cost?' },
+      { speaker: 'fixer', ja: '試算では国防予算の3分の1です。ただし成功すれば、月でもWi-Fiが届くそうです。…月に届いても使う人はいませんが。', en: 'Estimates put it at one-third of the defense budget. However, if successful, Wi-Fi would reach the moon. ...Though there\'s nobody on the moon to use it.' },
+      { speaker: 'leader', ja: 'UNESCO世界遺産の問題はどうなる？', en: 'What about the UNESCO World Heritage issue?' },
+      { speaker: 'fixer', ja: '「デジタル文化遺産への進化」として申請し直します。世界初の「接続可能な世界遺産」です。観光客は万里の長城の上で最高速度のインターネットを楽しめます。', en: 'We\'ll resubmit it as "Evolution into Digital Cultural Heritage." The world\'s first "Connected World Heritage Site." Tourists can enjoy maximum-speed internet on the Great Wall.' },
+      { speaker: 'leader', ja: 'テスト結果はあるのか？', en: 'Are there any test results?' },
+      { speaker: 'fixer', ja: '試験区間100メートルで実験した結果、Wi-Fiは完璧でしたが…副作用として周辺の農家のヤギが全頭、同時にダンスを始めました。電磁波の影響かもしれません。', en: 'Testing on a 100-meter section showed perfect Wi-Fi... but as a side effect, all goats at nearby farms simultaneously started dancing. It might be electromagnetic interference.' },
+      { speaker: 'leader', ja: '踊るヤギは困るぞ。国際ニュースになる。', en: 'Dancing goats are problematic. That\'ll make international news.' },
+      { speaker: 'fixer', ja: '「中国発の新しいエンターテインメント」として、踊るヤギの動画を公式配信しましょう。TikTokでバイラルになれば、プロジェクトの広告費がゼロになります。主席、21世紀の万里の長城は、敵を防ぐのではなく、世界を繋ぐのです。', en: 'Let\'s officially stream the dancing goat videos as "New Entertainment from China." If it goes viral on TikTok, advertising costs for the project drop to zero. Chairman, the 21st-century Great Wall doesn\'t keep enemies out — it connects the world.' },
+    ],
+  },
+  // ===== COMEDY 3: 国家主席の火鍋ランキング流出 =====
+  {
+    scenario_title_ja: '国家主席の火鍋ランキング流出',
+    scenario_title_en: 'The Chairman\'s Hot Pot Rankings Leaked',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、私が個人的につけていた「全国火鍋店ランキングTOP50」がWeiboに流出した。', en: 'Fixer, my personal "National Hot Pot Restaurant Top 50 Rankings" have been leaked on Weibo.' },
+      { speaker: 'fixer', ja: '主席、問題はランキングの存在ではなく、その内容です。1位が四川省ではなく…重慶市の無名店になっていることが四川省全体を激怒させています。', en: 'Chairman, the problem isn\'t the rankings\' existence, but their content. The fact that number one isn\'t in Sichuan Province but... an unknown shop in Chongqing has enraged all of Sichuan.' },
+      { speaker: 'leader', ja: 'あの店の麻辣スープは芸術なんだ！四川省の知事から抗議の電話が30件来ている。', en: 'That shop\'s mala soup is art! I\'ve received 30 protest calls from the Sichuan governor.' },
+      { speaker: 'fixer', ja: '四川省の知事だけではありません。広東省が「なぜ広東式火鍋が一つも入っていないのか」と声明を出し、内蒙古自治区は「羊肉火鍋への冒涜だ」と非難しています。', en: 'It\'s not just the Sichuan governor. Guangdong Province has issued a statement asking "Why isn\'t a single Cantonese hot pot included?" and Inner Mongolia has condemned it as "an insult to lamb hot pot."' },
+      { speaker: 'leader', ja: '火鍋のランキングで地方間対立が起きるとは…。', en: 'Regional conflicts breaking out over hot pot rankings...' },
+      { speaker: 'fixer', ja: '対策案があります。「第1回 全国火鍋統一選手権」を開催し、主席が審査委員長を務めるのです。「火鍋で国を一つにする」というスローガンで。', en: 'I have a countermeasure. We hold the "1st National Hot Pot Championship" with you as chief judge. Under the slogan "Uniting the Nation Through Hot Pot."' },
+      { speaker: 'leader', ja: '…それは公務として認められるのか？', en: '...Would that be approved as official business?' },
+      { speaker: 'fixer', ja: '「食文化を通じた国内結束の強化」として政策に組み込みます。予算は文化部から。審査には各省の代表を1名ずつ参加させ、地方の不満を吸収します。', en: 'We\'ll incorporate it into policy as "Strengthening National Unity Through Food Culture." Budget from the Ministry of Culture. Each province sends one representative judge to absorb regional dissatisfaction.' },
+      { speaker: 'leader', ja: '優勝店には何を与える？', en: 'What does the winning restaurant receive?' },
+      { speaker: 'fixer', ja: '「国家認定火鍋」の称号と、主席直筆の「至高の一鍋」の書です。ただし…主席、全店を審査するには、1日8食の火鍋を3ヶ月続ける必要があります。胃腸の準備はよろしいですか？', en: 'The title of "Nationally Certified Hot Pot" and your personally calligraphed "The Supreme Pot." However... Chairman, to judge all entries, you\'ll need to eat hot pot 8 times a day for 3 months. Is your stomach ready?' },
+    ],
+  },
+];
