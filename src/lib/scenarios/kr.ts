@@ -1,0 +1,109 @@
+import type { Scenario } from '../../types';
+
+export const krSerious: Scenario[] = [
+  // ===== SERIOUS 1: 南北秘密首脳会談の設営 =====
+  {
+    scenario_title_ja: '南北秘密首脳会談の設営',
+    scenario_title_en: 'Arranging a Secret Inter-Korean Summit',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、北朝鮮から秘密裏に接触があった。金正恩が直接会談を望んでいるという。', en: 'Fixer, there\'s been a secret contact from North Korea. Kim Jong-un reportedly wants a direct meeting.' },
+      { speaker: 'fixer', ja: '大統領、情報は確認済みです。北朝鮮側は板門店ではなく、第三国での会談を希望しています。彼らも面子を守りたいのです。', en: 'Mr. President, the information is confirmed. The North Korean side prefers a meeting in a third country, not Panmunjom. They want to save face too.' },
+      { speaker: 'leader', ja: '場所はどこが最適だ？中国は北朝鮮寄りだし、日本は北との関係が悪い。', en: 'What\'s the ideal location? China leans toward the North, and Japan\'s relationship with them is poor.' },
+      { speaker: 'fixer', ja: 'シンガポールを提案します。中立的で、安全保障体制が整っており、メディアのコントロールも容易です。シンガポール政府とは非公式に合意済みです。', en: 'I propose Singapore. It\'s neutral, has solid security infrastructure, and media control is straightforward. I\'ve already reached an informal agreement with the Singaporean government.' },
+      { speaker: 'leader', ja: 'アメリカへの根回しは？彼らの承認なしでは動けない。', en: 'What about coordinating with America? We can\'t move without their approval.' },
+      { speaker: 'fixer', ja: 'ワシントンには「情報共有」として報告しますが、「承認」は求めません。韓国の主導であることが重要です。アメリカには成功後に「最大の功労者」として持ち上げれば不満は出ません。', en: 'We\'ll brief Washington as "information sharing" but won\'t seek "approval." Korean leadership is essential. If we credit America as "the greatest contributor" after success, there\'ll be no complaints.' },
+      { speaker: 'leader', ja: '金正恩の真意は何だと思う？また時間稼ぎか？', en: 'What do you think Kim\'s true intention is? Another stalling tactic?' },
+      { speaker: 'fixer', ja: '今回は違います。北朝鮮国内の食糧危機が深刻化しています。彼は「交渉する姿勢」を見せることで、制裁緩和の糸口を掴みたいのです。我々にとってもチャンスです。', en: 'This time is different. The food crisis in North Korea is worsening. He wants to show "a willingness to negotiate" to find an opening for sanctions relief. It\'s an opportunity for us too.' },
+      { speaker: 'leader', ja: '国内世論が割れるだろう。保守派は猛反対する。', en: 'Public opinion will be divided. Conservatives will fiercely oppose it.' },
+      { speaker: 'fixer', ja: '会談の成功映像が流れた瞬間、世論は逆転します。大統領、歴史的な一歩は、常に批判の中から始まるものです。準備は全て整っています。', en: 'The moment footage of a successful summit airs, public opinion will flip. Mr. President, historic steps always begin amid criticism. Everything is ready.' },
+    ],
+  },
+  // ===== SERIOUS 2: 財閥スキャンダルと政権防衛 =====
+  {
+    scenario_title_ja: '財閥スキャンダルと政権防衛',
+    scenario_title_en: 'Chaebol Scandal and Administration Defense',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、国内最大の財閥の会長が逮捕された。問題は、彼と私の選挙資金の関係がメディアに露出しかけていることだ。', en: 'Fixer, the chairman of the nation\'s largest chaebol has been arrested. The problem is, the connection between his money and my campaign funds is about to be exposed.' },
+      { speaker: 'fixer', ja: '大統領、資金の流れは確認しました。直接的な違法献金はありませんが、財団を経由したグレーゾーンの資金があります。検察が辿り着くのは時間の問題です。', en: 'Mr. President, I\'ve verified the money trail. There\'s no direct illegal donation, but there are gray-zone funds routed through a foundation. It\'s only a matter of time before prosecutors trace it.' },
+      { speaker: 'leader', ja: '前大統領と同じ末路は避けたい。どうすればいい？', en: 'I want to avoid the same fate as the previous president. What should I do?' },
+      { speaker: 'fixer', ja: '先手を打ちます。大統領自ら「財閥改革特別委員会」を設置し、その委員長に最も厳格な検察OBを任命します。「改革する側」に立つことで、追及の矛先が変わります。', en: 'We strike first. You personally establish a "Special Committee for Chaebol Reform" and appoint the most rigorous former prosecutor as chair. By standing on the "reform side," the direction of scrutiny changes.' },
+      { speaker: 'leader', ja: '財閥側が報復してこないか？彼らは経済の心臓部だ。', en: 'Won\'t the chaebols retaliate? They\'re the heart of the economy.' },
+      { speaker: 'fixer', ja: '財閥も生き残りたいのです。改革に協力的な財閥には優遇措置を、抵抗する財閥には税務調査を。アメとムチです。', en: 'Chaebols want to survive too. Favorable measures for cooperative chaebols, tax audits for resistant ones. Carrots and sticks.' },
+      { speaker: 'leader', ja: 'グレーゾーンの資金はどう処理する？', en: 'How do we handle the gray-zone funds?' },
+      { speaker: 'fixer', ja: '財団を自主的に解散し、全資産を奨学金基金に転換します。「疑惑を指摘される前に自ら正す」姿勢が重要です。メディアには「クリーンな政治の実現」としてリークします。', en: 'Voluntarily dissolve the foundation and convert all assets into a scholarship fund. The posture of "self-correcting before being accused" is crucial. We leak to media as "achieving clean politics."' },
+      { speaker: 'leader', ja: '…攻めの防御か。', en: '...Offense as defense.' },
+      { speaker: 'fixer', ja: '大統領、韓国政治で生き残る唯一の方法は、常にスキャンダルの一歩先を行くことです。追われる側から追う側へ。それが私の仕事です。', en: 'Mr. President, the only way to survive in Korean politics is to stay one step ahead of scandal. From the pursued to the pursuer. That\'s my job.' },
+    ],
+  },
+  // ===== SERIOUS 3: 竹島/独島・日韓極秘交渉 =====
+  {
+    scenario_title_ja: '竹島/独島・日韓極秘交渉',
+    scenario_title_en: 'Takeshima/Dokdo — Secret Japan-Korea Negotiation',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、日本が竹島周辺で海洋調査を強行しようとしている。国民感情が爆発寸前だ。', en: 'Fixer, Japan is about to force through a maritime survey around Takeshima/Dokdo. Public sentiment is about to explode.' },
+      { speaker: 'fixer', ja: '大統領、日本側の真意は領有権主張ではなく、国内向けのパフォーマンスです。参院選を控えた与党の支持率対策です。', en: 'Mr. President, Japan\'s true intent isn\'t a sovereignty claim — it\'s a domestic performance. The ruling party is shoring up support ahead of upper house elections.' },
+      { speaker: 'leader', ja: 'だとしても我が国も黙っているわけにはいかない。軍の艦艇を派遣する声が出ている。', en: 'Even so, we can\'t stay silent either. There are calls to dispatch naval vessels.' },
+      { speaker: 'fixer', ja: '軍事的対峙はエスカレーションの引き金になります。代わりに、日本の首相に「極秘チャンネル」で直接連絡を取ります。提案するのは「共同海洋環境調査」への転換です。', en: 'Military confrontation triggers escalation. Instead, I\'ll directly contact Japan\'s PM through a "secret channel." The proposal: converting it into a "Joint Marine Environmental Survey."' },
+      { speaker: 'leader', ja: '共同調査？国民が許さないだろう。「独島を日本と共有するのか」と批判される。', en: 'A joint survey? The public won\'t accept it. "Are we sharing Dokdo with Japan?" they\'ll say.' },
+      { speaker: 'fixer', ja: '「調査」であって「領有」ではありません。海洋環境データの共有は科学的行為です。国際社会には「成熟した両国関係」をアピールできます。独島の実効支配は一切揺るぎません。', en: 'It\'s a "survey," not "sovereignty-sharing." Sharing marine environmental data is a scientific act. We project "mature bilateral relations" to the international community. Our effective control over Dokdo remains completely unchanged.' },
+      { speaker: 'leader', ja: '日本側がこの提案を受け入れるか？', en: 'Will the Japanese side accept this proposal?' },
+      { speaker: 'fixer', ja: '日本の首相も国内向けに「成果」が必要です。「韓国との対話チャンネルを開いた」ことが十分な成果になります。双方が勝者になれる構図です。', en: 'Japan\'s PM also needs a "result" for domestic consumption. "Opening a dialogue channel with Korea" is sufficient achievement. A structure where both sides can claim victory.' },
+      { speaker: 'leader', ja: 'この交渉が漏れたら両国とも終わりだ。', en: 'If this negotiation leaks, both countries are finished.' },
+      { speaker: 'fixer', ja: '関係者は私と日本側の1名のみ。記録は一切残しません。大統領、60年以上の対立を終わらせる一歩は、こうした「見えない握手」から始まるのです。', en: 'Only myself and one person on the Japanese side are involved. No records. Mr. President, the first step to ending 60-plus years of conflict begins with these "invisible handshakes."' },
+    ],
+  },
+];
+
+export const krComedy: Scenario[] = [
+  // ===== COMEDY 1: K-POPアイドルが外交大使に任命される =====
+  {
+    scenario_title_ja: 'K-POPアイドルが外交大使に任命される',
+    scenario_title_en: 'K-POP Idol Appointed as Diplomatic Ambassador',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、外交部が「K-POP外交大使」の任命を提案してきた。候補は世界的人気グループのメンバーだ。', en: 'Fixer, the Foreign Ministry has proposed appointing a "K-POP Diplomatic Ambassador." The candidate is a member of a world-famous group.' },
+      { speaker: 'fixer', ja: '大統領、すでにSNSに噂が漏れています。ファンダムが「推しが外交大使に！」と世界中で騒いでいます。青瓦台のウェブサイトがアクセス過多でダウンしました。', en: 'Mr. President, rumors have already leaked on social media. Fandoms worldwide are going wild: "Our bias is becoming a diplomatic ambassador!" The Blue House website has crashed from excessive traffic.' },
+      { speaker: 'leader', ja: 'K-POPアイドルに外交ができるのか？国際社会に笑われないか？', en: 'Can a K-POP idol handle diplomacy? Won\'t the international community laugh at us?' },
+      { speaker: 'fixer', ja: '笑うどころか、各国が彼との面会を求めてきています。フランス大統領が「ぜひエリゼ宮に」、日本の首相が「推しです」と非公式に連絡してきました。', en: 'Far from laughing — countries are requesting meetings with him. France\'s President said "Please visit the Élysée," and Japan\'s PM unofficially messaged "I\'m a fan."' },
+      { speaker: 'leader', ja: '…各国首脳がファンなのか。', en: '...World leaders are fans?' },
+      { speaker: 'fixer', ja: '彼が国連で演説した際、通常の10倍の視聴者数を記録しました。外交的影響力という点では、どの大使より効果的です。', en: 'When he spoke at the UN, viewership was 10 times the norm. In terms of diplomatic influence, he\'s more effective than any ambassador.' },
+      { speaker: 'leader', ja: '問題は、彼のスケジュールだ。世界ツアー中に外交ができるのか？', en: 'The issue is his schedule. Can he do diplomacy during a world tour?' },
+      { speaker: 'fixer', ja: 'ツアー先で「外交ミッション」を組み込みます。コンサートの前に30分の非公式首脳会談。観客5万人の歓声が外交的圧力になります。「うちの国でもコンサートを」と言われれば、通商交渉のカードになります。', en: 'We integrate "diplomatic missions" into tour stops. A 30-minute informal summit before each concert. The cheers of 50,000 fans become diplomatic pressure. When countries say "please hold a concert here too," it becomes a trade negotiation card.' },
+      { speaker: 'leader', ja: '…K-POPのコンサートを外交カードに使うとは。', en: '...Using K-POP concerts as diplomatic leverage.' },
+      { speaker: 'fixer', ja: '大統領、ソフトパワーは最強の武器です。軍事費の1%で100倍の外交効果を生みます。なお、ファンクラブの会員が3億人いるということは…有権者3億人の支持を得たのと同義です。', en: 'Mr. President, soft power is the ultimate weapon. It produces 100 times the diplomatic effect at 1% of military spending. And 300 million fan club members... is equivalent to the support of 300 million voters.' },
+    ],
+  },
+  // ===== COMEDY 2: 大統領のゲーム配信がバレた =====
+  {
+    scenario_title_ja: '大統領のゲーム配信がバレた',
+    scenario_title_en: 'The President\'s Secret Gaming Stream Exposed',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、まずいことになった。私が匿名でやっていたゲーム配信のアカウントが特定された。', en: 'Fixer, I\'m in trouble. My anonymous gaming stream account has been identified.' },
+      { speaker: 'fixer', ja: '大統領、「ShadowPresident_KR」というアカウント名は…少し分かりやすすぎました。現在、視聴者数が通常の500倍に膨れ上がっています。', en: 'Mr. President, the username "ShadowPresident_KR" was... a bit too obvious. Current viewership has ballooned to 500 times normal.' },
+      { speaker: 'leader', ja: 'リーグ・オブ・レジェンドでダイヤモンドランクまで行ったんだ。国政の息抜きにちょうどよかったのに…。', en: 'I made it to Diamond rank in League of Legends. It was the perfect stress relief from running the country...' },
+      { speaker: 'fixer', ja: '問題は2点あります。1つ目、昨日の国務会議中にスマホでモバイルゲームをしていた画面が記者に撮られています。2つ目、配信中の暴言が録音されています。「このジャングラーは北朝鮮のスパイか！」と叫んでいます。', en: 'There are two problems. First, a reporter photographed you playing mobile games during yesterday\'s cabinet meeting. Second, your in-stream trash talk was recorded. You shouted "Is this jungler a North Korean spy!?"' },
+      { speaker: 'leader', ja: '…あれはゲーム内の話で、外交的発言ではない！', en: '...That was in-game talk, not a diplomatic statement!' },
+      { speaker: 'fixer', ja: '承知しています。対策案があります。「eスポーツ振興政策」を即座に発表します。大統領自らがゲーマーであることを「韓国のeスポーツ産業への理解の深さ」として転換します。', en: 'Understood. I have a plan. We immediately announce an "eSports Promotion Policy." Your being a gamer gets reframed as "deep understanding of Korea\'s eSports industry."' },
+      { speaker: 'leader', ja: '国務会議中のゲームはどう説明する？', en: 'How do we explain gaming during the cabinet meeting?' },
+      { speaker: 'fixer', ja: '「eスポーツ政策のための実地調査」です。ダイヤモンドランクという実績は、「大統領の戦略的思考力の証明」として使えます。プロゲーマーからも「大統領のプレイは上手い」とコメントをもらえるよう手配中です。', en: '"Field research for eSports policy." Diamond rank is proof of "the President\'s strategic thinking ability." I\'m arranging for pro gamers to comment "the President\'s gameplay is impressive."' },
+      { speaker: 'leader', ja: '…ゲームの腕前が政治力の証明になるのか。', en: '...Gaming skill as proof of political ability?' },
+      { speaker: 'fixer', ja: '韓国ではなり得ます。eスポーツの競技人口は1000万人です。大統領、次の配信は…公式チャンネルで「大統領のゲーム実況」として。支持率は確実に上がります。北朝鮮のスパイ発言だけは控えてください。', en: 'In Korea, absolutely. The eSports population is 10 million. Mr. President, your next stream should be... on the official channel as "Presidential Gaming Commentary." Approval ratings will definitely rise. Just please refrain from the North Korean spy comments.' },
+    ],
+  },
+  // ===== COMEDY 3: キムチ起源論争が国連に持ち込まれる =====
+  {
+    scenario_title_ja: 'キムチ起源論争が国連に持ち込まれる',
+    scenario_title_en: 'The Kimchi Origin Debate Goes to the United Nations',
+    lines: [
+      { speaker: 'leader', ja: 'フィクサー、中国が「キムチの起源は中国」という論文を国際学会に発表した。国民が大激怒している。', en: 'Fixer, China has published a paper at an international conference claiming "kimchi originated in China." The public is absolutely furious.' },
+      { speaker: 'fixer', ja: '大統領、問題はそれだけではありません。日本も「漬物文化は日本が独自発展させた」と主張し、三つ巴の論争になっています。', en: 'Mr. President, the problem doesn\'t stop there. Japan is also claiming "pickle culture was independently developed in Japan," creating a three-way dispute.' },
+      { speaker: 'leader', ja: 'キムチは韓国のものだ！これは国家のアイデンティティの問題だ！', en: 'Kimchi is Korean! This is a matter of national identity!' },
+      { speaker: 'fixer', ja: '激情はお控えください。科学的に反論します。韓国のキムチの発酵技術は独自の乳酸菌株を使用しており、DNA分析で証明できます。論文の準備はすでに完了しています。', en: 'Please temper your passion. We counter with science. Korean kimchi\'s fermentation technology uses unique lactic acid bacteria strains, provable through DNA analysis. The paper is already prepared.' },
+      { speaker: 'leader', ja: '国連に持ち込むべきではないか？UNESCOの文化遺産として登録すれば決着がつく。', en: 'Shouldn\'t we take this to the UN? Registering it as UNESCO cultural heritage would settle it.' },
+      { speaker: 'fixer', ja: '実はすでにUNESCOに申請済みです。「韓国のキムジャン文化」は2013年に登録されていますが、今回は「キムチ製造技術」自体の追加登録を目指します。', en: 'Actually, we\'ve already applied to UNESCO. "Korean Kimjang culture" was registered in 2013, but this time we\'re pursuing additional registration of "kimchi manufacturing technology" itself.' },
+      { speaker: 'leader', ja: '中国の反応はどうなる？', en: 'How will China react?' },
+      { speaker: 'fixer', ja: '中国には「泡菜（パオツァイ）は中国固有の文化として別途登録しては」と提案します。キムチと泡菜は似て非なるものです。互いの文化を認め合う形で決着させます。', en: 'We suggest to China: "How about separately registering paocai as China\'s unique culture?" Kimchi and paocai are similar but different. We settle it by mutually recognizing each other\'s cultures.' },
+      { speaker: 'leader', ja: '国民は納得するか？「中国に譲歩した」と言われないか？', en: 'Will the public accept it? Won\'t they say "we conceded to China"?' },
+      { speaker: 'fixer', ja: '国内向けには「キムチの世界的優位性が国際機関で証明された」と発表します。そして…決定打として、「世界キムチフェスティバル」をソウルで開催し、各国首脳にキムチを漬けてもらいます。映像が世界に配信されれば、キムチ＝韓国は揺るぎません。', en: 'Domestically, we announce "Kimchi\'s global superiority has been certified by an international body." And the finishing blow: host a "World Kimchi Festival" in Seoul where world leaders make kimchi. Once that footage goes global, kimchi = Korea becomes unshakeable.' },
+    ],
+  },
+];

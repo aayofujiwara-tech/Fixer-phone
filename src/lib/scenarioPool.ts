@@ -5,17 +5,31 @@ import type { Scenario } from '../types';
 import { usSerious, usComedy } from './scenarios/us';
 import { jpSerious, jpComedy } from './scenarios/jp';
 import { cnSerious, cnComedy } from './scenarios/cn';
+import { ruSerious, ruComedy } from './scenarios/ru';
+import { ukSerious, ukComedy } from './scenarios/uk';
+import { frSerious, frComedy } from './scenarios/fr';
+import { deSerious, deComedy } from './scenarios/de';
+import { krSerious, krComedy } from './scenarios/kr';
+import { ilSerious, ilComedy } from './scenarios/il';
+import { inSerious, inComedy } from './scenarios/in';
 
 interface ScenarioPool {
   serious: Scenario[];
   comedy: Scenario[];
 }
 
-// 国ごとのシナリオプール
+// 国ごとのシナリオプール（全10カ国）
 const scenarioPools: Record<string, ScenarioPool> = {
   us: { serious: usSerious, comedy: usComedy },
   jp: { serious: jpSerious, comedy: jpComedy },
   cn: { serious: cnSerious, comedy: cnComedy },
+  ru: { serious: ruSerious, comedy: ruComedy },
+  uk: { serious: ukSerious, comedy: ukComedy },
+  fr: { serious: frSerious, comedy: frComedy },
+  de: { serious: deSerious, comedy: deComedy },
+  kr: { serious: krSerious, comedy: krComedy },
+  il: { serious: ilSerious, comedy: ilComedy },
+  in: { serious: inSerious, comedy: inComedy },
 };
 
 /**
