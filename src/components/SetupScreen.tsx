@@ -1,17 +1,18 @@
 import { useState, useEffect } from 'react';
-import type { Country, Mood } from '../types';
+import type { Country, Mood, CallMode } from '../types';
 import { CountrySelector } from './CountrySelector';
 import { getApiKey, setApiKey } from '../lib/claude';
 import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
-  onStart: (country: Country, mood: Mood) => void;
+  onStart: (country: Country, mood: Mood, callMode: CallMode) => void;
 }
 
 // 設定画面
 export function SetupScreen({ onStart }: Props) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [mood, setMood] = useState<Mood>('serious');
+  const [callMode, setCallMode] = useState<CallMode>('auto');
   const [apiKey, setApiKeyState] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
 
@@ -39,7 +40,7 @@ export function SetupScreen({ onStart }: Props) {
     }
 
     console.log('=== SETUP: calling onStart ===');
-    onStart(selectedCountry, mood);
+    onStart(selectedCountry, mood, callMode);
   };
 
   return (
@@ -140,6 +141,41 @@ export function SetupScreen({ onStart }: Props) {
             >
               {t('comedy')}
               <div className="text-xs mt-1 opacity-70">{t('comedyDesc')}</div>
+            </button>
+          </div>
+        </section>
+
+        {/* 通話モード選択 */}
+        <section>
+          <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
+            {t('callModeLabel')}
+          </h2>
+          <div className="flex gap-3">
+            <button
+              onClick={() => setCallMode('auto')}
+              className={`flex-1 p-3 rounded-lg border-2 transition-all font-mono text-sm ${
+                callMode === 'auto'
+                  ? 'border-accent bg-accent/10 text-accent'
+                  : 'border-gray-700 text-gray-500 hover:border-gray-500'
+              }`}
+            >
+              ▶ AUTO
+              <div className="text-xs mt-1 opacity-70">
+                {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+              </div>
+            </button>
+            <button
+              onClick={() => setCallMode('practice')}
+              className={`flex-1 p-3 rounded-lg border-2 transition-all font-mono text-sm ${
+                callMode === 'practice'
+                  ? 'border-accent bg-accent/10 text-accent'
+                  : 'border-gray-700 text-gray-500 hover:border-gray-500'
+              }`}
+            >
+              🎙 PRACTICE
+              <div className="text-xs mt-1 opacity-70">
+                {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
+              </div>
             </button>
           </div>
         </section>

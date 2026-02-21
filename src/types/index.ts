@@ -29,6 +29,9 @@ export type AppScreen = 'setup' | 'loading' | 'call' | 'callEnd';
 // トーン（雰囲気）
 export type Mood = 'serious' | 'comedy';
 
+// 通話モード
+export type CallMode = 'auto' | 'practice';
+
 // アプリの状態
 export interface AppState {
   screen: AppScreen;

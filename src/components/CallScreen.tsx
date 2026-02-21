@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { Country, Scenario } from '../types';
+import type { Country, Scenario, CallMode } from '../types';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
 import { useCallTimer } from '../hooks/useCallTimer';
 import { SpeechBubble } from './SpeechBubble';
@@ -8,16 +8,18 @@ import { useLanguage } from '../i18n/LanguageContext';
 interface Props {
   country: Country;
   scenario: Scenario;
+  callMode: CallMode;
   onEnd: (duration: number) => void;
 }
 
 // 通話メイン画面
-export function CallScreen({ country, scenario, onEnd }: Props) {
+export function CallScreen({ country, scenario, callMode, onEnd }: Props) {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [showLeaderLine, setShowLeaderLine] = useState(false);
   const [showFixerLine, setShowFixerLine] = useState(false);
   const [isThinking, setIsThinking] = useState(true);
   const [autoMode, setAutoMode] = useState(true);
+  const [practiceLang, setPracticeLang] = useState<'ja' | 'en'>('ja');
 
   const { speak, stop, isSpeaking } = useSpeechSynthesis();
   const timer = useCallTimer();
@@ -82,20 +84,46 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
     const thinkTimer = setTimeout(() => {
       setIsThinking(false);
       setShowLeaderLine(true);
-
-      // 相手セリフ表示後、自分のセリフをスライドイン
-      const fixerTimer = setTimeout(() => {
-        setShowFixerLine(true);
-      }, 1000);
-
-      return () => clearTimeout(fixerTimer);
     }, 1500 + Math.random() * 1500);
 
     return () => clearTimeout(thinkTimer);
   }, [currentLineIndex]);
 
-  // 自動進行: 自分のセリフ表示後に自動読み上げ→次へ
+  // リーダーのセリフ表示後: 日英TTS自動読み上げ → フィクサーセリフ表示
+  // 練習モード・自動進行モード共通
   useEffect(() => {
+    if (!showLeaderLine || !pair.leader) return;
+
+    autoActiveRef.current = true;
+    const leader = pair.leader;
+
+    // 0.5秒待ってリーダー日本語読み上げ
+    addAutoTimer(() => {
+      if (!autoActiveRef.current) return;
+      speak(leader.ja, 'ja', () => {
+        if (!autoActiveRef.current) return;
+        // 日本語完了 → 0.5秒待って英語読み上げ
+        addAutoTimer(() => {
+          if (!autoActiveRef.current) return;
+          speak(leader.en, 'en', () => {
+            if (!autoActiveRef.current) return;
+            // 英語完了 → 0.5秒待ってフィクサーセリフを表示
+            addAutoTimer(() => {
+              if (!autoActiveRef.current) return;
+              setShowFixerLine(true);
+            }, 500);
+          });
+        }, 500);
+      });
+    }, 500);
+
+    return () => clearAutoTimers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showLeaderLine, pair.leader]);
+
+  // 自動進行（AUTOモード時のみ）: フィクサーセリフ表示後にTTS→次へ
+  useEffect(() => {
+    if (callMode === 'practice') return; // 練習モードではフィクサーTTSなし
     if (!autoMode || !showFixerLine || !pair.fixer) return;
 
     autoActiveRef.current = true;
@@ -128,7 +156,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
     return () => clearAutoTimers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoMode, showFixerLine, pair.fixer]);
+  }, [autoMode, callMode, showFixerLine, pair.fixer]);
 
   // コンポーネントアンマウント時のクリーンアップ
   useEffect(() => {
@@ -160,6 +188,16 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
     handleEndCallRef.current();
   };
 
+  // 練習モード: 読み終わって次へ
+  const handlePracticeNext = () => {
+    clearAutoTimers();
+    if (isLastPair) {
+      handleEndCallRef.current();
+    } else {
+      setCurrentLineIndex((prev) => prev + 1);
+    }
+  };
+
   // 日本語読み上げ（手動）
   const speakJa = () => {
     if (pair.fixer) {
@@ -182,7 +220,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
     : `${country.nameEn} ${country.leaderEn}`;
 
   // 自動モード中はボタンの透明度を下げる
-  const manualButtonOpacity = autoMode ? 'opacity-40' : '';
+  const manualButtonOpacity = callMode === 'auto' && autoMode ? 'opacity-40' : '';
 
   return (
     <div className="min-h-dvh bg-dark flex flex-col">
@@ -199,6 +237,11 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
             <span className="text-red-400 text-xs font-mono font-bold tracking-wider">
               {t('encryptedCall')}
             </span>
+            {callMode === 'practice' && (
+              <span className="text-xs font-mono text-accent/70 ml-1">
+                {t('practiceModeIndicator')}
+              </span>
+            )}
           </div>
           <span className="text-accent font-mono text-sm tabular-nums">
             {timer.formatted.split('').map((char, i) =>
@@ -256,40 +299,93 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
         {/* 自分のセリフ */}
         <div className="min-h-[120px]">
-          {showFixerLine && pair.fixer && (
+          {showFixerLine && pair.fixer && callMode !== 'practice' && (
             <SpeechBubble
               speaker="fixer"
               ja={pair.fixer.ja}
               en={pair.fixer.en}
             />
           )}
+
+          {/* 練習モード: フィクサーセリフ（言語切替付き） */}
+          {showFixerLine && pair.fixer && callMode === 'practice' && (
+            <div className="animate-fade-in">
+              <div className="text-xs text-accent/60 mb-2 font-mono font-bold uppercase tracking-wider">
+                {t('yourLine')}
+              </div>
+
+              {/* 言語切替トグル */}
+              <div className="flex justify-center gap-2 mb-3">
+                <button
+                  onClick={() => setPracticeLang('ja')}
+                  className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
+                    practiceLang === 'ja'
+                      ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                      : 'bg-gray-800 text-gray-600 border border-gray-700'
+                  }`}
+                >
+                  🇯🇵 日本語
+                </button>
+                <button
+                  onClick={() => setPracticeLang('en')}
+                  className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
+                    practiceLang === 'en'
+                      ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
+                      : 'bg-gray-800 text-gray-600 border border-gray-700'
+                  }`}
+                >
+                  🇺🇸 English
+                </button>
+              </div>
+
+              {/* メインの言語（大きく表示） */}
+              <div className="text-white text-base leading-relaxed mb-2">
+                {practiceLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
+              </div>
+
+              {/* サブの言語（小さく薄く表示 = カンニング用） */}
+              <div className="text-gray-500 text-xs leading-relaxed">
+                {practiceLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
+              </div>
+
+              {/* 「読めた！次へ」ボタン */}
+              <button
+                onClick={handlePracticeNext}
+                className="mt-4 w-full py-3 rounded-xl bg-accent/20 text-accent border border-accent/50 font-mono text-sm hover:bg-accent/30 transition-all active:scale-[0.98]"
+              >
+                {t('practiceNext')}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* コントロールエリア */}
       <div className="p-4 space-y-3 border-t border-gray-800">
-        {/* 自動/手動切替 */}
-        <div className="flex items-center justify-between">
-          <span className="text-gray-400 text-xs font-mono">
-            {autoMode ? t('autoModeOn') : t('autoModeOff')}
-          </span>
-          <button
-            onClick={() => {
-              if (autoMode) clearAutoTimers();
-              setAutoMode(!autoMode);
-            }}
-            className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
-              autoMode
-                ? 'bg-accent/20 text-accent border border-accent/50'
-                : 'bg-gray-800 text-gray-500 border border-gray-700'
-            }`}
-          >
-            {autoMode ? 'AUTO' : 'MANUAL'}
-          </button>
-        </div>
+        {/* 自動/手動切替（AUTOモードの時のみ表示） */}
+        {callMode === 'auto' && (
+          <div className="flex items-center justify-between">
+            <span className="text-gray-400 text-xs font-mono">
+              {autoMode ? t('autoModeOn') : t('autoModeOff')}
+            </span>
+            <button
+              onClick={() => {
+                if (autoMode) clearAutoTimers();
+                setAutoMode(!autoMode);
+              }}
+              className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
+                autoMode
+                  ? 'bg-accent/20 text-accent border border-accent/50'
+                  : 'bg-gray-800 text-gray-500 border border-gray-700'
+              }`}
+            >
+              {autoMode ? 'AUTO' : 'MANUAL'}
+            </button>
+          </div>
+        )}
 
-        {/* 読み上げボタン */}
-        {showFixerLine && pair.fixer && (
+        {/* 読み上げボタン（AUTOモードの時のみ表示） */}
+        {callMode === 'auto' && showFixerLine && pair.fixer && (
           <div className={`flex gap-3 animate-fade-in ${manualButtonOpacity}`}>
             <button
               onClick={speakJa}

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { AppScreen, Country, Mood } from './types';
+import type { AppScreen, Country, Mood, CallMode } from './types';
 import { useScenarioGenerator } from './hooks/useScenarioGenerator';
 import { useLanguage } from './i18n/LanguageContext';
 import { fallbackScenario } from './lib/scenarios';
@@ -14,17 +14,19 @@ function App() {
   const [screen, setScreen] = useState<AppScreen>('setup');
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [callDuration, setCallDuration] = useState(0);
+  const [callMode, setCallMode] = useState<CallMode>('auto');
 
   const { scenario, isLoading, error, generate, reset, setFallback } = useScenarioGenerator();
   const { t } = useLanguage();
 
   // 通話開始
   const handleStart = useCallback(
-    async (country: Country, mood: Mood) => {
+    async (country: Country, mood: Mood, mode: CallMode = 'auto') => {
       console.log('=== APP: handleStart called ===');
-      console.log('country:', country.id, 'mood:', mood);
+      console.log('country:', country.id, 'mood:', mood, 'callMode:', mode);
 
       setSelectedCountry(country);
+      setCallMode(mode);
       setScreen('loading');
 
       const apiKey = getApiKey();
@@ -124,6 +126,7 @@ function App() {
         <CallScreen
           country={selectedCountry}
           scenario={scenario}
+          callMode={callMode}
           onEnd={handleCallEnd}
         />
       )}

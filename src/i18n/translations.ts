@@ -103,6 +103,18 @@ export const translations = {
     ja: '手動モード',
     en: 'Manual Mode',
   },
+  callModeLabel: {
+    ja: '通話モード',
+    en: 'Call Mode',
+  },
+  practiceNext: {
+    ja: '読めた！次へ →',
+    en: 'Done! Next →',
+  },
+  practiceModeIndicator: {
+    ja: '🎙 練習モード',
+    en: '🎙 Practice Mode',
+  },
 
   // CallEndScreen
   callTerminated: {
