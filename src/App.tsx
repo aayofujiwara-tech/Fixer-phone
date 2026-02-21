@@ -3,7 +3,7 @@ import type { AppScreen, Country, Mood, CallMode } from './types';
 import { useScenarioGenerator } from './hooks/useScenarioGenerator';
 import { useLanguage } from './i18n/LanguageContext';
 import { fallbackScenario } from './lib/scenarios';
-import { getRandomScenario } from './lib/scenarioPool';
+import { getScenario } from './lib/scenarioPool';
 import { getApiKey } from './lib/claude';
 import { SetupScreen } from './components/SetupScreen';
 import { LoadingScreen } from './components/LoadingScreen';
@@ -21,9 +21,9 @@ function App() {
 
   // 通話開始
   const handleStart = useCallback(
-    async (country: Country, mood: Mood, mode: CallMode = 'auto') => {
+    async (country: Country, mood: Mood, mode: CallMode = 'auto', scenarioIndex: number | null = null) => {
       console.log('=== APP: handleStart called ===');
-      console.log('country:', country.id, 'mood:', mood, 'callMode:', mode);
+      console.log('country:', country.id, 'mood:', mood, 'callMode:', mode, 'scenarioIndex:', scenarioIndex);
 
       setSelectedCountry(country);
       setCallMode(mode);
@@ -32,16 +32,16 @@ function App() {
       const apiKey = getApiKey();
       console.log('=== APP: apiKey exists:', !!apiKey);
 
-      if (apiKey) {
-        // APIキーがある場合: Claude APIで生成を試みる
+      if (apiKey && scenarioIndex === null) {
+        // APIキーがある場合 & ランダム選択: Claude APIで生成を試みる
         try {
           await generate(country, mood);
         } catch {
           // エラー時はloading画面に留まり、エラーを表示する
         }
       } else {
-        // APIキーがない場合: シナリオプールから選択
-        const poolScenario = getRandomScenario(country.id, mood);
+        // シナリオプールから選択（特定シナリオ指定 or APIキーなし）
+        const poolScenario = getScenario(country.id, mood, scenarioIndex);
         console.log('=== APP: poolScenario:', poolScenario ? poolScenario.scenario_title_ja : 'null');
         if (poolScenario) {
           setFallback(poolScenario);

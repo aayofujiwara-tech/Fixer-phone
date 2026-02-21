@@ -103,6 +103,14 @@ export const translations = {
     ja: '手動モード',
     en: 'Manual Mode',
   },
+  scenarioSelectLabel: {
+    ja: 'シナリオ選択',
+    en: 'Select Scenario',
+  },
+  scenarioRandom: {
+    ja: 'ランダム',
+    en: 'Random',
+  },
   callModeLabel: {
     ja: '通話モード',
     en: 'Call Mode',

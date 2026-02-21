@@ -2,10 +2,11 @@ import { useState, useEffect } from 'react';
 import type { Country, Mood, CallMode } from '../types';
 import { CountrySelector } from './CountrySelector';
 import { getApiKey, setApiKey } from '../lib/claude';
+import { getScenarioList, hasScenarioPool } from '../lib/scenarioPool';
 import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
-  onStart: (country: Country, mood: Mood, callMode: CallMode) => void;
+  onStart: (country: Country, mood: Mood, callMode: CallMode, scenarioIndex: number | null) => void;
 }
 
 // 設定画面
@@ -13,6 +14,7 @@ export function SetupScreen({ onStart }: Props) {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [mood, setMood] = useState<Mood>('serious');
   const [callMode, setCallMode] = useState<CallMode>('auto');
+  const [selectedScenarioIndex, setSelectedScenarioIndex] = useState<number | null>(null);
   const [apiKey, setApiKeyState] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
 
@@ -24,6 +26,11 @@ export function SetupScreen({ onStart }: Props) {
       setApiKeyState(savedKey);
     }
   }, []);
+
+  // mood変更時にシナリオ選択をリセット
+  useEffect(() => {
+    setSelectedScenarioIndex(null);
+  }, [mood]);
 
   const handleStart = () => {
     console.log('=== SETUP: handleStart ===');
@@ -40,7 +47,7 @@ export function SetupScreen({ onStart }: Props) {
     }
 
     console.log('=== SETUP: calling onStart ===');
-    onStart(selectedCountry, mood, callMode);
+    onStart(selectedCountry, mood, callMode, selectedScenarioIndex);
   };
 
   return (
@@ -144,6 +151,46 @@ export function SetupScreen({ onStart }: Props) {
             </button>
           </div>
         </section>
+
+        {/* シナリオ選択（シナリオプールがある国の場合のみ表示） */}
+        {selectedCountry && hasScenarioPool(selectedCountry.id) && (
+          <section className="animate-fade-in">
+            <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
+              {t('scenarioSelectLabel')}
+            </h2>
+            <div className="flex flex-col gap-2">
+              {/* ランダムボタン */}
+              <button
+                onClick={() => setSelectedScenarioIndex(null)}
+                className={`px-4 py-2 rounded-lg text-sm font-mono transition-all text-left ${
+                  selectedScenarioIndex === null
+                    ? 'bg-accent/20 text-accent border border-accent/50'
+                    : 'bg-gray-800 text-gray-500 border border-gray-700'
+                }`}
+              >
+                🎲 {t('scenarioRandom')}
+              </button>
+
+              {/* 各シナリオボタン */}
+              {getScenarioList(selectedCountry.id, mood).map((scenario, index) => (
+                <button
+                  key={index}
+                  onClick={() => setSelectedScenarioIndex(index)}
+                  className={`px-4 py-2 rounded-lg text-sm font-mono transition-all text-left ${
+                    selectedScenarioIndex === index
+                      ? 'bg-accent/20 text-accent border border-accent/50'
+                      : 'bg-gray-800 text-gray-500 border border-gray-700'
+                  }`}
+                >
+                  {`${index + 1}. ${lang === 'ja' ? scenario.title_ja : scenario.title_en}`}
+                  <span className="block text-xs opacity-60">
+                    {lang === 'ja' ? scenario.title_en : scenario.title_ja}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 通話モード選択 */}
         <section>
