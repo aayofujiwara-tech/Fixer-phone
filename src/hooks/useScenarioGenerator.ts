@@ -1,6 +1,12 @@
 import { useState, useCallback } from 'react';
 import type { Country, Mood, Scenario } from '../types';
 import { generateScenario } from '../lib/claude';
+import { translations, type Lang } from '../i18n/translations';
+
+function getLang(): Lang {
+  const saved = localStorage.getItem('fixer-phone-lang');
+  return saved === 'en' ? 'en' : 'ja';
+}
 
 // シナリオ生成フック
 export function useScenarioGenerator() {
@@ -18,7 +24,8 @@ export function useScenarioGenerator() {
       setScenario(result);
       return result;
     } catch (err) {
-      const message = err instanceof Error ? err.message : '回線が不安定です。再接続してください。';
+      const lang = getLang();
+      const message = err instanceof Error ? err.message : translations.connectionError[lang];
       setError(message);
       throw err;
     } finally {

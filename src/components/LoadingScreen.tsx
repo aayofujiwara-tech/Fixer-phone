@@ -1,29 +1,31 @@
 import { useState, useEffect } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
+import { translations, type TranslationKey } from '../i18n/translations';
 
 interface Props {
   isReady: boolean;
   onComplete: () => void;
 }
 
-// ローディング演出のメッセージ
-const messages = [
-  { ja: '暗号化回線を確立中...', en: 'Establishing encrypted channel...' },
-  { ja: '相手方のセキュリティを検証中...', en: 'Verifying counterpart security...' },
-  { ja: '通訳プロトコルを起動中...', en: 'Initializing interpreter protocol...' },
-  { ja: '回線接続完了', en: 'Connection established' },
-];
+const messageKeys: TranslationKey[] = ['loading1', 'loading2', 'loading3', 'loading4'];
 
 // 演出ローディング画面
 export function LoadingScreen({ isReady, onComplete }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
+  const { lang } = useLanguage();
+
+  const otherLang = lang === 'ja' ? 'en' : 'ja';
+
+  const getPrimaryText = (idx: number) => translations[messageKeys[idx]][lang];
+  const getSecondaryText = (idx: number) => translations[messageKeys[idx]][otherLang];
 
   // タイプライター効果
   useEffect(() => {
-    if (currentIndex >= messages.length) return;
+    if (currentIndex >= messageKeys.length) return;
 
-    const fullText = messages[currentIndex].ja;
+    const fullText = getPrimaryText(currentIndex);
     let charIndex = 0;
     setDisplayText('');
     setIsTyping(true);
@@ -37,13 +39,13 @@ export function LoadingScreen({ isReady, onComplete }: Props) {
         setIsTyping(false);
 
         // 最後のメッセージかつAPIレスポンス取得済みなら画面遷移
-        if (currentIndex === messages.length - 1 && isReady) {
+        if (currentIndex === messageKeys.length - 1 && isReady) {
           setTimeout(onComplete, 800);
           return;
         }
 
         // 次のメッセージへ
-        if (currentIndex < messages.length - 1) {
+        if (currentIndex < messageKeys.length - 1) {
           setTimeout(() => {
             setCurrentIndex((prev) => prev + 1);
           }, 1200);
@@ -52,18 +54,19 @@ export function LoadingScreen({ isReady, onComplete }: Props) {
     }, 50);
 
     return () => clearInterval(typeInterval);
-  }, [currentIndex, isReady, onComplete]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, isReady, onComplete, lang]);
 
   // 全メッセージ表示後、APIがまだなら最後のメッセージで待機
   // APIが完了したら遷移
   useEffect(() => {
-    if (currentIndex >= messages.length - 1 && !isTyping && isReady) {
+    if (currentIndex >= messageKeys.length - 1 && !isTyping && isReady) {
       setTimeout(onComplete, 800);
     }
   }, [isReady, currentIndex, isTyping, onComplete]);
 
   // プログレス計算
-  const progress = ((currentIndex + 1) / messages.length) * 100;
+  const progress = ((currentIndex + 1) / messageKeys.length) * 100;
 
   return (
     <div className="min-h-dvh bg-dark flex flex-col items-center justify-center p-8">
@@ -77,10 +80,10 @@ export function LoadingScreen({ isReady, onComplete }: Props) {
 
       {/* 過去のメッセージ */}
       <div className="w-full max-w-sm space-y-3 mb-6">
-        {messages.slice(0, currentIndex).map((msg, i) => (
+        {messageKeys.slice(0, currentIndex).map((_key, i) => (
           <div key={i} className="text-accent/40 text-sm font-mono">
             <span className="text-accent/20 mr-2">[OK]</span>
-            {msg.ja}
+            {getPrimaryText(i)}
           </div>
         ))}
       </div>
@@ -93,8 +96,8 @@ export function LoadingScreen({ isReady, onComplete }: Props) {
           {isTyping && <span className="animate-blink">_</span>}
         </div>
         <div className="text-accent/30 text-xs font-mono mt-1 ml-5">
-          {currentIndex < messages.length
-            ? messages[currentIndex].en
+          {currentIndex < messageKeys.length
+            ? getSecondaryText(currentIndex)
             : ''}
         </div>
       </div>

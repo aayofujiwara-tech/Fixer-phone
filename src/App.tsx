@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import type { AppScreen, Country, Mood } from './types';
 import { useScenarioGenerator } from './hooks/useScenarioGenerator';
+import { useLanguage } from './i18n/LanguageContext';
 import { SetupScreen } from './components/SetupScreen';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CallScreen } from './components/CallScreen';
@@ -12,6 +13,7 @@ function App() {
   const [callDuration, setCallDuration] = useState(0);
 
   const { scenario, isLoading, error, generate, reset } = useScenarioGenerator();
+  const { t } = useLanguage();
 
   // 通話開始
   const handleStart = useCallback(
@@ -65,7 +67,7 @@ function App() {
             <div className="fixed bottom-4 left-4 right-4 max-w-[480px] mx-auto">
               <div className="bg-red-900/90 border border-red-500 rounded-lg p-4 text-center">
                 <div className="text-red-300 text-sm font-mono mb-2">
-                  回線が不安定です
+                  {t('connectionUnstable')}
                 </div>
                 <div className="text-red-400/70 text-xs font-mono mb-3">
                   {error}
@@ -74,7 +76,7 @@ function App() {
                   onClick={handleRestart}
                   className="px-6 py-2 bg-red-600 text-white rounded-lg font-mono text-sm hover:bg-red-500"
                 >
-                  再接続
+                  {t('reconnect')}
                 </button>
               </div>
             </div>

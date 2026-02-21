@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import type { Country, Mood } from '../types';
 import { CountrySelector } from './CountrySelector';
 import { getApiKey, setApiKey } from '../lib/claude';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   onStart: (country: Country, mood: Mood) => void;
@@ -13,6 +14,8 @@ export function SetupScreen({ onStart }: Props) {
   const [mood, setMood] = useState<Mood>('serious');
   const [apiKey, setApiKeyState] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+
+  const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
     const savedKey = getApiKey();
@@ -42,12 +45,35 @@ export function SetupScreen({ onStart }: Props) {
   return (
     <div className="min-h-dvh bg-dark flex flex-col">
       {/* ヘッダー */}
-      <div className="p-6 text-center">
+      <div className="p-6 text-center relative">
+        {/* 言語切替 */}
+        <div className="absolute top-4 right-4 flex gap-1">
+          <button
+            onClick={() => setLang('ja')}
+            className={`px-2 py-1 text-xs font-mono rounded transition-all ${
+              lang === 'ja'
+                ? 'bg-accent/20 text-accent border border-accent/50'
+                : 'text-gray-500 border border-gray-700 hover:text-gray-300'
+            }`}
+          >
+            JA
+          </button>
+          <button
+            onClick={() => setLang('en')}
+            className={`px-2 py-1 text-xs font-mono rounded transition-all ${
+              lang === 'en'
+                ? 'bg-accent/20 text-accent border border-accent/50'
+                : 'text-gray-500 border border-gray-700 hover:text-gray-300'
+            }`}
+          >
+            EN
+          </button>
+        </div>
         <h1 className="text-2xl font-bold text-accent font-mono tracking-wider">
           FIXER PHONE
         </h1>
         <p className="text-gray-500 text-xs mt-1 font-mono">
-          極秘回線 // CLASSIFIED LINE
+          {t('subtitle')}
         </p>
       </div>
 
@@ -55,7 +81,7 @@ export function SetupScreen({ onStart }: Props) {
         {/* 国選択 */}
         <section>
           <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
-            Target Country
+            {t('targetCountry')}
           </h2>
           <CountrySelector
             selected={selectedCountry}
@@ -73,10 +99,14 @@ export function SetupScreen({ onStart }: Props) {
               <span className="text-4xl">{selectedCountry.flag}</span>
               <div>
                 <div className="text-white font-bold">
-                  {selectedCountry.name} {selectedCountry.leader}
+                  {lang === 'ja'
+                    ? `${selectedCountry.name} ${selectedCountry.leader}`
+                    : `${selectedCountry.nameEn} ${selectedCountry.leaderEn}`}
                 </div>
                 <div className="text-gray-400 text-sm font-mono">
-                  {selectedCountry.nameEn} {selectedCountry.leaderEn}
+                  {lang === 'ja'
+                    ? `${selectedCountry.nameEn} ${selectedCountry.leaderEn}`
+                    : `${selectedCountry.name} ${selectedCountry.leader}`}
                 </div>
               </div>
             </div>
@@ -86,7 +116,7 @@ export function SetupScreen({ onStart }: Props) {
         {/* トーン切替 */}
         <section>
           <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
-            Operation Mode
+            {t('operationMode')}
           </h2>
           <div className="flex gap-3">
             <button
@@ -97,8 +127,8 @@ export function SetupScreen({ onStart }: Props) {
                   : 'border-gray-700 text-gray-500 hover:border-gray-500'
               }`}
             >
-              SERIOUS
-              <div className="text-xs mt-1 opacity-70">ガチ交渉</div>
+              {t('serious')}
+              <div className="text-xs mt-1 opacity-70">{t('seriousDesc')}</div>
             </button>
             <button
               onClick={() => setMood('comedy')}
@@ -108,8 +138,8 @@ export function SetupScreen({ onStart }: Props) {
                   : 'border-gray-700 text-gray-500 hover:border-gray-500'
               }`}
             >
-              COMEDY
-              <div className="text-xs mt-1 opacity-70">コメディ</div>
+              {t('comedy')}
+              <div className="text-xs mt-1 opacity-70">{t('comedyDesc')}</div>
             </button>
           </div>
         </section>
@@ -118,7 +148,7 @@ export function SetupScreen({ onStart }: Props) {
         {showApiKeyInput && (
           <section className="animate-fade-in">
             <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
-              API Key
+              {t('apiKeyLabel')}
             </h2>
             <input
               type="password"
@@ -128,7 +158,7 @@ export function SetupScreen({ onStart }: Props) {
               className="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono text-sm focus:border-accent focus:outline-none"
             />
             <p className="text-gray-600 text-xs mt-2 font-mono">
-              Anthropic API Key（ローカル保存のみ）
+              {t('apiKeyHint')}
             </p>
           </section>
         )}
@@ -139,7 +169,7 @@ export function SetupScreen({ onStart }: Props) {
             onClick={() => setShowApiKeyInput(true)}
             className="text-gray-600 text-xs font-mono hover:text-gray-400 transition-colors"
           >
-            API Key を変更する
+            {t('changeApiKey')}
           </button>
         )}
       </div>
@@ -156,8 +186,8 @@ export function SetupScreen({ onStart }: Props) {
           }`}
         >
           {selectedCountry
-            ? `${selectedCountry.flag} 通話を開始する`
-            : '国を選択してください'}
+            ? `${selectedCountry.flag} ${t('startCall')}`
+            : t('selectCountry')}
         </button>
       </div>
     </div>

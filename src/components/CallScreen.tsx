@@ -3,6 +3,7 @@ import type { Country, Scenario } from '../types';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
 import { useCallTimer } from '../hooks/useCallTimer';
 import { SpeechBubble } from './SpeechBubble';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   country: Country;
@@ -19,6 +20,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
 
   const { speak, stop, isSpeaking } = useSpeechSynthesis();
   const timer = useCallTimer();
+  const { lang, t } = useLanguage();
 
   // タイマーを開始
   useEffect(() => {
@@ -104,6 +106,11 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
     }
   };
 
+  const scenarioTitle = lang === 'ja' ? scenario.scenario_title_ja : scenario.scenario_title_en;
+  const countryDisplay = lang === 'ja'
+    ? `${country.name}${country.leader}`
+    : `${country.nameEn} ${country.leaderEn}`;
+
   return (
     <div className="min-h-dvh bg-dark flex flex-col">
       {/* ヘッダー */}
@@ -117,7 +124,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
           <div className="flex items-center gap-2">
             <span className="inline-block w-2 h-2 rounded-full bg-red-500 animate-blink" />
             <span className="text-red-400 text-xs font-mono font-bold tracking-wider">
-              ENCRYPTED CALL
+              {t('encryptedCall')}
             </span>
           </div>
           <span className="text-accent font-mono text-sm tabular-nums">
@@ -134,10 +141,10 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
           <span className="text-xl">{country.flag}</span>
           <div>
             <div className="text-white text-sm font-bold">
-              {country.name}{country.leader}
+              {countryDisplay}
             </div>
             <div className="text-gray-400 text-xs font-mono">
-              「{scenario.scenario_title_ja}」
+              「{scenarioTitle}」
             </div>
           </div>
         </div>
@@ -150,7 +157,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
           {isThinking && (
             <div className="animate-fade-in">
               <div className="text-xs text-gray-500 mb-2 font-mono">
-                {country.flag} 相手が発言中...
+                {country.flag} {t('leaderSpeaking')}
               </div>
               <div className="flex gap-1">
                 <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -200,7 +207,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
                   : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
               }`}
             >
-              日本語
+              {t('speakJa')}
             </button>
             <button
               onClick={speakEn}
@@ -211,7 +218,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
                   : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
               }`}
             >
-              English
+              {t('speakEn')}
             </button>
           </div>
         )}
@@ -227,13 +234,13 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
                 : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:scale-[0.97]'
             }`}
           >
-            ◀ 前へ
+            {t('prev')}
           </button>
           <button
             onClick={handleNext}
             className="flex-1 py-3 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-mono text-sm transition-all active:scale-[0.97]"
           >
-            {isLastPair ? '通話終了 ▶' : '次のセリフ ▶'}
+            {isLastPair ? t('endCallNext') : t('next')}
           </button>
         </div>
 
@@ -242,7 +249,7 @@ export function CallScreen({ country, scenario, onEnd }: Props) {
           onClick={handleEndCall}
           className="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono transition-all active:scale-[0.98]"
         >
-          通話終了
+          {t('endCall')}
         </button>
 
         {/* セリフ進行表示 */}

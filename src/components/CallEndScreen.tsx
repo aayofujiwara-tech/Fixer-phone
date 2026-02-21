@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Scenario } from '../types';
+import { useLanguage } from '../i18n/LanguageContext';
 
 interface Props {
   scenario: Scenario;
@@ -11,6 +12,7 @@ interface Props {
 export function CallEndScreen({ scenario, duration, onRestart }: Props) {
   const [phase, setPhase] = useState<'terminated' | 'erasing' | 'done'>('terminated');
   const [eraseProgress, setEraseProgress] = useState(0);
+  const { lang, t } = useLanguage();
 
   // 時間フォーマット
   const formatDuration = (secs: number) => {
@@ -47,28 +49,30 @@ export function CallEndScreen({ scenario, duration, onRestart }: Props) {
     return () => clearInterval(interval);
   }, [phase]);
 
+  const scenarioTitle = lang === 'ja' ? scenario.scenario_title_ja : scenario.scenario_title_en;
+
   return (
     <div className="min-h-dvh bg-dark flex flex-col items-center justify-center p-8">
       {/* CALL TERMINATED */}
       <div className="text-center mb-12">
         <div className="text-red-500 text-3xl font-mono font-bold mb-2 animate-fade-in">
-          CALL TERMINATED
+          {t('callTerminated')}
         </div>
         <div className="text-gray-500 text-sm font-mono">
-          通話終了
+          {t('callEnded')}
         </div>
       </div>
 
       {/* 通話情報 */}
       <div className="w-full max-w-sm space-y-4 mb-12">
         <div className="flex justify-between text-sm font-mono">
-          <span className="text-gray-500">通話時間</span>
+          <span className="text-gray-500">{t('callDuration')}</span>
           <span className="text-white">{formatDuration(duration)}</span>
         </div>
         <div className="flex justify-between text-sm font-mono">
-          <span className="text-gray-500">シナリオ</span>
+          <span className="text-gray-500">{t('scenarioLabel')}</span>
           <span className="text-accent text-right max-w-[200px] truncate">
-            {scenario.scenario_title_ja}
+            {scenarioTitle}
           </span>
         </div>
         <div className="border-t border-gray-800" />
@@ -79,7 +83,7 @@ export function CallEndScreen({ scenario, duration, onRestart }: Props) {
         {phase === 'terminated' && (
           <div className="text-center">
             <div className="text-gray-600 text-xs font-mono animate-blink">
-              STANDBY...
+              {t('standby')}
             </div>
           </div>
         )}
@@ -87,7 +91,7 @@ export function CallEndScreen({ scenario, duration, onRestart }: Props) {
         {phase === 'erasing' && (
           <div className="animate-fade-in">
             <div className="text-red-400 text-xs font-mono mb-3 text-center">
-              CLASSIFIED - 機密データ消去中...
+              {t('erasing')}
             </div>
             <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
               <div
@@ -104,10 +108,10 @@ export function CallEndScreen({ scenario, duration, onRestart }: Props) {
         {phase === 'done' && (
           <div className="text-center animate-fade-in">
             <div className="text-accent text-xs font-mono">
-              ✓ すべてのデータが安全に消去されました
+              {t('eraseComplete')}
             </div>
             <div className="text-accent/40 text-xs font-mono mt-1">
-              All classified data has been securely erased
+              {t('eraseCompleteSub')}
             </div>
           </div>
         )}
@@ -119,7 +123,7 @@ export function CallEndScreen({ scenario, duration, onRestart }: Props) {
           onClick={onRestart}
           className="w-full max-w-sm py-4 rounded-xl bg-accent text-dark font-bold font-mono text-lg transition-all hover:bg-accent/90 active:scale-[0.98] animate-fade-in"
         >
-          新しい通話を開始
+          {t('newCall')}
         </button>
       )}
     </div>
