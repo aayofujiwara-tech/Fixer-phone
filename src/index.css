@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap');
+@import "tailwindcss";
+
+/* カスタムテーマ */
+@theme {
+  --color-dark: #0a0a0f;
+  --color-accent: #00ff88;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-sans: 'Noto Sans JP', sans-serif;
+}
+
+/* ベーススタイル */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0a0f;
+  color: #e0e0e0;
+  font-family: 'Noto Sans JP', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* スクロールバー非表示（モバイルアプリ感） */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+}
+
+/* セーフエリア対応 */
+body {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* カスタムアニメーション */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes blink-colon {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(0, 255, 136, 0.3); }
+  50% { border-color: rgba(0, 255, 136, 0.8); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.animate-blink-colon {
+  animation: blink-colon 1s ease-in-out infinite;
+}
+
+.animate-pulse-border {
+  animation: pulse-border 1.5s ease-in-out infinite;
+}
+
+/* タッチ操作最適化 */
+button {
+  min-height: 44px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* dvh単位フォールバック */
+@supports not (min-height: 100dvh) {
+  .min-h-dvh {
+    min-height: 100vh;
+  }
+}
