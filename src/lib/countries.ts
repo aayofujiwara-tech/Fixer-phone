@@ -3,6 +3,15 @@ import type { Country } from '../types';
 // 対応国データ
 export const countries: Country[] = [
   {
+    id: 'jp',
+    name: '日本',
+    nameEn: 'Japan',
+    leader: '総理大臣',
+    leaderEn: 'Prime Minister',
+    flag: '\u{1F1EF}\u{1F1F5}',
+    accentColor: '#bc002d',
+  },
+  {
     id: 'us',
     name: 'アメリカ',
     nameEn: 'United States',
@@ -64,15 +73,6 @@ export const countries: Country[] = [
     leaderEn: 'President',
     flag: '\u{1F1F0}\u{1F1F7}',
     accentColor: '#003478',
-  },
-  {
-    id: 'sa',
-    name: 'サウジアラビア',
-    nameEn: 'Saudi Arabia',
-    leader: '皇太子',
-    leaderEn: 'Crown Prince',
-    flag: '\u{1F1F8}\u{1F1E6}',
-    accentColor: '#006c35',
   },
   {
     id: 'il',
