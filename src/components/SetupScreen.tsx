@@ -6,6 +6,7 @@ import { getScenarioList, hasScenarioPool } from '../lib/scenarioPool';
 import { useLanguage } from '../i18n/LanguageContext';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { countries } from '../lib/countries';
+import { FlagIcon } from './FlagIcon';
 import { FEATURES } from '../lib/features';
 
 interface Props {
@@ -94,12 +95,12 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
 
         {/* メインコンテンツ: 左右分割 */}
         <div className="flex flex-1 min-h-0">
-          {/* ----- 左パネル: 国選択 (25%) ----- */}
-          <div className="w-[25%] border-r border-gray-800 flex flex-col min-h-0 px-1.5 py-1.5">
-            <h2 className="text-[10px] font-mono text-gray-400 mb-1 px-1 uppercase tracking-wider shrink-0">
+          {/* ----- 左パネル: 国選択 (22%) ----- */}
+          <div className="w-[22%] border-r border-gray-800 flex flex-col min-h-0 px-1 py-1">
+            <h2 className="text-[10px] font-mono text-gray-400 mb-1 px-0.5 uppercase tracking-wider shrink-0">
               {t('targetCountry')}
             </h2>
-            <div className="grid grid-cols-2 gap-[3px] flex-1 min-h-0 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-[2px] min-h-0">
               {countries.map((country) => {
                 const isSelected = selectedCountry?.id === country.id;
                 return (
@@ -107,21 +108,21 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                     key={country.id}
                     onClick={() => setSelectedCountry(country)}
                     aria-label={`${country.name} ${country.leader}`}
-                    className={`flex flex-col items-center justify-center gap-0.5 p-2 rounded border-2 transition-all duration-200 ${
+                    className={`flex flex-col items-center justify-center gap-px p-1.5 rounded border-2 transition-all duration-200 ${
                       isSelected
                         ? 'border-accent bg-accent/10 shadow-[0_0_10px_rgba(0,255,136,0.12)]'
                         : 'border-gray-700/60 bg-gray-900/50 hover:border-gray-500 hover:bg-gray-800/50'
                     }`}
                   >
-                    <span className="text-[2rem] leading-none">{country.flag}</span>
-                    <span className="text-[0.9rem] font-bold font-mono text-white leading-tight">
+                    <FlagIcon countryId={country.id} className="w-8 h-auto rounded-sm" />
+                    <span className="text-[0.85rem] font-bold font-mono text-white leading-tight">
                       {country.id.toUpperCase()}
                     </span>
                     <div className="text-center w-full">
-                      <div className="text-[0.7rem] text-gray-300 leading-tight">
+                      <div className="text-[0.65rem] text-gray-300 leading-tight">
                         {lang === 'ja' ? country.name : country.nameEn}
                       </div>
-                      <div className="text-[0.6rem] text-gray-500 leading-tight">
+                      <div className="text-[0.55rem] text-gray-500 leading-tight">
                         {lang === 'ja' ? country.leader : country.leaderEn}
                       </div>
                     </div>
@@ -146,7 +147,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                   style={{ borderColor: selectedCountry.accentColor + '80' }}
                 >
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl">{selectedCountry.flag}</span>
+                    <FlagIcon countryId={selectedCountry.id} className="w-10 h-auto rounded-sm" />
                     <div>
                       <div className="text-white font-bold text-sm">
                         {lang === 'ja'
@@ -343,9 +344,10 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                 <div className="pt-2 animate-fade-in" style={{ animationDelay: '0.25s', animationFillMode: 'backwards' }}>
                   <button
                     onClick={handleStart}
-                    className="w-full py-3 rounded-xl font-bold text-base transition-all font-mono bg-accent text-dark hover:bg-accent/90 active:scale-[0.98]"
+                    className="w-full py-3 rounded-xl font-bold text-base transition-all font-mono bg-accent text-dark hover:bg-accent/90 active:scale-[0.98] flex items-center justify-center gap-2"
                   >
-                    {selectedCountry.flag} {t('startCall')}
+                    <FlagIcon countryId={selectedCountry.id} className="w-6 h-auto rounded-sm" />
+                    {t('startCall')}
                   </button>
                 </div>
               </div>
