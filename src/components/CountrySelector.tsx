@@ -12,7 +12,7 @@ export function CountrySelector({ selected, onSelect }: Props) {
   const { lang } = useLanguage();
 
   return (
-    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 md:gap-3 lg:gap-4">
+    <div className="grid grid-cols-3 md:grid-cols-4 gap-2 md:gap-3">
       {countries.map((country) => {
         const isSelected = selected?.id === country.id;
         return (
@@ -20,18 +20,18 @@ export function CountrySelector({ selected, onSelect }: Props) {
             key={country.id}
             onClick={() => onSelect(country)}
             aria-label={`${country.name} ${country.leader}`}
-            className={`flex flex-col items-center gap-1 md:gap-2 p-2.5 md:p-4 lg:p-5 rounded-lg border-2 transition-all duration-200 ${
+            className={`flex flex-col items-center gap-1 md:gap-2 p-2.5 md:p-4 rounded-lg border-2 transition-all duration-200 ${
               isSelected
                 ? 'border-accent bg-accent/10'
                 : 'border-gray-700 bg-gray-900/50 hover:border-gray-500'
             }`}
           >
-            <span className="text-2xl md:text-4xl lg:text-5xl">{country.flag}</span>
+            <span className="text-2xl md:text-4xl">{country.flag}</span>
             <div className="text-center min-w-0 w-full">
-              <div className="text-xs md:text-sm lg:text-base font-bold text-white truncate">
+              <div className="text-xs md:text-sm font-bold text-white truncate md:whitespace-normal md:overflow-visible">
                 {lang === 'ja' ? country.name : country.nameEn}
               </div>
-              <div className="text-[10px] md:text-xs lg:text-sm text-gray-400 truncate">
+              <div className="text-[10px] md:text-xs text-gray-400 truncate md:whitespace-normal md:overflow-visible">
                 {lang === 'ja' ? country.leader : country.leaderEn}
               </div>
             </div>
