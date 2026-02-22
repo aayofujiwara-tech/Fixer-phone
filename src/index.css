@@ -140,3 +140,258 @@ button {
     min-height: 100vh;
   }
 }
+
+/* ========================================
+   装飾エリア共通（PC版セットアップ画面）
+   768px以上でのみ表示
+   ======================================== */
+@media (min-width: 768px) {
+
+  /* ----- 左装飾エリア ----- */
+  .deco-left {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* スキャンライン */
+  @keyframes deco-scan {
+    0%   { top: -4px; opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+  .deco-scanline {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0,255,136,0.4), transparent);
+    box-shadow: 0 0 8px rgba(0,255,136,0.3);
+    animation: deco-scan 4s linear infinite;
+    will-change: top;
+  }
+
+  /* データストリーム */
+  .deco-stream {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 8px;
+    overflow: hidden;
+  }
+  @keyframes deco-fall {
+    0%   { transform: translateY(-100%); }
+    100% { transform: translateY(100%); }
+  }
+  .deco-stream-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    line-height: 1.3;
+    color: rgba(0,170,51,0.25);
+    white-space: nowrap;
+    animation: deco-fall 18s linear infinite;
+    will-change: transform;
+  }
+  .deco-stream-col-1 { animation-duration: 20s; }
+  .deco-stream-col-2 { animation-duration: 16s; animation-delay: -5s; }
+  .deco-stream-col-3 { animation-duration: 22s; animation-delay: -10s; }
+
+  /* 座標・ステータス */
+  .deco-status {
+    position: absolute;
+    bottom: 20px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .deco-status-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(0,255,136,0.3);
+    letter-spacing: 0.05em;
+  }
+  @keyframes deco-blink-slow {
+    0%, 70%, 100% { opacity: 1; }
+    85% { opacity: 0.2; }
+  }
+  .deco-blink-slow {
+    animation: deco-blink-slow 3s ease-in-out infinite;
+  }
+
+  /* ----- 右装飾エリア ----- */
+  .deco-right {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px 12px;
+  }
+
+  /* レーダー */
+  .deco-radar-wrap {
+    display: flex;
+    justify-content: center;
+  }
+  .deco-radar {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,255,136,0.15);
+  }
+  .deco-radar-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0,255,136,0.1);
+  }
+  .deco-radar-circle-1 {
+    inset: 15%;
+  }
+  .deco-radar-circle-2 {
+    inset: 35%;
+  }
+  .deco-radar-circle-3 {
+    inset: 55%;
+  }
+  /* 十字線 */
+  .deco-radar::before,
+  .deco-radar::after {
+    content: '';
+    position: absolute;
+    background: rgba(0,255,136,0.08);
+  }
+  .deco-radar::before {
+    top: 0; bottom: 0; left: 50%;
+    width: 1px;
+  }
+  .deco-radar::after {
+    left: 0; right: 0; top: 50%;
+    height: 1px;
+  }
+  @keyframes deco-sweep {
+    0%   { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .deco-radar-sweep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 2px;
+    transform-origin: left center;
+    background: linear-gradient(90deg, rgba(0,255,136,0.6), transparent);
+    animation: deco-sweep 3s linear infinite;
+    will-change: transform;
+  }
+  /* レーダードット */
+  @keyframes deco-dot-blink {
+    0%, 60%, 100% { opacity: 0; }
+    10%, 50% { opacity: 1; }
+  }
+  .deco-radar-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(0,255,136,0.7);
+    box-shadow: 0 0 4px rgba(0,255,136,0.5);
+    animation: deco-dot-blink 3s ease-in-out infinite;
+  }
+  .deco-radar-dot-1 { top: 25%; left: 60%; animation-delay: 0.5s; }
+  .deco-radar-dot-2 { top: 65%; left: 30%; animation-delay: 1.5s; }
+  .deco-radar-dot-3 { top: 40%; left: 75%; animation-delay: 2.2s; }
+
+  /* 音声波形 */
+  .deco-waveform-wrap {
+    width: 100%;
+    max-width: 160px;
+  }
+  .deco-waveform-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: rgba(0,255,136,0.3);
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 0.08em;
+  }
+  .deco-waveform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    height: 40px;
+  }
+  @keyframes deco-wave {
+    0%, 100% { height: 4px; }
+    25%      { height: 28px; }
+    50%      { height: 8px; }
+    75%      { height: 20px; }
+  }
+  .deco-waveform-bar {
+    width: 3px;
+    height: 4px;
+    background: rgba(0,255,136,0.35);
+    border-radius: 1px;
+    animation: deco-wave 1.6s ease-in-out infinite;
+    will-change: height;
+  }
+
+  /* 暗号文スクロール */
+  .deco-cipher-wrap {
+    width: 100%;
+    max-width: 180px;
+  }
+  .deco-cipher-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: rgba(0,255,136,0.3);
+    text-align: center;
+    margin-bottom: 6px;
+    letter-spacing: 0.08em;
+  }
+  .deco-cipher {
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+  }
+  @keyframes deco-cipher-up {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(-50%); }
+  }
+  .deco-cipher-scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: rgba(0,170,51,0.25);
+    text-align: center;
+    animation: deco-cipher-up 12s linear infinite;
+    will-change: transform;
+  }
+  .deco-cipher-scroll em {
+    font-style: normal;
+    color: rgba(0,255,136,0.7);
+    text-shadow: 0 0 4px rgba(0,255,136,0.3);
+  }
+
+} /* end @media (min-width: 768px) */
