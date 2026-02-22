@@ -275,6 +275,10 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
   // 自動モード中はボタンの透明度を下げる
   const manualButtonOpacity = callMode === 'auto' && autoMode ? 'opacity-40' : '';
 
+  // PC用: レスポンシブブレークポイント（768 / 1024 / 1440）
+  const isLargePC = useMediaQuery('(min-width: 1024px)');
+  const isXLargePC = useMediaQuery('(min-width: 1440px)');
+
   // PC用: パネルのアクティブ状態
   const vipActive = showLeaderLine && !showFixerLine;
   const fixerActive = showFixerLine;
@@ -400,8 +404,24 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
         </div>
       </div>
 
-      {isPC ? (
-        /* ===== PC: スプリットスクリーン ===== */
+      {isPC ? (() => {
+        /* ===== PC: レスポンシブサイズ定義 (768 / 1024 / 1440) ===== */
+        const avatarSize = isXLargePC ? 280 : isLargePC ? 220 : 200;
+        const textMain = isXLargePC ? 'text-2xl' : isLargePC ? 'text-xl' : 'text-lg';
+        const textSub = isXLargePC ? 'text-lg' : isLargePC ? 'text-base' : 'text-sm';
+        const textName = isXLargePC ? 'text-xl' : isLargePC ? 'text-lg' : 'text-base';
+        const textGhost = isXLargePC ? 'text-base' : isLargePC ? 'text-sm' : 'text-sm';
+        const bubblePad = isXLargePC ? 'px-10 py-8' : isLargePC ? 'px-8 py-7' : 'p-7';
+        const bubbleMax = isXLargePC ? 'max-w-2xl' : isLargePC ? 'max-w-xl' : 'max-w-lg';
+        const lineH = isXLargePC ? 'leading-[1.8]' : isLargePC ? 'leading-[1.75]' : 'leading-[1.7]';
+        const btnText = isXLargePC ? 'text-sm' : 'text-xs';
+        const btnPad = isXLargePC ? 'px-5 py-2.5' : isLargePC ? 'px-4 py-2' : 'px-4 py-1.5';
+        const practiceText = isXLargePC ? 'text-2xl' : isLargePC ? 'text-xl' : 'text-lg';
+        const practiceSub = isXLargePC ? 'text-base' : isLargePC ? 'text-sm' : 'text-sm';
+        const practiceLabelText = isXLargePC ? 'text-sm' : 'text-xs';
+        const practiceBtnText = isXLargePC ? 'text-base' : isLargePC ? 'text-sm' : 'text-sm';
+
+        return (
         <>
           <div className="flex flex-1 min-h-0">
             {/* ----- VIP パネル (45%) ----- */}
@@ -425,9 +445,9 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                     color={country.accentColor}
                     flag={country.flag}
                     speaking={vipActive}
-                    size={140}
+                    size={avatarSize}
                   />
-                  <div className={`text-sm font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
+                  <div className={`${textName} font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
                     vipActive ? 'text-white' : 'text-gray-600'
                   }`}>
                     {countryDisplay}
@@ -441,25 +461,25 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                 </div>
 
                 {/* VIP 吹き出し */}
-                <div className="w-full max-w-md">
+                <div className={`w-full ${bubbleMax}`}>
                   {showLeaderLine && pair.leader ? (
-                    <div className="relative bg-gray-800/50 rounded-2xl p-6 ml-auto mr-2 max-w-[95%] animate-fade-in">
+                    <div className={`relative bg-gray-800/50 rounded-2xl ${bubblePad} ml-auto mr-2 max-w-[95%] animate-fade-in`}>
                       {/* 右向き三角（尻尾） */}
                       <div className="absolute -right-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gray-800/50" />
                       <TypewriterText
                         text={lang === 'ja' ? pair.leader.en : pair.leader.ja}
-                        className="text-gray-300 text-base leading-relaxed italic block"
+                        className={`text-gray-300 ${textMain} ${lineH} italic block`}
                         duration={2000}
                       />
-                      <div className="text-gray-500 text-xs mt-3">
+                      <div className={`text-gray-500 ${textSub} mt-3`}>
                         {lang === 'ja' ? pair.leader.ja : pair.leader.en}
                       </div>
                     </div>
                   ) : !vipActive && prevLeaderRef.current ? (
                     /* 前回のセリフ（ゴースト表示） */
-                    <div className="relative bg-gray-800/20 rounded-2xl p-6 ml-auto mr-2 max-w-[95%] opacity-50">
+                    <div className={`relative bg-gray-800/20 rounded-2xl ${bubblePad} ml-auto mr-2 max-w-[95%] opacity-50`}>
                       <div className="absolute -right-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gray-800/20" />
-                      <div className="text-gray-600 text-sm leading-relaxed italic">
+                      <div className={`text-gray-600 ${textGhost} ${lineH} italic`}>
                         {lang === 'ja' ? prevLeaderRef.current.en : prevLeaderRef.current.ja}
                       </div>
                     </div>
@@ -499,9 +519,9 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                     variant="fixer"
                     color="#4a4a4a"
                     speaking={fixerActive}
-                    size={140}
+                    size={avatarSize}
                   />
-                  <div className={`text-sm font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
+                  <div className={`${textName} font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
                     fixerActive ? 'text-accent' : 'text-gray-600'
                   }`}>
                     FIXER
@@ -512,44 +532,44 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                 </div>
 
                 {/* フィクサー吹き出し */}
-                <div className="w-full max-w-md">
+                <div className={`w-full ${bubbleMax}`}>
                   {showFixerLine && pair.fixer && callMode !== 'practice' ? (
-                    <div className="relative bg-accent/5 border border-accent/20 rounded-2xl p-6 mr-auto ml-2 max-w-[95%] animate-fade-in">
+                    <div className={`relative bg-accent/5 border border-accent/20 rounded-2xl ${bubblePad} mr-auto ml-2 max-w-[95%] animate-fade-in`}>
                       {/* 左向き三角（尻尾） */}
                       <div className="absolute -left-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-accent/20" />
                       <TypewriterText
                         text={lang === 'ja' ? `「${pair.fixer.ja}」` : `"${pair.fixer.en}"`}
-                        className="text-white text-base font-bold leading-relaxed block"
+                        className={`text-white ${textMain} font-bold ${lineH} block`}
                         duration={2000}
                       />
-                      <div className="text-accent/60 text-sm mt-3 font-mono">
+                      <div className={`text-accent/60 ${textSub} mt-3 font-mono`}>
                         "{lang === 'ja' ? pair.fixer.en : pair.fixer.ja}"
                       </div>
                     </div>
                   ) : showFixerLine && pair.fixer && callMode === 'practice' ? (
                     /* 練習モード */
                     <div className="mr-auto ml-2 max-w-[95%] animate-fade-in">
-                      <div className="text-xs text-accent/60 mb-2 font-mono font-bold uppercase tracking-wider">
+                      <div className={`${practiceLabelText} text-accent/60 mb-2 font-mono font-bold uppercase tracking-wider`}>
                         {t('yourLine')}
                       </div>
-                      <div className="text-white text-lg leading-relaxed mb-2">
+                      <div className={`text-white ${practiceText} ${lineH} mb-2`}>
                         {selectedLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
                       </div>
-                      <div className="text-gray-500 text-sm leading-relaxed">
+                      <div className={`text-gray-500 ${practiceSub} ${lineH}`}>
                         {selectedLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
                       </div>
                       <button
                         onClick={handlePracticeNext}
-                        className="mt-4 w-full py-3 rounded-xl bg-accent/20 text-accent border border-accent/50 font-mono text-sm hover:bg-accent/30 transition-all active:scale-[0.98]"
+                        className={`mt-4 w-full py-3 rounded-xl bg-accent/20 text-accent border border-accent/50 font-mono ${practiceBtnText} hover:bg-accent/30 transition-all active:scale-[0.98]`}
                       >
                         {t('practiceNext')}
                       </button>
                     </div>
                   ) : !fixerActive && prevFixerRef.current ? (
                     /* 前回のセリフ（ゴースト表示） */
-                    <div className="relative bg-accent/5 rounded-2xl p-6 mr-auto ml-2 max-w-[95%] opacity-30">
+                    <div className={`relative bg-accent/5 rounded-2xl ${bubblePad} mr-auto ml-2 max-w-[95%] opacity-30`}>
                       <div className="absolute -left-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-accent/10" />
-                      <div className="text-gray-500 text-sm leading-relaxed">
+                      <div className={`text-gray-500 ${textGhost} ${lineH}`}>
                         {lang === 'ja' ? `「${prevFixerRef.current.ja}」` : `"${prevFixerRef.current.en}"`}
                       </div>
                     </div>
@@ -565,7 +585,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               {/* スピーカー切替 */}
               <button
                 onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
-                className={`pc-compact-btn px-3 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+                className={`pc-compact-btn ${btnPad} rounded-full ${btnText} font-mono transition-all flex items-center gap-1.5 ${
                   speakerMode === 'speaker'
                     ? 'bg-green-500/20 text-green-400 border border-green-500/50'
                     : 'bg-gray-800 text-gray-400 border border-gray-700'
@@ -582,7 +602,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                     if (autoMode) clearAutoTimers();
                     setAutoMode(!autoMode);
                   }}
-                  className={`pc-compact-btn px-3 py-1.5 rounded-full text-xs font-mono transition-all ${
+                  className={`pc-compact-btn ${btnPad} rounded-full ${btnText} font-mono transition-all ${
                     autoMode
                       ? 'bg-accent/20 text-accent border border-accent/50'
                       : 'bg-gray-800 text-gray-500 border border-gray-700'
@@ -598,7 +618,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               <button
                 onClick={handlePrev}
                 disabled={currentLineIndex === 0}
-                className={`pc-compact-btn px-4 py-1.5 rounded-lg font-mono text-xs transition-all ${
+                className={`pc-compact-btn ${btnPad} rounded-lg font-mono ${btnText} transition-all ${
                   currentLineIndex === 0
                     ? 'bg-gray-900 text-gray-700 cursor-not-allowed'
                     : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:scale-[0.97]'
@@ -606,12 +626,12 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               >
                 ◀ {t('prev')}
               </button>
-              <span className="text-gray-600 text-xs font-mono tabular-nums">
+              <span className={`text-gray-600 ${btnText} font-mono tabular-nums`}>
                 {currentLineIndex + 1} / {totalPairs}
               </span>
               <button
                 onClick={handleNext}
-                className="pc-compact-btn px-4 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-mono text-xs transition-all active:scale-[0.97]"
+                className={`pc-compact-btn ${btnPad} rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-mono ${btnText} transition-all active:scale-[0.97]`}
               >
                 {isLastPair ? t('endCallNext') : t('next')} ▶
               </button>
@@ -623,7 +643,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                   <button
                     onClick={speakJa}
                     disabled={isSpeaking}
-                    className={`pc-compact-btn px-3 py-1.5 rounded-lg border font-mono text-xs transition-all ${
+                    className={`pc-compact-btn ${btnPad} rounded-lg border font-mono ${btnText} transition-all ${
                       isSpeaking
                         ? 'border-accent/50 text-accent/50 animate-pulse-border'
                         : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
@@ -634,7 +654,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                   <button
                     onClick={speakEn}
                     disabled={isSpeaking}
-                    className={`pc-compact-btn px-3 py-1.5 rounded-lg border font-mono text-xs transition-all ${
+                    className={`pc-compact-btn ${btnPad} rounded-lg border font-mono ${btnText} transition-all ${
                       isSpeaking
                         ? 'border-accent/50 text-accent/50 animate-pulse-border'
                         : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
@@ -650,14 +670,15 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               {/* 通話終了 */}
               <button
                 onClick={handleEndCall}
-                className="pc-compact-btn px-5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono text-xs transition-all active:scale-[0.98]"
+                className={`pc-compact-btn px-5 py-2 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono ${btnText} transition-all active:scale-[0.98]`}
               >
                 {t('endCall')}
               </button>
             </div>
           </div>
         </>
-      ) : (
+        );
+      })() : (
         /* ===== モバイル: 既存レイアウト（変更なし） ===== */
         <>
           {/* セリフエリア */}

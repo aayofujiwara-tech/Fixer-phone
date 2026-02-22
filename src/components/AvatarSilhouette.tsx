@@ -17,6 +17,9 @@ interface Props {
  */
 export function AvatarSilhouette({ variant, color, flag, speaking = false, size = 140 }: Props) {
   const isFixer = variant === 'fixer';
+  // バッジサイズをシルエットサイズに連動
+  const flagFontSize = Math.max(28, Math.round(size * 0.2));
+  const iconFontSize = Math.max(24, Math.round(size * 0.16));
 
   return (
     <div
@@ -83,8 +86,12 @@ export function AvatarSilhouette({ variant, color, flag, speaking = false, size 
       {/* VIP: 国旗バッジ */}
       {!isFixer && flag && (
         <div
-          className="absolute -top-1 -right-1 text-3xl drop-shadow-lg"
-          style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }}
+          className="absolute -top-1 -right-1 drop-shadow-lg"
+          style={{
+            fontSize: `${flagFontSize}px`,
+            lineHeight: 1,
+            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
+          }}
         >
           {flag}
         </div>
@@ -93,8 +100,12 @@ export function AvatarSilhouette({ variant, color, flag, speaking = false, size 
       {/* フィクサー: サングラス絵文字バッジ */}
       {isFixer && (
         <div
-          className="absolute -top-1 -right-1 text-2xl"
-          style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))' }}
+          className="absolute -top-1 -right-1"
+          style={{
+            fontSize: `${iconFontSize}px`,
+            lineHeight: 1,
+            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))',
+          }}
         >
           🕶️
         </div>
