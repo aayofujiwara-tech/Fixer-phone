@@ -30,7 +30,8 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
   const [showFixerLine, setShowFixerLine] = useState(false);
   const [isThinking, setIsThinking] = useState(true);
   const [autoMode, setAutoMode] = useState(true);
-  const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>('ja');
+  const { lang, t } = useLanguage();
+  const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>(lang);
 
   // スピーカーモード: 'speaker' = スピーカー（大音量）, 'earpiece' = 受話器（小音量）
   const [speakerMode, setSpeakerMode] = useState<'speaker' | 'earpiece'>(() => {
@@ -40,7 +41,6 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
 
   const { speak, stop, isSpeaking, setVolume } = useSpeechSynthesis();
   const timer = useCallTimer();
-  const { lang, t } = useLanguage();
 
   // PC判定（768px以上）
   const isPC = useMediaQuery('(min-width: 768px)');
