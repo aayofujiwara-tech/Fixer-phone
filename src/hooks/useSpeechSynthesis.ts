@@ -280,28 +280,49 @@ function ttsLog(message: string, ...args: unknown[]) {
 // ======================================================
 
 let _iosUnlocked = false;
+let _iosUnlockSetup = false;
 
 function setupIOSUnlock() {
   if (!isIOS()) return;
   if (_iosUnlocked) return;
+  if (_iosUnlockSetup) return;           // 重複登録を防止
   if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+  _iosUnlockSetup = true;
 
   const unlock = () => {
     if (_iosUnlocked) return;
-    const utterance = new SpeechSynthesisUtterance(' ');
-    utterance.volume = 0;
-    utterance.rate = 10;       // 最速で完了させる
+
+    // iOS は cancel→resume→speak の順でないと動かないケースがある
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.resume();
+
+    // volume=0 や空白テキストではオーディオセッションがアクティベートされない。
+    // 短い実テキストと最小限の音量で実際の音声出力を発生させる。
+    const utterance = new SpeechSynthesisUtterance('.');
+    utterance.volume = 0.01;
+    utterance.rate = 4;
+    utterance.lang = 'en-US';
     utterance.onend = () => {
       _iosUnlocked = true;
-      ttsLog('Speech unlock: success');
+      ttsLog('Speech unlock: success (onend)');
     };
-    utterance.onerror = () => {
-      // エラーでもアンロック済みとみなす（再試行しない）
+    utterance.onerror = (e) => {
+      // エラーでもユーザージェスチャー内で speak() を呼んだのでアンロック済み
       _iosUnlocked = true;
-      ttsLog('Speech unlock: error (treated as unlocked)');
+      ttsLog(`Speech unlock: error ${e.error} (treated as unlocked)`);
     };
     window.speechSynthesis.speak(utterance);
     ttsLog('Speech unlock: attempted');
+
+    // iOS では onend/onerror が発火しないことがある（volume が小さい等）。
+    // ユーザージェスチャー内で speak() を呼んだ時点でセッションは有効化されるため、
+    // タイムアウトでフラグを立てる。
+    setTimeout(() => {
+      if (!_iosUnlocked) {
+        _iosUnlocked = true;
+        ttsLog('Speech unlock: success (timeout fallback)');
+      }
+    }, 500);
 
     // 一度だけ実行
     document.removeEventListener('touchstart', unlock);
@@ -426,6 +447,11 @@ export function useSpeechSynthesis() {
       ttsLog(`Speak called: "${text.slice(0, 10)}..." [${lang}]`);
 
       const doSpeak = () => {
+        // iOS: cancel() 後に resume() しないと speak() が無音になるバグを回避
+        if (isIOS()) {
+          window.speechSynthesis.resume();
+        }
+
         const utterance = new SpeechSynthesisUtterance(ttsText);
         utteranceRef.current = utterance;
 
