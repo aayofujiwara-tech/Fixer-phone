@@ -175,7 +175,7 @@ button {
     user-select: none;
   }
 
-  /* スキャンライン */
+  /* スキャンライン — 明るく太く */
   @keyframes deco-scan {
     0%   { top: -4px; opacity: 0; }
     10%  { opacity: 1; }
@@ -186,20 +186,20 @@ button {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(0,255,136,0.4), transparent);
-    box-shadow: 0 0 8px rgba(0,255,136,0.3);
-    animation: deco-scan 4s linear infinite;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(0,255,136,0.7), transparent);
+    box-shadow: 0 0 16px rgba(0,255,136,0.5), 0 0 4px rgba(0,255,136,0.3);
+    animation: deco-scan 3.5s linear infinite;
     will-change: top;
   }
 
-  /* データストリーム */
+  /* データストリーム — 大きく速く */
   .deco-stream {
     position: absolute;
     inset: 0;
     display: flex;
     justify-content: space-around;
-    padding: 0 8px;
+    padding: 0 4px;
     overflow: hidden;
   }
   @keyframes deco-fall {
@@ -209,38 +209,39 @@ button {
   .deco-stream-col {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    line-height: 1.3;
-    color: rgba(0,170,51,0.25);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: rgba(0,200,60,0.35);
     white-space: nowrap;
-    animation: deco-fall 18s linear infinite;
+    animation: deco-fall 14s linear infinite;
     will-change: transform;
   }
-  .deco-stream-col-1 { animation-duration: 20s; }
-  .deco-stream-col-2 { animation-duration: 16s; animation-delay: -5s; }
-  .deco-stream-col-3 { animation-duration: 22s; animation-delay: -10s; }
+  .deco-stream-col-1 { animation-duration: 15s; }
+  .deco-stream-col-2 { animation-duration: 12s; animation-delay: -4s; }
+  .deco-stream-col-3 { animation-duration: 17s; animation-delay: -8s; }
+  .deco-stream-col-4 { animation-duration: 13s; animation-delay: -2s; }
 
-  /* 座標・ステータス */
+  /* 座標・ステータス — 大きく */
   .deco-status {
     position: absolute;
-    bottom: 20px;
-    left: 12px;
-    right: 12px;
+    bottom: 24px;
+    left: 8px;
+    right: 8px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 5px;
   }
   .deco-status-line {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: rgba(0,255,136,0.3);
+    font-size: 0.85rem;
+    color: rgba(0,255,136,0.45);
     letter-spacing: 0.05em;
   }
   @keyframes deco-blink-slow {
     0%, 70%, 100% { opacity: 1; }
-    85% { opacity: 0.2; }
+    85% { opacity: 0.15; }
   }
   .deco-blink-slow {
     animation: deco-blink-slow 3s ease-in-out infinite;
@@ -258,42 +259,38 @@ button {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 24px;
-    padding: 20px 12px;
+    gap: 28px;
+    padding: 20px 8px;
   }
 
-  /* レーダー */
+  /* レーダー — 大幅拡大 */
   .deco-radar-wrap {
     display: flex;
     justify-content: center;
+    width: 100%;
   }
   .deco-radar {
     position: relative;
-    width: 120px;
-    height: 120px;
+    width: min(220px, 90%);
+    aspect-ratio: 1;
     border-radius: 50%;
-    border: 1px solid rgba(0,255,136,0.15);
+    border: 1px solid rgba(0,255,136,0.25);
   }
   .deco-radar-circle {
     position: absolute;
     border-radius: 50%;
-    border: 1px solid rgba(0,255,136,0.1);
+    border: 1px solid rgba(0,255,136,0.15);
   }
-  .deco-radar-circle-1 {
-    inset: 15%;
-  }
-  .deco-radar-circle-2 {
-    inset: 35%;
-  }
-  .deco-radar-circle-3 {
-    inset: 55%;
-  }
+  .deco-radar-circle-1 { inset: 12%; }
+  .deco-radar-circle-2 { inset: 30%; }
+  .deco-radar-circle-3 { inset: 50%; }
+  .deco-radar-circle-4 { inset: 70%; }
   /* 十字線 */
   .deco-radar::before,
   .deco-radar::after {
     content: '';
     position: absolute;
-    background: rgba(0,255,136,0.08);
+    background: rgba(0,255,136,0.12);
   }
   .deco-radar::before {
     top: 0; bottom: 0; left: 50%;
@@ -314,82 +311,84 @@ button {
     width: 50%;
     height: 2px;
     transform-origin: left center;
-    background: linear-gradient(90deg, rgba(0,255,136,0.6), transparent);
-    animation: deco-sweep 3s linear infinite;
+    background: linear-gradient(90deg, rgba(0,255,136,0.8), transparent);
+    animation: deco-sweep 2.5s linear infinite;
     will-change: transform;
   }
-  /* レーダードット */
+  /* レーダードット — 大きく明るく */
   @keyframes deco-dot-blink {
     0%, 60%, 100% { opacity: 0; }
     10%, 50% { opacity: 1; }
   }
   .deco-radar-dot {
     position: absolute;
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: rgba(0,255,136,0.7);
-    box-shadow: 0 0 4px rgba(0,255,136,0.5);
+    background: rgba(0,255,136,0.8);
+    box-shadow: 0 0 8px rgba(0,255,136,0.6);
     animation: deco-dot-blink 3s ease-in-out infinite;
   }
-  .deco-radar-dot-1 { top: 25%; left: 60%; animation-delay: 0.5s; }
-  .deco-radar-dot-2 { top: 65%; left: 30%; animation-delay: 1.5s; }
-  .deco-radar-dot-3 { top: 40%; left: 75%; animation-delay: 2.2s; }
+  .deco-radar-dot-1 { top: 22%; left: 62%; animation-delay: 0.3s; }
+  .deco-radar-dot-2 { top: 68%; left: 28%; animation-delay: 1.2s; }
+  .deco-radar-dot-3 { top: 35%; left: 78%; animation-delay: 2.0s; }
+  .deco-radar-dot-4 { top: 55%; left: 18%; animation-delay: 0.8s; }
+  .deco-radar-dot-5 { top: 80%; left: 65%; animation-delay: 1.8s; }
 
-  /* 音声波形 */
+  /* 音声波形 — 大きく */
   .deco-waveform-wrap {
     width: 100%;
-    max-width: 160px;
+    max-width: 280px;
   }
   .deco-waveform-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    color: rgba(0,255,136,0.3);
+    font-size: 0.7rem;
+    color: rgba(0,255,136,0.45);
     text-align: center;
-    margin-bottom: 6px;
-    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
   }
   .deco-waveform {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 2px;
-    height: 40px;
+    height: 60px;
   }
   @keyframes deco-wave {
-    0%, 100% { height: 4px; }
-    25%      { height: 28px; }
-    50%      { height: 8px; }
-    75%      { height: 20px; }
+    0%, 100% { height: 5px; }
+    25%      { height: 45px; }
+    50%      { height: 10px; }
+    75%      { height: 32px; }
   }
   .deco-waveform-bar {
     width: 3px;
-    height: 4px;
-    background: rgba(0,255,136,0.35);
+    height: 5px;
+    background: rgba(0,255,136,0.5);
     border-radius: 1px;
-    animation: deco-wave 1.6s ease-in-out infinite;
+    animation: deco-wave 1.4s ease-in-out infinite;
     will-change: height;
   }
 
-  /* 暗号文スクロール */
+  /* 暗号文スクロール — 大きく */
   .deco-cipher-wrap {
     width: 100%;
-    max-width: 180px;
+    max-width: 280px;
   }
   .deco-cipher-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8px;
-    color: rgba(0,255,136,0.3);
+    font-size: 0.7rem;
+    color: rgba(0,255,136,0.45);
     text-align: center;
-    margin-bottom: 6px;
-    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
   }
   .deco-cipher {
-    height: 80px;
+    height: 120px;
     overflow: hidden;
     position: relative;
-    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
   }
   @keyframes deco-cipher-up {
     0%   { transform: translateY(0); }
@@ -398,18 +397,18 @@ button {
   .deco-cipher-scroll {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px;
-    color: rgba(0,170,51,0.25);
+    font-size: 0.85rem;
+    color: rgba(0,200,60,0.35);
     text-align: center;
-    animation: deco-cipher-up 12s linear infinite;
+    animation: deco-cipher-up 10s linear infinite;
     will-change: transform;
   }
   .deco-cipher-scroll em {
     font-style: normal;
-    color: rgba(0,255,136,0.7);
-    text-shadow: 0 0 4px rgba(0,255,136,0.3);
+    color: rgba(0,255,136,0.8);
+    text-shadow: 0 0 6px rgba(0,255,136,0.4);
   }
 
 } /* end @media (min-width: 768px) */

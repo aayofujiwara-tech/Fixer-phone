@@ -16,6 +16,12 @@ export function LeftDecoration() {
           <span>E139.650</span><span>01100111</span><span>壱壱零壱</span>
           <span>00101110</span><span>伍零壱壱</span><span>11001010</span>
           <span>01001101</span><span>壱零壱壱</span><span>00110100</span>
+          <span>N40.7128</span><span>11010110</span><span>零壱参壱</span>
+          <span>W074.006</span><span>10011001</span><span>壱零壱零</span>
+          <span>00110011</span><span>参壱零零</span><span>11100001</span>
+          <span>01001101</span><span>壱零壱壱</span><span>00110100</span>
+          <span>11010011</span><span>参零壱零</span><span>01011010</span>
+          <span>N35.6762</span><span>10110001</span><span>零壱壱零</span>
         </div>
         <div className="deco-stream-col deco-stream-col-2">
           <span>11100010</span><span>零参壱壱</span><span>10011001</span>
@@ -24,6 +30,12 @@ export function LeftDecoration() {
           <span>11010110</span><span>参壱零壱</span><span>01101001</span>
           <span>10100011</span><span>壱壱零零</span><span>00111010</span>
           <span>11100010</span><span>零参壱壱</span><span>10011001</span>
+          <span>N55.7558</span><span>01010011</span><span>壱零零壱</span>
+          <span>E037.617</span><span>11001100</span><span>零壱壱零</span>
+          <span>10110100</span><span>参零壱壱</span><span>01010010</span>
+          <span>11100010</span><span>零参壱壱</span><span>10011001</span>
+          <span>N51.5074</span><span>01110100</span><span>壱零零壱</span>
+          <span>W000.127</span><span>10001011</span><span>零壱零零</span>
         </div>
         <div className="deco-stream-col deco-stream-col-3">
           <span>10110100</span><span>壱零零壱</span><span>01010111</span>
@@ -32,6 +44,26 @@ export function LeftDecoration() {
           <span>10001110</span><span>零零壱壱</span><span>11010001</span>
           <span>00110110</span><span>壱零壱零</span><span>10101100</span>
           <span>10110100</span><span>壱零零壱</span><span>01010111</span>
+          <span>N39.9042</span><span>10010011</span><span>零壱零壱</span>
+          <span>E116.407</span><span>01101100</span><span>壱壱零零</span>
+          <span>11001010</span><span>参零零壱</span><span>00101101</span>
+          <span>10110100</span><span>壱零零壱</span><span>01010111</span>
+          <span>N48.8566</span><span>11001001</span><span>零壱壱零</span>
+          <span>E002.352</span><span>01110010</span><span>壱壱零壱</span>
+        </div>
+        <div className="deco-stream-col deco-stream-col-4">
+          <span>01101001</span><span>零壱壱零</span><span>11010010</span>
+          <span>N52.5200</span><span>10100101</span><span>壱零壱壱</span>
+          <span>E013.405</span><span>01011100</span><span>零零壱零</span>
+          <span>11100011</span><span>壱零零零</span><span>00101011</span>
+          <span>10010110</span><span>零壱壱壱</span><span>01100101</span>
+          <span>01101001</span><span>零壱壱零</span><span>11010010</span>
+          <span>N24.7136</span><span>11010001</span><span>壱壱零壱</span>
+          <span>E046.675</span><span>00110110</span><span>零壱零壱</span>
+          <span>10101001</span><span>壱零壱零</span><span>01010110</span>
+          <span>01101001</span><span>零壱壱零</span><span>11010010</span>
+          <span>N52.5200</span><span>10100101</span><span>壱零壱壱</span>
+          <span>E013.405</span><span>01011100</span><span>零零壱零</span>
         </div>
       </div>
 
@@ -43,14 +75,23 @@ export function LeftDecoration() {
         <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '0.5s' }}>
           LON: 139.6503
         </div>
-        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '1.2s' }}>
+        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '1.0s' }}>
+          ALT: 40.2m
+        </div>
+        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '1.5s' }}>
           STATUS: MONITORING
         </div>
-        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '1.8s' }}>
+        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '2.0s' }}>
           SIGNAL: ENCRYPTED
         </div>
         <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '2.5s' }}>
           FREQ: 2.4GHz
+        </div>
+        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '3.0s' }}>
+          PROTOCOL: AES-256
+        </div>
+        <div className="deco-status-line deco-blink-slow" style={{ animationDelay: '3.5s' }}>
+          UPLINK: ACTIVE
         </div>
       </div>
     </div>

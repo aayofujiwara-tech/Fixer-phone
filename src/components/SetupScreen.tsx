@@ -103,7 +103,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
           </div>
 
           {/* メインコンテンツ（スクロールなし1画面） */}
-          <div className="flex-1 min-h-0 flex flex-col px-4 py-3 gap-2.5 overflow-hidden">
+          <div className="flex-1 min-h-0 flex flex-col justify-center px-4 py-3 gap-2.5 overflow-hidden">
             {/* TARGET COUNTRY: 4列×3段グリッド */}
             <section className="shrink-0">
               <h2 className="text-[10px] font-mono text-gray-400 mb-1.5 uppercase tracking-wider">
@@ -319,7 +319,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             )}
 
             {/* 通話開始ボタン */}
-            <div className="shrink-0 mt-auto pt-1">
+            <div className="shrink-0 pt-1">
               <button
                 onClick={handleStart}
                 disabled={!selectedCountry}
