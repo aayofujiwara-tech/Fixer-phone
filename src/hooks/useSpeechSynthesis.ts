@@ -116,27 +116,110 @@ function fixJaReading(text: string): string {
   return fixed;
 }
 
-// 男性音声を名前パターンで判定
-const MALE_VOICE_PATTERNS = /male|otoya|takeru|ken|david|daniel|alex|james|mark|google.*male/i;
-const FEMALE_VOICE_PATTERNS = /female|kyoko|o-ren|haruka|samantha|karen|fiona|google.*female/i;
+// ======================================================
+// 男性音声選択（ブラウザ・OS別の優先順位リスト）
+// ======================================================
 
-function isMaleVoice(voice: SpeechSynthesisVoice): boolean {
-  if (MALE_VOICE_PATTERNS.test(voice.name)) return true;
-  if (FEMALE_VOICE_PATTERNS.test(voice.name)) return false;
-  // 判定不能な場合はfalse（後でpitchで補正）
-  return false;
+// 既知の女性音声パターン（これらを確実に除外する）
+const FEMALE_VOICE_PATTERNS =
+  /female|kyoko|o-ren|haruka|samantha|karen|fiona|tessa|moira|victoria|zuzana|alice|amelie|anna|ellen|monica|luciana|milena|yelda|mei-jia|sin-ji/i;
+
+// 既知の男性音声パターン（フォールバック判定用）
+const MALE_VOICE_PATTERNS =
+  /\bmale\b|otoya|takeru|keita|ichiro|ken(?!ya)|hattori|daniel|david|alex(?!a)|james|jorge|thomas|rishi|aaron|fred\b|ralph|junior/i;
+
+// ブラウザ・OS別の男性音声優先リスト（上から順に優先）
+// prettier-ignore
+const JA_MALE_VOICE_PRIORITY = [
+  // Safari / macOS / iOS
+  'otoya',          // macOS 男性日本語
+  'takeru',         // iOS 拡張男性日本語
+  // Edge / Windows
+  'keita',          // Microsoft Keita Online (Natural)
+  'microsoft keita',
+  // Chrome
+  'google 日本語',   // Chrome built-in（性別不定だがピッチで補正）
+  // Android
+  'ja-jp-x-jab',    // Google TTS 男性系バリアント
+  'ja-jp-x-jac',
+];
+
+// prettier-ignore
+const EN_MALE_VOICE_PRIORITY = [
+  // Safari / macOS / iOS
+  'daniel',         // macOS/iOS British English 男性
+  'alex',           // macOS 男性（高品質）
+  'fred',           // macOS フォールバック男性
+  'ralph',
+  // Edge / Windows
+  'microsoft guy',  // Edge Online (Natural)
+  'microsoft mark',
+  'guy',
+  // Chrome
+  'google us english',  // Chrome built-in
+  // Android
+  'en-us-x-sfg',   // Google TTS 男性系バリアント
+];
+
+function isKnownFemale(voice: SpeechSynthesisVoice): boolean {
+  return FEMALE_VOICE_PATTERNS.test(voice.name);
 }
 
-// 指定言語の男性音声を取得
+function isKnownMale(voice: SpeechSynthesisVoice): boolean {
+  return MALE_VOICE_PATTERNS.test(voice.name);
+}
+
+// 指定言語の男性音声を取得（優先順位付き）
 function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices();
   const langVoices = voices.filter(v => v.lang.startsWith(lang));
+  const priorityList = lang === 'ja' ? JA_MALE_VOICE_PRIORITY : EN_MALE_VOICE_PRIORITY;
 
-  // 名前から男性と判定できる音声を優先
-  const male = langVoices.find(v => isMaleVoice(v));
-  if (male) return male;
+  // --- デバッグログ（本番では削除可） ---
+  if (process.env.NODE_ENV === 'development') {
+    console.group(`[TTS] Voice selection for lang="${lang}"`);
+    console.log('Available voices:', langVoices.map(v => `${v.name} (${v.lang})`));
+  }
 
-  // 見つからない場合は言語一致の最初の音声（pitchで男性感を出す）
+  // Step 1: 優先リストから順に探す
+  for (const name of priorityList) {
+    const match = langVoices.find(
+      v => v.name.toLowerCase().includes(name.toLowerCase()) && !isKnownFemale(v)
+    );
+    if (match) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✓ Selected (priority match):', match.name);
+        console.groupEnd();
+      }
+      return match;
+    }
+  }
+
+  // Step 2: 名前パターンで男性と判定できる音声
+  const knownMale = langVoices.find(v => isKnownMale(v) && !isKnownFemale(v));
+  if (knownMale) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✓ Selected (pattern match):', knownMale.name);
+      console.groupEnd();
+    }
+    return knownMale;
+  }
+
+  // Step 3: 女性と判定されない最初の音声（ピッチで補正）
+  const nonFemale = langVoices.find(v => !isKnownFemale(v));
+  if (nonFemale) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log('△ Selected (non-female fallback):', nonFemale.name);
+      console.groupEnd();
+    }
+    return nonFemale;
+  }
+
+  // Step 4: どうしても見つからない場合は最初の音声
+  if (process.env.NODE_ENV === 'development') {
+    console.log('✗ Fallback: first available voice:', langVoices[0]?.name ?? 'none');
+    console.groupEnd();
+  }
   return langVoices[0] ?? null;
 }
 
@@ -196,14 +279,17 @@ export function useSpeechSynthesis() {
         utterance.voice = maleVoice;
       }
 
+      // --- 男性的な重厚感を出すための音声パラメータ ---
+      // pitch: 0.5(最低)〜0.7 が男性域。0.6前後が聞き取りやすく低い声。
+      // rate : やや遅め(0.95〜1.1)で落ち着いた印象に。
       if (lang === 'ja') {
         utterance.lang = 'ja-JP';
-        utterance.rate = rate ?? 1.15;
-        utterance.pitch = 0.75;
+        utterance.rate = rate ?? 1.05;
+        utterance.pitch = 0.6;
       } else {
         utterance.lang = 'en-US';
-        utterance.rate = rate ?? 1.0;
-        utterance.pitch = 0.8;
+        utterance.rate = rate ?? 0.95;
+        utterance.pitch = 0.65;
       }
 
       utterance.volume = volumeRef.current;
