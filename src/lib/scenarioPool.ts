@@ -1,17 +1,17 @@
 // シナリオプール（事前生成済み台本）
 import type { Scenario } from '../types';
 
-// 国別シナリオの読み込み
-import { usSerious, usComedy } from './scenarios/us';
-import { jpSerious, jpComedy } from './scenarios/jp';
-import { cnSerious, cnComedy } from './scenarios/cn';
-import { ruSerious, ruComedy } from './scenarios/ru';
-import { ukSerious, ukComedy } from './scenarios/uk';
-import { frSerious, frComedy } from './scenarios/fr';
-import { deSerious, deComedy } from './scenarios/de';
-import { krSerious, krComedy } from './scenarios/kr';
-import { ilSerious, ilComedy } from './scenarios/il';
-import { inSerious, inComedy } from './scenarios/in';
+// 国別シナリオの読み込み（JSONファイルから）
+import usData from '../data/scenarios/us.json';
+import jpData from '../data/scenarios/jp.json';
+import cnData from '../data/scenarios/cn.json';
+import ruData from '../data/scenarios/ru.json';
+import ukData from '../data/scenarios/uk.json';
+import frData from '../data/scenarios/fr.json';
+import deData from '../data/scenarios/de.json';
+import krData from '../data/scenarios/kr.json';
+import ilData from '../data/scenarios/il.json';
+import inData from '../data/scenarios/in.json';
 
 interface ScenarioPool {
   serious: Scenario[];
@@ -20,16 +20,16 @@ interface ScenarioPool {
 
 // 国ごとのシナリオプール（全10カ国）
 const scenarioPools: Record<string, ScenarioPool> = {
-  us: { serious: usSerious, comedy: usComedy },
-  jp: { serious: jpSerious, comedy: jpComedy },
-  cn: { serious: cnSerious, comedy: cnComedy },
-  ru: { serious: ruSerious, comedy: ruComedy },
-  uk: { serious: ukSerious, comedy: ukComedy },
-  fr: { serious: frSerious, comedy: frComedy },
-  de: { serious: deSerious, comedy: deComedy },
-  kr: { serious: krSerious, comedy: krComedy },
-  il: { serious: ilSerious, comedy: ilComedy },
-  in: { serious: inSerious, comedy: inComedy },
+  us: usData as unknown as ScenarioPool,
+  jp: jpData as unknown as ScenarioPool,
+  cn: cnData as unknown as ScenarioPool,
+  ru: ruData as unknown as ScenarioPool,
+  uk: ukData as unknown as ScenarioPool,
+  fr: frData as unknown as ScenarioPool,
+  de: deData as unknown as ScenarioPool,
+  kr: krData as unknown as ScenarioPool,
+  il: ilData as unknown as ScenarioPool,
+  in: inData as unknown as ScenarioPool,
 };
 
 /**

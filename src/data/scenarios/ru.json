@@ -1,0 +1,342 @@
+{
+  "serious": [
+    {
+      "scenario_title_ja": "北極圏資源戦争の密約",
+      "scenario_title_en": "Secret Pact of the Arctic Resource War",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、カナダとノルウェーが北極海の大陸棚延伸を国連に申請した。我々の権益が脅かされている。",
+          "en": "Fixer, Canada and Norway have submitted continental shelf extension claims to the UN for the Arctic Ocean. Our interests are under threat."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "大統領、先週の衛星データで北極海底に未確認の巨大資源鉱脈を発見しました。推定埋蔵量は中東全体の天然ガスに匹敵します。",
+          "en": "Mr. President, last week's satellite data revealed an unidentified massive resource deposit on the Arctic seabed. Estimated reserves rival the entire Middle East's natural gas."
+        },
+        {
+          "speaker": "leader",
+          "ja": "西側諸国が先に手を打てば、ロシアは北極から締め出される。軍を動かすべきか？",
+          "en": "If the Western nations act first, Russia will be locked out of the Arctic. Should we mobilize the military?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "軍事行動はNATOの介入を招きます。代わりに、中国との「北極共同開発協定」を提案します。二大国が組めば、西側は交渉せざるを得ません。",
+          "en": "Military action will invite NATO intervention. Instead, I propose a \"Joint Arctic Development Agreement\" with China. If two great powers unite, the West will have no choice but to negotiate."
+        },
+        {
+          "speaker": "leader",
+          "ja": "中国と組むのか。彼らは信用できるのか？",
+          "en": "Partner with China? Can they be trusted?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "信用ではなく、利害の一致です。中国は北極航路で欧州への物流を短縮したい。我々は資源が欲しい。互いに必要なものが異なるからこそ、同盟が成立します。",
+          "en": "It's not about trust — it's aligned interests. China wants to shorten logistics to Europe via Arctic routes. We want resources. The alliance works precisely because we need different things."
+        },
+        {
+          "speaker": "leader",
+          "ja": "アメリカの反応はどうなる？",
+          "en": "How will America react?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "アメリカには「環境保護のための共同監視体制」として提示します。表向きは環境協力、裏では資源分配。アメリカも参加せざるを得ない構図を作ります。",
+          "en": "We present it to America as a \"Joint Environmental Monitoring System.\" Environmental cooperation on the surface, resource distribution underneath. We create a structure America can't refuse to join."
+        },
+        {
+          "speaker": "leader",
+          "ja": "北極を制する者が21世紀を制する…か。いつから動ける？",
+          "en": "He who controls the Arctic controls the 21st century... When can we begin?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "来週、北京で「気候変動サミット」が開催されます。そこでの「偶然の立ち話」から全てが始まります。台本は用意済みです。",
+          "en": "Next week, a \"Climate Change Summit\" is being held in Beijing. Everything begins with an \"accidental sidebar\" there. The script is ready."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "旧ソ連圏・離反国家の引き戻し",
+      "scenario_title_en": "Pulling Back a Defecting Post-Soviet State",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、カザフスタンがNATOとの安全保障協議を始めたという情報は本当か。",
+          "en": "Fixer, is it true that Kazakhstan has begun security consultations with NATO?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "事実です。先月、カザフスタンの国防大臣がブリュッセルを極秘訪問しました。議題は「防空システムの近代化支援」です。",
+          "en": "It's true. Last month, Kazakhstan's Defense Minister secretly visited Brussels. The agenda was \"air defense system modernization assistance.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "裏切りだ。カザフスタンは我が国の安全保障の緩衝地帯だ。NATO入りなど絶対に許さない。",
+          "en": "Betrayal. Kazakhstan is our security buffer zone. NATO membership is absolutely unacceptable."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "大統領、圧力は逆効果です。カザフスタンが西側に傾いたのは、我々の経済支援が細ったからです。「北風と太陽」の太陽で行きましょう。",
+          "en": "Mr. President, pressure will backfire. Kazakhstan turned westward because our economic support dried up. Let's be the sun in \"The North Wind and the Sun.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "具体的に何を提案する？",
+          "en": "What specifically do you propose?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "カザフスタン最大の港湾をユーラシア物流のハブにする共同プロジェクトです。投資額は30億ドル。カザフスタンのGDPを5%押し上げる規模です。NATOの防空システムより、実利が勝ります。",
+          "en": "A joint project to make Kazakhstan's largest port a Eurasian logistics hub. $3 billion investment. Enough to boost Kazakhstan's GDP by 5%. Practical benefits outweigh NATO's air defense systems."
+        },
+        {
+          "speaker": "leader",
+          "ja": "カザフスタンの大統領は個人的にも野心が強い。彼の心を掴めるか？",
+          "en": "Kazakhstan's president is personally ambitious. Can we win him over?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "彼の息子がモスクワの一等地に不動産を欲しがっている情報があります。公式の交渉とは別に、「個人的な友好」のルートも開いておきます。",
+          "en": "I have intelligence that his son wants prime real estate in Moscow. Separate from official negotiations, I'll also open a channel for \"personal friendship.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "NATOへの対処は？",
+          "en": "What about handling NATO?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "カザフスタンとの合意が成立した時点で、NATOの提案は自然消滅します。大統領、帝国は武力ではなく、経済圏で維持するものです。",
+          "en": "Once our agreement with Kazakhstan is secured, NATO's proposal will naturally dissolve. Mr. President, an empire is sustained not by military force, but by economic spheres."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "国際制裁の裏経済ネットワーク",
+      "scenario_title_en": "The Shadow Economy Network Behind Sanctions",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、西側の新たな制裁パッケージが発動される。今回は中央銀行の外貨準備まで凍結対象だ。",
+          "en": "Fixer, the West's new sanctions package is about to take effect. This time, even the central bank's foreign reserves are targeted for freezing."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "想定済みです。6ヶ月前から外貨準備の40%を暗号資産と金現物に分散済みです。凍結されるのは空の口座だけです。",
+          "en": "Anticipated. Over the past 6 months, I've diversified 40% of foreign reserves into cryptocurrency and physical gold. They'll only freeze empty accounts."
+        },
+        {
+          "speaker": "leader",
+          "ja": "エネルギー輸出はどうなる？欧州向けのパイプラインが止められたら経済が崩壊する。",
+          "en": "What about energy exports? If the pipelines to Europe are shut down, our economy collapses."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "迂回ルートは3系統確保済みです。トルコ経由、インド経由、そしてアフリカ経由。それぞれ異なるペーパーカンパニーを通じて、ロシア産と分からない形で欧州市場に再流入させます。",
+          "en": "Three bypass routes are already secured. Via Turkey, via India, and via Africa. Through different shell companies, Russian-origin energy re-enters European markets unidentified."
+        },
+        {
+          "speaker": "leader",
+          "ja": "西側の情報機関に嗅ぎつけられないか？",
+          "en": "Won't Western intelligence agencies catch on?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "取引は全てデジタル人民元で決済します。SWIFTを通らないため、西側の監視網には映りません。中国人民銀行との合意は先月完了しています。",
+          "en": "All transactions are settled in digital yuan. Since they don't pass through SWIFT, they're invisible to Western surveillance networks. The agreement with the People's Bank of China was completed last month."
+        },
+        {
+          "speaker": "leader",
+          "ja": "国内経済への影響は最小限に抑えられるのか？",
+          "en": "Can we minimize the impact on the domestic economy?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "国民の生活必需品は確保します。ただし、オリガルヒの海外資産は一部犠牲になります。それを逆手に取り、「国家への忠誠の証」として彼らの結束を強化します。",
+          "en": "Essential goods for citizens will be secured. However, some oligarchs' overseas assets will be sacrificed. We turn this around, using it as a \"proof of loyalty to the state\" to strengthen their unity."
+        },
+        {
+          "speaker": "leader",
+          "ja": "西側は我々を追い詰めたつもりだろうが…。",
+          "en": "The West thinks they have us cornered..."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "追い詰められた者は最も危険です。大統領、制裁は我々を弱くするのではなく、自立を加速させるのです。3年後、彼らは制裁が逆効果だったと気づくでしょう。",
+          "en": "A cornered opponent is the most dangerous. Mr. President, sanctions don't weaken us — they accelerate our self-reliance. In three years, they'll realize sanctions backfired."
+        }
+      ]
+    }
+  ],
+  "comedy": [
+    {
+      "scenario_title_ja": "大統領の柔道試合がYouTubeに流出",
+      "scenario_title_en": "The President's Judo Match Leaked on YouTube",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、大問題だ。先週の柔道のプライベート練習動画がYouTubeに流出した。",
+          "en": "Fixer, big problem. The video of last week's private judo practice has been leaked on YouTube."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "把握しています。問題は…大統領が黒帯の相手に一本負けしている映像です。現在2億回再生されています。",
+          "en": "I'm aware. The problem is... the footage shows you being thrown by a black belt opponent. Currently at 200 million views."
+        },
+        {
+          "speaker": "leader",
+          "ja": "あれは相手が反則技を使ったんだ！審判がいれば私の勝ちだった！",
+          "en": "He used an illegal technique! If there had been a referee, I would have won!"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "大統領、動画のスロー再生では…正規の大外刈りです。しかし対策はあります。「わざと負けて相手の自信を育てる指導者の姿」としてプロパガンダに転換します。",
+          "en": "Mr. President, in slow motion the video shows... a textbook osoto-gari. But I have a plan. We spin it as \"a leader who deliberately loses to build his opponent's confidence.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "そんなことで国民が納得するか？",
+          "en": "Will the people buy that?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "国営テレビで「大統領の柔道哲学」特番を放送します。負けの美学を語っていただければ。ちなみにコメント欄はすでにbotで「大統領の謙虚さに感動」で埋めてあります。",
+          "en": "We'll air a \"President's Judo Philosophy\" special on state TV. If you speak about the beauty of defeat... By the way, the comment section is already filled with bots saying \"Moved by the President's humility.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "流出元は特定できたのか？",
+          "en": "Have you identified the leak source?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ボディガードの一人です。彼は現在シベリアの特別任務に「志願」しています。冬季のクマ個体数調査です。",
+          "en": "One of the bodyguards. He has currently \"volunteered\" for a special assignment in Siberia. A winter bear population survey."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…リマッチを公開でやりたいんだが。今度は私が勝つ試合だ。",
+          "en": "...I want to do a public rematch. One where I win this time."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "対戦相手は私が選びます。ご安心ください、身長150センチの柔道初心者で、しかも大統領の大ファンです。判定は…全員一致であなたの圧勝です。",
+          "en": "I'll select the opponent. Rest assured — a 150cm judo beginner who happens to be your biggest fan. The judges' decision... unanimous overwhelming victory for you."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "シベリア虎が外交使節団を襲撃",
+      "scenario_title_en": "Siberian Tiger Attacks the Diplomatic Delegation",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、シベリアでの日露首脳会談中に、シベリア虎が会場に乱入した。日本の外務大臣が木の上に逃げている。",
+          "en": "Fixer, during the Japan-Russia summit in Siberia, a Siberian tiger broke into the venue. Japan's Foreign Minister is hiding up a tree."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "虎の名前はボリスです。地元の保護区から脱走したようです。現在、外務大臣は白樺の木の上で日本語で般若心経を唱えています。",
+          "en": "The tiger's name is Boris. It appears to have escaped from the local reserve. The Foreign Minister is currently up a birch tree chanting a Buddhist sutra in Japanese."
+        },
+        {
+          "speaker": "leader",
+          "ja": "私が素手で虎を制圧する。国際社会に我がロシアの力を見せてやる。",
+          "en": "I'll subdue the tiger barehanded. I'll show the international community Russia's strength."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "大統領、お気持ちは分かりますが、万が一噛まれたら大変です。代わりに、虎のボリスの好物であるサーモンを用意しました。日本代表団が持参した最高級の北海道産サーモンです。",
+          "en": "Mr. President, I understand your feelings, but being bitten would be catastrophic. Instead, I've prepared Boris's favorite: salmon. Premium Hokkaido salmon brought by the Japanese delegation."
+        },
+        {
+          "speaker": "leader",
+          "ja": "日本の土産で虎をおびき寄せるのか…。外交的に問題にならないか？",
+          "en": "Luring the tiger with Japan's gift... Won't that cause diplomatic issues?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「日本のサーモンがシベリア虎を魅了した」として、日露友好のシンボルにします。すでにカメラマンを配置済みです。",
+          "en": "We'll frame it as \"Japanese salmon captivates Siberian tiger\" — a symbol of Japan-Russia friendship. Photographers are already in position."
+        },
+        {
+          "speaker": "leader",
+          "ja": "日本の外務大臣は無事に降ろせるのか？",
+          "en": "Can we safely get the Japanese Foreign Minister down from the tree?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "はしご車を手配しましたが…外務大臣が意外と木登りを楽しんでいるようで、「もう少し上に行きたい」と言っています。ロシアの自然に感動しているようです。",
+          "en": "I've arranged a ladder truck, but... the Foreign Minister seems to be unexpectedly enjoying the tree climbing. He says he \"wants to go a bit higher.\" He appears moved by Russia's nature."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…首脳会談はどうなる？虎がいるままでは会議ができない。",
+          "en": "...What about the summit? We can't hold a meeting with a tiger present."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ボリスは現在、サーモンを食べて満足し、暖炉の前で寝ています。「特別参加者」として会議に同席させましょう。ロシアらしい演出です。日本側も…SNS映えすると喜んでいます。",
+          "en": "Boris is currently asleep by the fireplace, satisfied after eating the salmon. Let's have him attend as a \"special participant.\" Very Russian. The Japanese side is... actually delighted, saying it's great for social media."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "宇宙ステーションからの亡命申請",
+      "scenario_title_en": "Asylum Request from the Space Station",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、国際宇宙ステーションの我が国の宇宙飛行士が、帰還を拒否している。「宇宙は自由だ」と言っているそうだ。",
+          "en": "Fixer, our cosmonaut on the International Space Station is refusing to return. He reportedly said \"Space is freedom.\""
+        },
+        {
+          "speaker": "fixer",
+          "ja": "コズロフ大佐ですね。彼はアメリカのNASA区画に移動し、「宇宙亡命」を申請したようです。史上初の事態です。",
+          "en": "Colonel Kozlov, yes? He has moved to the American NASA module and appears to have applied for \"space asylum.\" An unprecedented situation."
+        },
+        {
+          "speaker": "leader",
+          "ja": "宇宙で亡命だと？国際法はどうなっている？",
+          "en": "Asylum in space? What does international law say?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "宇宙条約には亡命に関する条項がありません。法律の空白地帯です。ただし、NASAも困惑しています。ビザの発行先住所が「地球上空400キロ」では処理できないそうです。",
+          "en": "The Outer Space Treaty has no provisions for asylum. It's a legal gray zone. However, NASA is also confused. They can't process a visa with the address \"400 kilometers above Earth.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "彼の動機は何だ？政治的不満か？",
+          "en": "What's his motive? Political dissatisfaction?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "いいえ。調査したところ、コズロフ大佐の動機は…宇宙ステーションのWi-Fiでアメリカのドラマシリーズを見始めたところ、続きが地球では見られないことが判明したためです。",
+          "en": "No. Investigation reveals Colonel Kozlov's motive is... he started watching an American drama series using the station's Wi-Fi and discovered he can't access it back on Earth."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…ドラマのために亡命を申請したのか？",
+          "en": "...He's requesting asylum over a TV drama?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "はい。「ストレンジャー・シングス」の新シーズンだそうです。ロシアでは配信停止中ですので…。解決策があります。VPNサービスを大佐の個人端末にインストールすれば、帰還に同意するはずです。",
+          "en": "Yes. The new season of Stranger Things, apparently. It's blocked in Russia... I have a solution. If we install a VPN service on the colonel's personal device, he should agree to return."
+        },
+        {
+          "speaker": "leader",
+          "ja": "VPNは我が国では違法だぞ。",
+          "en": "VPNs are illegal in our country."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「宇宙空間での通信実験」として特別許可を出しましょう。地上では違法でも、宇宙空間の管轄は曖昧ですから。大統領、宇宙飛行士一人のために国際問題を起こすより、Netflixを解禁する方が安上がりです。",
+          "en": "We'll issue special authorization as a \"space communication experiment.\" Even if illegal on the ground, jurisdiction in space is ambiguous. Mr. President, unblocking Netflix is cheaper than causing an international incident over one cosmonaut."
+        }
+      ]
+    }
+  ]
+}

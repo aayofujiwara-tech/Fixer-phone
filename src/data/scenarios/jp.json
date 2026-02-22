@@ -1,0 +1,342 @@
+{
+  "serious": [
+    {
+      "scenario_title_ja": "日米同盟の極秘再定義",
+      "scenario_title_en": "Secret Redefinition of the Japan-US Alliance",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、ワシントンから極秘の打診が入った。日米同盟の根幹に関わる話だ。",
+          "en": "Fixer, I've received a classified proposal from Washington. It concerns the very foundation of the Japan-US alliance."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "承知しています。在日米軍の再編と、日本の防衛分担の大幅見直し…。先週、国務省の次官補と非公式に接触済みです。",
+          "en": "I'm aware. The restructuring of US forces in Japan and a major overhaul of Japan's defense burden-sharing... I made unofficial contact with the Assistant Secretary of State last week."
+        },
+        {
+          "speaker": "leader",
+          "ja": "アメリカ側は日本にもっと「血を流す覚悟」を求めている。しかし憲法の制約がある。国民世論も簡単には動かない。",
+          "en": "The Americans want Japan to show more \"willingness to shed blood.\" But we have constitutional constraints. Public opinion won't shift easily either."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "正面突破は不要です。「技術同盟」という枠組みを提案します。サイバー防衛と宇宙監視で日本が主導権を握れば、兵力の話は後回しにできます。",
+          "en": "A frontal assault isn't necessary. I propose a \"Technology Alliance\" framework. If Japan takes the lead in cyber defense and space surveillance, the troop discussion can be deferred."
+        },
+        {
+          "speaker": "leader",
+          "ja": "技術で血の代価を払うということか。アメリカはそれで納得するのか？",
+          "en": "Paying the price in technology instead of blood. Will the Americans accept that?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "国防総省のAI戦略部門は日本の半導体技術を喉から手が出るほど欲しがっています。この交渉カードは、戦車千台より価値があります。",
+          "en": "The Pentagon's AI strategy division is desperate for Japan's semiconductor technology. This bargaining chip is worth more than a thousand tanks."
+        },
+        {
+          "speaker": "leader",
+          "ja": "中国と韓国の反応が気になる。周辺国への根回しはどうする？",
+          "en": "I'm concerned about reactions from China and South Korea. How do we manage the neighboring countries?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "中国には別チャンネルで「経済協力の深化」を囁きます。韓国には竹島周辺の漁業協定で譲歩カードを用意してあります。全方位で均衡を保ちます。",
+          "en": "We'll whisper \"deepening economic cooperation\" to China through a separate channel. For South Korea, I've prepared a concession card on the Takeshima fishery agreement. We maintain balance on all fronts."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…君の頭の中では、もう全ての駒が配置されているようだな。",
+          "en": "...It seems like all the pieces are already in place inside your head."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "将棋と同じです、総理。大事なのは三手先を読むこと。調印は来月の日米首脳会談の「非公開セッション」で。表向きは「気候変動に関する共同声明」として発表します。",
+          "en": "It's like shogi, Prime Minister. What matters is reading three moves ahead. The signing will happen at the \"closed session\" of next month's summit. Publicly, it will be announced as a \"joint statement on climate change.\""
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "震災時の皇室緊急避難",
+      "scenario_title_en": "Imperial Emergency Evacuation During Earthquake",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、地震予知連絡会から極秘報告が上がってきた。南海トラフの前兆が確認された。",
+          "en": "Fixer, a classified report has come in from the Earthquake Prediction Committee. Precursors to a Nankai Trough event have been confirmed."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "報告書は拝見しました。M9クラス、発生確率は今後72時間で40%以上。皇居は海抜が低い。まず皇室の安全確保が最優先です。",
+          "en": "I've reviewed the report. M9-class, probability exceeds 40% within the next 72 hours. The Imperial Palace sits at low elevation. Securing the Imperial Family's safety is the top priority."
+        },
+        {
+          "speaker": "leader",
+          "ja": "陛下を避難させるにしても、国民に不安を与えてはならない。パニックは地震そのものより危険だ。",
+          "en": "Even if we evacuate His Majesty, we must not cause public alarm. Panic is more dangerous than the earthquake itself."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「私的な静養」として軽井沢の御用邸への移動を手配します。宮内庁には私から説明します。護衛は通常の3倍、ただし目立たない配置で。",
+          "en": "I'll arrange a move to the Karuizawa Imperial Villa under the guise of \"private rest.\" I'll brief the Imperial Household Agency personally. Triple the security detail, but in a low-profile formation."
+        },
+        {
+          "speaker": "leader",
+          "ja": "国民への警告はどうする？地震が来ることを知りながら黙っているのは…。",
+          "en": "What about warning the public? Staying silent while knowing an earthquake is coming..."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「防災訓練週間」を前倒しで発表します。全国自治体に一斉通達を出し、避難経路の確認と備蓄の点検を促します。事実上の警告です。",
+          "en": "We'll announce \"Disaster Preparedness Week\" ahead of schedule. Issue simultaneous notifications to all municipalities, urging evacuation route checks and supply inspections. It's a warning in all but name."
+        },
+        {
+          "speaker": "leader",
+          "ja": "メディアに嗅ぎつけられたら終わりだ。NHKの政治部記者が動いている気配がある。",
+          "en": "If the media catches wind of this, it's over. I sense NHK's political desk is already moving."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "NHKには「総理独占インタビュー」を餌に48時間の猶予をもらいます。その間に全ての準備を完了させます。",
+          "en": "I'll dangle an \"exclusive PM interview\" to buy 48 hours from NHK. We'll complete all preparations within that window."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…もし地震が来なかったら、私は過剰反応した総理として歴史に残るかもしれない。",
+          "en": "...If the earthquake doesn't come, I may go down in history as the PM who overreacted."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "来なければ、それが最良の結果です。歴史の評価より、今日の命です。総理、決断を。",
+          "en": "If it doesn't come, that's the best outcome. Today's lives matter more than history's judgment. Prime Minister, your decision."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "拉致被害者の極秘奪還作戦",
+      "scenario_title_en": "Secret Operation to Rescue Abduction Victims",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、北朝鮮に残されている拉致被害者の所在が特定できたという報告は本当か。",
+          "en": "Fixer, is the report true that we've located the remaining abduction victims in North Korea?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "事実です。衛星情報と現地の協力者の証言が一致しました。平壌郊外の特別区域に3名が確認されています。",
+          "en": "It's true. Satellite intelligence and testimony from a local asset match. Three individuals have been confirmed in a special zone on the outskirts of Pyongyang."
+        },
+        {
+          "speaker": "leader",
+          "ja": "外交ルートでの交渉は30年間進展がない。だが軍事作戦は憲法が許さない。どうすればいい？",
+          "en": "Diplomatic negotiations have made no progress in 30 years. But the constitution doesn't permit a military operation. What do we do?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "第三国を経由します。モンゴルの情報機関と極秘の協力関係を構築済みです。彼らが「人道的移送」として3名をウランバートル経由で日本に送り届けます。",
+          "en": "We go through a third country. I've established a covert cooperation with Mongolian intelligence. They'll deliver the three via Ulaanbaatar as a \"humanitarian transfer.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "北朝鮮が黙って見ているとは思えない。報復の可能性は？",
+          "en": "I can't imagine North Korea will just stand by. What about the possibility of retaliation?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "既に手を打ってあります。北朝鮮の外貨獲得に不可欠な、ある取引ルートの情報を握っています。「静かにしていれば、こちらも黙る」という相互確証です。",
+          "en": "I've already taken precautions. We hold information about a trade route essential to North Korea's foreign currency earnings. It's mutual assurance: \"Stay quiet, and so will we.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "被害者の健康状態は把握できているのか？",
+          "en": "Do we have information on the victims' health condition?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "協力者が月に一度、医療物資を届けています。身体的には問題ありませんが、30年の隔離生活です。帰国後の心理ケアチームもすでに編成しています。",
+          "en": "Our asset delivers medical supplies once a month. Physically they're fine, but it's been 30 years of isolation. A psychological care team for their return has already been assembled."
+        },
+        {
+          "speaker": "leader",
+          "ja": "国民に発表するタイミングは？",
+          "en": "When do we announce this to the public?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "3名が日本の領空に入った瞬間です。それまでは一切の情報を封鎖します。総理、このオペレーションの成功は…日本外交史上最大の快挙になります。",
+          "en": "The moment the three enter Japanese airspace. Until then, total information blackout. Prime Minister, the success of this operation... will be the greatest achievement in Japanese diplomatic history."
+        }
+      ]
+    }
+  ],
+  "comedy": [
+    {
+      "scenario_title_ja": "G7での日本食テロ事件",
+      "scenario_title_en": "The Japanese Food Terror Incident at the G7",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、G7の晩餐会で大事件だ！納豆を出したら、各国首脳が次々に倒れた！",
+          "en": "Fixer, disaster at the G7 dinner! We served natto and the world leaders collapsed one after another!"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "状況は把握しています。正確には「倒れた」のではなく、匂いで「気絶しかけた」ですね。フランス大統領は現在ソファで回復中です。",
+          "en": "I'm aware of the situation. To be precise, they didn't \"collapse\" — they nearly fainted from the smell. The French President is currently recovering on a sofa."
+        },
+        {
+          "speaker": "leader",
+          "ja": "日本の食文化を紹介したかっただけなのに…。ドイツ首相は「これは生物兵器か」と真顔で聞いてきた。",
+          "en": "I just wanted to showcase Japanese food culture... The German Chancellor asked with a straight face, \"Is this a biological weapon?\""
+        },
+        {
+          "speaker": "fixer",
+          "ja": "至急、各国首脳に高級抹茶アイスと和牛ステーキを提供して、記憶を上書きしましょう。既にホテルの厨房を押さえてあります。",
+          "en": "Immediately, let's serve premium matcha ice cream and wagyu steak to overwrite their memories. I've already secured the hotel kitchen."
+        },
+        {
+          "speaker": "leader",
+          "ja": "イギリス首相だけは「意外と美味い」と言って完食したぞ。",
+          "en": "The British PM was the only one who said \"surprisingly good\" and finished the whole thing."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "イギリス人の味覚は世界最強ですから…。それより問題は、カナダ首相が納豆の写真をSNSに投稿しかけたことです。ギリギリで阻止しました。",
+          "en": "British taste buds are the world's strongest, after all... The bigger problem is the Canadian PM nearly posted a photo of the natto on social media. I stopped it just in time."
+        },
+        {
+          "speaker": "leader",
+          "ja": "共同声明への影響は？",
+          "en": "Will this affect the joint statement?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「食文化の多様性を尊重する」という一文を追加することで各国の合意を得ました。事実上の「納豆不可侵条約」です。",
+          "en": "I've secured agreement from all nations to add a clause about \"respecting food culture diversity.\" It's effectively a \"Natto Non-Aggression Pact.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "来年のG7でリベンジしたいんだが…次は何を出せばいい？",
+          "en": "I want to get revenge at next year's G7... What should we serve next time?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "くさやは…やめておきましょう。寿司と天ぷらで行きます。ただし、わさびの量は私が厳重に管理します。前回のメルケル元首相の悲劇は繰り返しません。",
+          "en": "Kusaya is... let's not. We'll go with sushi and tempura. However, I will strictly control the wasabi portions. We will not repeat the former Chancellor Merkel tragedy."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "総理のアニメ声優デビュー危機",
+      "scenario_title_en": "The PM's Anime Voice Acting Debut Crisis",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、極秘の相談がある。実は…あるアニメのプロデューサーから、声優としてゲスト出演のオファーが来たんだ。",
+          "en": "Fixer, I need to discuss something classified. Actually... I've received an offer from an anime producer to make a guest voice acting appearance."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "…総理、それは「機動戦士ガンダム」の新作ですか。情報は掴んでいました。",
+          "en": "...Prime Minister, is this the new Gundam series? I had already picked up on the intel."
+        },
+        {
+          "speaker": "leader",
+          "ja": "なぜ知っている！？…まあいい。役柄は「地球連邦の首相」だそうだ。運命を感じないか？",
+          "en": "How did you know!? ...Never mind. The role is \"Prime Minister of the Earth Federation.\" Don't you feel it's destiny?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "運命は感じますが、問題も感じます。現職総理がアニメに出演したら、野党が「職務怠慢」で追及します。支持率に影響しかねません。",
+          "en": "I feel the destiny, but I also sense problems. If a sitting PM appears in anime, the opposition will attack you for \"neglecting your duties.\" It could impact approval ratings."
+        },
+        {
+          "speaker": "leader",
+          "ja": "しかし、クールジャパン戦略の推進には最高のPRになるはずだ！",
+          "en": "But it would be the ultimate PR for the Cool Japan strategy!"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "であれば、「声」は総理ご本人が担当し、クレジットには「特別協力：内閣府」とだけ記載する形はいかがでしょう。バレても「政策の一環」と説明できます。",
+          "en": "In that case, how about having you provide the voice, but crediting only \"Special Cooperation: Cabinet Office\"? Even if discovered, we can explain it as \"part of policy initiatives.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "天才だ！…ただ、一つ心配がある。私の演技力は大丈夫だろうか。",
+          "en": "Genius! ...But I have one concern. Will my acting be good enough?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "国会答弁で毎日演技されていますので、問題ないかと。むしろアニメの方が台本通りで楽でしょう。",
+          "en": "You perform in parliamentary sessions every day, so I see no issue. Anime might actually be easier since you can follow the script."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…それは褒めているのか皮肉なのか分からんぞ。",
+          "en": "...I can't tell if that's a compliment or sarcasm."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "もちろん褒め言葉です。では収録スケジュールは「外遊」として調整します。行き先は…スタジオのある練馬区です。",
+          "en": "A compliment, of course. I'll arrange the recording schedule under \"overseas diplomatic trip.\" The destination is... Nerima Ward, where the studio is located."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "温泉外交の大失態",
+      "scenario_title_en": "The Great Hot Spring Diplomacy Disaster",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、温泉外交が大変なことになった。アメリカ大統領を箱根の温泉に招待したんだが…。",
+          "en": "Fixer, the hot spring diplomacy has turned into a disaster. I invited the American President to a hot spring in Hakone, but..."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "大統領が露天風呂で滑って転んだ件ですね。シークレットサービスが温泉に飛び込んで大騒ぎになったと。",
+          "en": "The incident where the President slipped in the outdoor bath, correct? And the Secret Service jumped in, causing a huge commotion."
+        },
+        {
+          "speaker": "leader",
+          "ja": "それだけじゃない。シークレットサービスが全員スーツのまま飛び込んだから、温泉のお湯が溢れて、隣の女湯に流れ込んだ！",
+          "en": "That's not all. The Secret Service all jumped in wearing their suits, causing the water to overflow into the adjacent women's bath!"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "旅館の女将が激怒しているのは把握しています。「湯加減が台無し」だと。国際問題より女将の怒りの方が深刻です。",
+          "en": "I'm aware the ryokan proprietress is furious. She says \"the water temperature is ruined.\" Her anger is more serious than any international incident."
+        },
+        {
+          "speaker": "leader",
+          "ja": "大統領本人は「Amazing experience!」と喜んでいるんだが、CNNのカメラが旅館の前にいる。",
+          "en": "The President himself is delighted, saying \"Amazing experience!\" But CNN cameras are outside the ryokan."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "CNNには「日米首脳による伝統文化体験」として報道してもらいます。シークレットサービスの飛び込みは「日米合同水難救助訓練」として処理します。",
+          "en": "We'll have CNN report it as \"Japan-US leaders experiencing traditional culture.\" The Secret Service's dive will be processed as a \"Japan-US Joint Water Rescue Drill.\""
+        },
+        {
+          "speaker": "leader",
+          "ja": "女将への賠償はどうする？すごい形相で請求書を持ってきたんだが…。",
+          "en": "What about compensation for the proprietress? She came at me with a terrifying expression holding a bill..."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "旅館を「国際迎賓館」に指定して、改修費は政府持ちにしましょう。女将には「総理特別感謝状」を。これで矛を収めるはずです。",
+          "en": "Let's designate the ryokan as an \"International Guest House\" with renovation costs covered by the government. A \"Special PM Certificate of Appreciation\" for the proprietress. That should calm her down."
+        },
+        {
+          "speaker": "leader",
+          "ja": "大統領が「次は混浴がいい」と言っているんだが…これは外交的にどう処理すれば…。",
+          "en": "The President is saying \"I want mixed bathing next time\"... How do we handle this diplomatically...?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "その件は全力で「文化的な誤解」として処理させていただきます。次回は大統領には足湯をお勧めしましょう。リスクが最小限です。",
+          "en": "I will handle that with full force as a \"cultural misunderstanding.\" Next time, let's recommend a foot bath for the President. Minimum risk."
+        }
+      ]
+    }
+  ]
+}
