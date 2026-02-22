@@ -248,9 +248,9 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
               </button>
               <span className="text-accent text-sm font-mono w-4 text-center">{jaSpeed}</span>
               <button
-                onClick={() => onJaSpeedChange(Math.min(5, jaSpeed + 1))}
+                onClick={() => onJaSpeedChange(Math.min(7, jaSpeed + 1))}
                 className="text-gray-500 text-xs px-1 hover:text-gray-300 disabled:opacity-30"
-                disabled={jaSpeed >= 5}
+                disabled={jaSpeed >= 7}
               >
                 ▶
               </button>
@@ -269,9 +269,9 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
               </button>
               <span className="text-accent text-sm font-mono w-4 text-center">{enSpeed}</span>
               <button
-                onClick={() => onEnSpeedChange(Math.min(5, enSpeed + 1))}
+                onClick={() => onEnSpeedChange(Math.min(7, enSpeed + 1))}
                 className="text-gray-500 text-xs px-1 hover:text-gray-300 disabled:opacity-30"
-                disabled={enSpeed >= 5}
+                disabled={enSpeed >= 7}
               >
                 ▶
               </button>
