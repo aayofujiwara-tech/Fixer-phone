@@ -178,9 +178,29 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showLeaderLine, pair.leader]);
 
-  // 自動進行（AUTOモード時のみ）: フィクサーセリフ表示後にTTS→次へ
+  // フィクサーセリフ表示後にTTS読み上げ
+  // AUTO: TTS → 自動進行（次のセリフへ）
+  // PRACTICE: TTS → 停止（ユーザーが声に出して練習→「次へ」ボタンで進行）
   useEffect(() => {
-    if (callMode === 'practice') return; // 練習モードではフィクサーTTSなし
+    if (callMode === 'practice') {
+      // 練習モード: TTS読み上げのみ（自動進行しない）
+      if (!showFixerLine || !pair.fixer) return;
+
+      autoActiveRef.current = true;
+      const fixer = pair.fixer;
+      const ttsLang = selectedLangRef.current;
+      const text = ttsLang === 'ja' ? fixer.ja : fixer.en;
+      const rate = ttsLang === 'ja' ? SPEED_LEVELS[jaSpeedRef.current] : SPEED_LEVELS[enSpeedRef.current];
+
+      addAutoTimer(() => {
+        if (!autoActiveRef.current) return;
+        speak(text, ttsLang, undefined, rate);
+      }, 200);
+
+      return () => clearAutoTimers();
+    }
+
+    // AUTOモード: TTS → 自動進行
     if (!autoMode || !showFixerLine || !pair.fixer) return;
 
     autoActiveRef.current = true;
