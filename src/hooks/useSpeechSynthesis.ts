@@ -243,28 +243,139 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   return selectedVoice;
 }
 
+// ======================================================
+// iOS 判定・デバッグログ
+// ======================================================
+
+function isIOS(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+  );
+}
+
+function getPlatformLabel(): string {
+  if (typeof navigator === 'undefined') return 'unknown';
+  if (/iPhone/.test(navigator.userAgent)) return 'iPhone';
+  if (/iPad/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) return 'iPad';
+  if (/Android/.test(navigator.userAgent)) return 'Android';
+  return 'other';
+}
+
+function ttsLog(message: string, ...args: unknown[]) {
+  console.log(`[TTS-iOS] ${message}`, ...args);
+}
+
+// ======================================================
+// iOS speechSynthesis サイレントアンロック
+// iOS Safari では最初のユーザージェスチャーで speechSynthesis を
+// 「アンロック」しないと、以降の speak() が無音になる。
+// ======================================================
+
+let _iosUnlocked = false;
+
+function setupIOSUnlock() {
+  if (!isIOS()) return;
+  if (_iosUnlocked) return;
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+  const unlock = () => {
+    if (_iosUnlocked) return;
+    const utterance = new SpeechSynthesisUtterance('');
+    utterance.volume = 0;
+    utterance.rate = 10;       // 最速で完了させる
+    utterance.onend = () => {
+      _iosUnlocked = true;
+      ttsLog('Speech unlock: success');
+    };
+    utterance.onerror = () => {
+      // エラーでもアンロック済みとみなす（再試行しない）
+      _iosUnlocked = true;
+      ttsLog('Speech unlock: error (treated as unlocked)');
+    };
+    window.speechSynthesis.speak(utterance);
+    ttsLog('Speech unlock: attempted');
+
+    // 一度だけ実行
+    document.removeEventListener('touchstart', unlock);
+    document.removeEventListener('click', unlock);
+  };
+
+  document.addEventListener('touchstart', unlock, { once: true, passive: true });
+  document.addEventListener('click', unlock, { once: true });
+  ttsLog('Speech unlock: listener registered');
+}
+
+// ======================================================
+// iOS 安全な speak（cancel→遅延→speak）
+// iOS Safari では cancel() 直後の speak() が無音になるバグがある。
+// 100ms の遅延を入れて回避する。
+// ======================================================
+
+const IOS_CANCEL_SPEAK_DELAY = 100;
+
 // TTS制御フック
 export function useSpeechSynthesis() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const volumeRef = useRef(1.0);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
+  const iosSpeakTimerRef = useRef<number | null>(null);
 
   // ブラウザがTTSに対応しているか
   const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
+  // iOS: 初回マウント時にアンロックリスナーを設置
+  useEffect(() => {
+    if (!isSupported) return;
+    setupIOSUnlock();
+  }, [isSupported]);
+
   // 音声リストは非同期で読み込まれるため、イベントを監視
   useEffect(() => {
     if (!isSupported) return;
-    const handleVoicesChanged = () => setVoicesLoaded(true);
-    window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
-    // 既に読み込み済みの場合
-    if (window.speechSynthesis.getVoices().length > 0) {
+
+    const handleVoicesChanged = () => {
       setVoicesLoaded(true);
+      ttsLog(`Voices available: ${window.speechSynthesis.getVoices().length} voices`);
+    };
+
+    window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
+
+    // 既に読み込み済みの場合
+    const currentVoices = window.speechSynthesis.getVoices();
+    if (currentVoices.length > 0) {
+      setVoicesLoaded(true);
+      ttsLog(`Voices available: ${currentVoices.length} voices (immediate)`);
+    } else {
+      ttsLog('Voices available: 0 (waiting for voiceschanged)');
     }
+
+    // iOS: voiceschanged が発火しない場合の保険（500ms後に再チェック）
+    let fallbackTimer: number | undefined;
+    if (isIOS()) {
+      fallbackTimer = window.setTimeout(() => {
+        const v = window.speechSynthesis.getVoices();
+        if (v.length > 0 && !voicesLoaded) {
+          setVoicesLoaded(true);
+          ttsLog(`Voices available: ${v.length} voices (iOS fallback)`);
+        }
+      }, 500);
+    }
+
     return () => {
       window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
+      if (fallbackTimer !== undefined) clearTimeout(fallbackTimer);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSupported]);
+
+  // プラットフォーム情報のログ（初回のみ）
+  useEffect(() => {
+    if (!isSupported) return;
+    ttsLog(`Platform: ${getPlatformLabel()}`);
+    ttsLog(`Speech unlock: ${_iosUnlocked ? 'success' : 'pending'}`);
   }, [isSupported]);
 
   // 音量設定（0.0〜1.0）
@@ -275,6 +386,11 @@ export function useSpeechSynthesis() {
   // 読み上げ停止
   const stop = useCallback(() => {
     if (isSupported) {
+      // iOS用の遅延speakタイマーが残っていたらクリア
+      if (iosSpeakTimerRef.current !== null) {
+        clearTimeout(iosSpeakTimerRef.current);
+        iosSpeakTimerRef.current = null;
+      }
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
     }
@@ -285,45 +401,89 @@ export function useSpeechSynthesis() {
     (text: string, lang: 'ja' | 'en', onEnd?: () => void, rate?: number) => {
       if (!isSupported) return;
 
+      // iOS用の遅延speakタイマーが残っていたらクリア
+      if (iosSpeakTimerRef.current !== null) {
+        clearTimeout(iosSpeakTimerRef.current);
+        iosSpeakTimerRef.current = null;
+      }
+
       // 既存の読み上げを停止
       window.speechSynthesis.cancel();
 
       const ttsText = lang === 'ja' ? fixJaReading(text) : text;
-      const utterance = new SpeechSynthesisUtterance(ttsText);
-      utteranceRef.current = utterance;
 
-      const langCode = lang === 'ja' ? 'ja' : 'en';
-      const maleVoice = findMaleVoice(langCode);
+      ttsLog(`Speak called: "${text.slice(0, 10)}..." [${lang}]`);
 
-      if (maleVoice) {
-        utterance.voice = maleVoice;
-      }
+      const doSpeak = () => {
+        const utterance = new SpeechSynthesisUtterance(ttsText);
+        utteranceRef.current = utterance;
 
-      // --- 男性的な重厚感を出すための音声パラメータ ---
-      // pitch: 0.4〜0.5 で十分に低い男性域。
-      // rate : 遅め(0.85〜0.95)で落ち着いた重厚な印象に。
-      if (lang === 'ja') {
-        utterance.lang = 'ja-JP';
-        utterance.rate = rate ?? 0.95;
-        utterance.pitch = 0.45;
+        const langCode = lang === 'ja' ? 'ja' : 'en';
+        const maleVoice = findMaleVoice(langCode);
+
+        if (maleVoice) {
+          utterance.voice = maleVoice;
+        }
+
+        // --- 男性的な重厚感を出すための音声パラメータ ---
+        // pitch: 0.4〜0.5 で十分に低い男性域。
+        // rate : 遅め(0.85〜0.95)で落ち着いた重厚な印象に。
+        if (lang === 'ja') {
+          utterance.lang = 'ja-JP';
+          utterance.rate = rate ?? 0.95;
+          utterance.pitch = 0.45;
+        } else {
+          utterance.lang = 'en-US';
+          utterance.rate = rate ?? 0.85;
+          utterance.pitch = 0.5;
+        }
+
+        utterance.volume = volumeRef.current;
+
+        utterance.onstart = () => {
+          setIsSpeaking(true);
+          ttsLog(`Speech state: speaking`);
+        };
+        utterance.onend = () => {
+          setIsSpeaking(false);
+          ttsLog(`Speech state: ended`);
+          onEnd?.();
+        };
+        utterance.onerror = (e) => {
+          setIsSpeaking(false);
+          ttsLog(`Speech state: error (${e.error})`);
+          // iOS: "interrupted" エラーはcancel()によるもので正常。onEndを呼ばない
+          // iOS: "not-allowed" はアンロック前のアクセス。次回タップで解消
+        };
+
+        window.speechSynthesis.speak(utterance);
+
+        // iOS: speechSynthesis が勝手に pause することがあるバグへの対策
+        // 定期的に speaking 状態を監視して resume する
+        if (isIOS()) {
+          const watchdog = setInterval(() => {
+            if (window.speechSynthesis.paused && window.speechSynthesis.speaking) {
+              ttsLog('Speech state: paused (auto-resuming)');
+              window.speechSynthesis.resume();
+            }
+            if (!window.speechSynthesis.speaking) {
+              clearInterval(watchdog);
+            }
+          }, 1000);
+          // 最大30秒で監視打ち切り
+          setTimeout(() => clearInterval(watchdog), 30000);
+        }
+      };
+
+      // iOS: cancel() の直後に speak() すると無音になるバグ回避
+      if (isIOS()) {
+        iosSpeakTimerRef.current = window.setTimeout(() => {
+          iosSpeakTimerRef.current = null;
+          doSpeak();
+        }, IOS_CANCEL_SPEAK_DELAY);
       } else {
-        utterance.lang = 'en-US';
-        utterance.rate = rate ?? 0.85;
-        utterance.pitch = 0.5;
+        doSpeak();
       }
-
-      utterance.volume = volumeRef.current;
-
-      utterance.onstart = () => setIsSpeaking(true);
-      utterance.onend = () => {
-        setIsSpeaking(false);
-        onEnd?.();
-      };
-      utterance.onerror = () => {
-        setIsSpeaking(false);
-      };
-
-      window.speechSynthesis.speak(utterance);
     },
     [isSupported, voicesLoaded]
   );
@@ -332,6 +492,9 @@ export function useSpeechSynthesis() {
   useEffect(() => {
     return () => {
       if (isSupported) {
+        if (iosSpeakTimerRef.current !== null) {
+          clearTimeout(iosSpeakTimerRef.current);
+        }
         window.speechSynthesis.cancel();
       }
     };
