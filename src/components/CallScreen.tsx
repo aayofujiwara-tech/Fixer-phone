@@ -113,11 +113,11 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
     setShowFixerLine(false);
     setIsThinking(true);
 
-    // 相手の「考え中」演出 → セリフ表示
+    // 短い間（150ms）でセリフ表示（事前定義データなので長い待ちは不要）
     const thinkTimer = setTimeout(() => {
       setIsThinking(false);
       setShowLeaderLine(true);
-    }, 1500 + Math.random() * 1500);
+    }, 150);
 
     return () => clearTimeout(thinkTimer);
   }, [currentLineIndex]);
@@ -134,18 +134,18 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
 
     const rate = ttsLang === 'ja' ? SPEED_LEVELS[jaSpeedRef.current] : SPEED_LEVELS[enSpeedRef.current];
 
-    // 0.3秒待ってリーダー読み上げ（選択言語のみ）
+    // 0.1秒待ってリーダー読み上げ（選択言語のみ）
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
       speak(text, ttsLang, () => {
         if (!autoActiveRef.current) return;
-        // 読み上げ完了 → 0.3秒待ってフィクサーセリフを表示
+        // 読み上げ完了 → 0.2秒待ってフィクサーセリフを表示
         addAutoTimer(() => {
           if (!autoActiveRef.current) return;
           setShowFixerLine(true);
-        }, 300);
+        }, 200);
       }, rate);
-    }, 300);
+    }, 100);
 
     return () => clearAutoTimers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -169,7 +169,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
       if (!autoActiveRef.current) return;
       speak(text, ttsLang, () => {
         if (!autoActiveRef.current) return;
-        // 読み上げ完了 → 0.8秒待って次へ
+        // 読み上げ完了 → 0.5秒待って次へ
         addAutoTimer(() => {
           if (!autoActiveRef.current) return;
           if (lastPair) {
@@ -177,7 +177,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
           } else {
             setCurrentLineIndex(prev => prev + 1);
           }
-        }, 800);
+        }, 500);
       }, rate);
     }, 200);
 
