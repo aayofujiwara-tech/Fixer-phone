@@ -178,10 +178,10 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                 <h2 className="text-[10px] font-mono text-gray-400 mb-1 uppercase tracking-wider">
                   {t('scenarioSelectLabel')}
                 </h2>
-                <div className="flex flex-col gap-1 max-h-[120px] overflow-y-auto">
+                <div className="flex flex-col gap-[3px]">
                   <button
                     onClick={() => setSelectedScenarioIndex(null)}
-                    className={`px-3 py-1 rounded-lg text-xs font-mono transition-all text-left shrink-0 pc-compact-btn ${
+                    className={`px-2.5 py-0.5 rounded text-[0.8rem] font-mono transition-all text-left pc-compact-btn ${
                       selectedScenarioIndex === null
                         ? 'bg-accent/20 text-accent border border-accent/50'
                         : 'bg-gray-800 text-gray-500 border border-gray-700'
@@ -193,14 +193,14 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                     <button
                       key={index}
                       onClick={() => setSelectedScenarioIndex(index)}
-                      className={`px-3 py-1 rounded-lg text-xs font-mono transition-all text-left shrink-0 pc-compact-btn ${
+                      className={`px-2.5 py-0.5 rounded text-[0.8rem] font-mono transition-all text-left pc-compact-btn ${
                         selectedScenarioIndex === index
                           ? 'bg-accent/20 text-accent border border-accent/50'
                           : 'bg-gray-800 text-gray-500 border border-gray-700'
                       }`}
                     >
                       {`${index + 1}. ${lang === 'ja' ? scenario.title_ja : scenario.title_en}`}
-                      <span className="block text-[10px] opacity-60">
+                      <span className="block text-[0.65rem] opacity-60 leading-tight">
                         {lang === 'ja' ? scenario.title_en : scenario.title_ja}
                       </span>
                     </button>
