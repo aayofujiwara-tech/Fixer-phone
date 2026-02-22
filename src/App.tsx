@@ -15,7 +15,7 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [callDuration, setCallDuration] = useState(0);
   const [callMode, setCallMode] = useState<CallMode>('auto');
-  const [jaSpeed, setJaSpeed] = useState(5);
+  const [jaSpeed, setJaSpeed] = useState(4);
   const [enSpeed, setEnSpeed] = useState(3);
 
   const { scenario, isLoading, error, generate, reset, setFallback } = useScenarioGenerator();
