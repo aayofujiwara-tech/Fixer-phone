@@ -493,12 +493,12 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                       {/* 右向き三角（尻尾） */}
                       <div className="absolute -right-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gray-800/50" />
                       <TypewriterText
-                        text={lang === 'ja' ? pair.leader.en : pair.leader.ja}
+                        text={selectedLang === 'ja' ? pair.leader.ja : pair.leader.en}
                         className={`text-gray-300 ${textMain} ${lineH} italic block`}
                         duration={2000}
                       />
                       <div className={`text-gray-500 ${textSub} mt-3`}>
-                        {lang === 'ja' ? pair.leader.ja : pair.leader.en}
+                        {selectedLang === 'ja' ? pair.leader.en : pair.leader.ja}
                       </div>
                     </div>
                   ) : !vipActive && prevLeaderRef.current ? (
@@ -506,7 +506,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                     <div className={`relative bg-gray-800/20 rounded-2xl ${bubblePad} ml-auto mr-2 max-w-[95%] opacity-50`}>
                       <div className="absolute -right-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gray-800/20" />
                       <div className={`text-gray-600 ${textGhost} ${lineH} italic`}>
-                        {lang === 'ja' ? prevLeaderRef.current.en : prevLeaderRef.current.ja}
+                        {selectedLang === 'ja' ? prevLeaderRef.current.ja : prevLeaderRef.current.en}
                       </div>
                     </div>
                   ) : isThinking ? (
@@ -565,12 +565,12 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                       {/* 左向き三角（尻尾） */}
                       <div className="absolute -left-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-accent/20" />
                       <TypewriterText
-                        text={lang === 'ja' ? `「${pair.fixer.ja}」` : `"${pair.fixer.en}"`}
+                        text={selectedLang === 'ja' ? `「${pair.fixer.ja}」` : `"${pair.fixer.en}"`}
                         className={`text-white ${textMain} font-bold ${lineH} block`}
                         duration={2000}
                       />
                       <div className={`text-accent/60 ${textSub} mt-3 font-mono`}>
-                        "{lang === 'ja' ? pair.fixer.en : pair.fixer.ja}"
+                        "{selectedLang === 'ja' ? pair.fixer.en : pair.fixer.ja}"
                       </div>
                     </div>
                   ) : showFixerLine && pair.fixer && callMode === 'practice' ? (
@@ -597,7 +597,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                     <div className={`relative bg-accent/5 rounded-2xl ${bubblePad} mr-auto ml-2 max-w-[95%] opacity-30`}>
                       <div className="absolute -left-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-accent/10" />
                       <div className={`text-gray-500 ${textGhost} ${lineH}`}>
-                        {lang === 'ja' ? `「${prevFixerRef.current.ja}」` : `"${prevFixerRef.current.en}"`}
+                        {selectedLang === 'ja' ? `「${prevFixerRef.current.ja}」` : `"${prevFixerRef.current.en}"`}
                       </div>
                     </div>
                   ) : null}
@@ -730,6 +730,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                   ja={pair.leader.ja}
                   en={pair.leader.en}
                   countryFlag={country.flag}
+                  selectedLang={selectedLang}
                 />
               )}
             </div>
@@ -746,6 +747,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                   speaker="fixer"
                   ja={pair.fixer.ja}
                   en={pair.fixer.en}
+                  selectedLang={selectedLang}
                 />
               )}
 

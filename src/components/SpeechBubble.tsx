@@ -5,15 +5,16 @@ interface Props {
   ja: string;
   en: string;
   countryFlag?: string;
+  selectedLang: 'ja' | 'en';
 }
 
 // セリフ表示コンポーネント
-export function SpeechBubble({ speaker, ja, en, countryFlag }: Props) {
-  const { lang, t } = useLanguage();
+// selectedLang に応じてメイン（大きい文字）とサブ（小さい文字）を切り替える
+export function SpeechBubble({ speaker, ja, en, countryFlag, selectedLang }: Props) {
+  const { t } = useLanguage();
 
-  // Primary language first, secondary language second
-  const primary = lang === 'ja' ? ja : en;
-  const secondary = lang === 'ja' ? en : ja;
+  const main = selectedLang === 'ja' ? ja : en;
+  const sub = selectedLang === 'ja' ? en : ja;
 
   if (speaker === 'leader') {
     return (
@@ -22,10 +23,10 @@ export function SpeechBubble({ speaker, ja, en, countryFlag }: Props) {
           {countryFlag} {t('leaderLine')}
         </div>
         <div className="text-gray-400 text-sm leading-relaxed italic">
-          "{secondary}"
+          {main}
         </div>
         <div className="text-gray-500 text-xs mt-1">
-          {primary}
+          {sub}
         </div>
       </div>
     );
@@ -37,10 +38,10 @@ export function SpeechBubble({ speaker, ja, en, countryFlag }: Props) {
         {t('yourLine')}
       </div>
       <div className="text-white text-lg font-bold leading-relaxed mb-3">
-        {lang === 'ja' ? `「${primary}」` : `"${primary}"`}
+        {selectedLang === 'ja' ? `「${main}」` : `"${main}"`}
       </div>
       <div className="text-accent text-sm font-mono leading-relaxed">
-        "{secondary}"
+        "{sub}"
       </div>
     </div>
   );
