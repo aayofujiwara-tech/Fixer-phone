@@ -127,6 +127,24 @@ button {
   transform-origin: bottom center;
 }
 
+/* PC: シルエット バックライトパルス（発言中） */
+@keyframes silhouette-backlight {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.05); }
+}
+.silhouette-backlight-pulse {
+  animation: silhouette-backlight 2s ease-in-out infinite;
+}
+
+/* PC: サングラス反射フラッシュ（フィクサー発言中） */
+@keyframes glass-flash {
+  0%, 80%, 100% { opacity: 1; }
+  90% { opacity: 2.5; }
+}
+.silhouette-glass-flash {
+  animation: glass-flash 3s ease-in-out infinite;
+}
+
 /* PC: ボタン min-height 上書き（コンパクト化） */
 @media (min-width: 768px) {
   .pc-compact-btn {

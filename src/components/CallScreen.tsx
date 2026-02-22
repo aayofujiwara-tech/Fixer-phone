@@ -7,6 +7,7 @@ import { SpeechBubble } from './SpeechBubble';
 import { TypewriterText } from './TypewriterText';
 import { ConnectionLine } from './ConnectionLine';
 import { AvatarSilhouette } from './AvatarSilhouette';
+import { FlagIcon } from './FlagIcon';
 import { useLanguage } from '../i18n/LanguageContext';
 import { safeGetItem, safeSetItem } from '../lib/storage';
 
@@ -320,7 +321,11 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xl">{country.flag}</span>
+            {isPC ? (
+              <FlagIcon countryId={country.id} className="w-7 h-auto rounded-sm" />
+            ) : (
+              <span className="text-xl">{country.flag}</span>
+            )}
             <div>
               <div className="text-white text-sm font-bold">
                 {countryDisplay}
@@ -443,13 +448,14 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                   <AvatarSilhouette
                     variant="vip"
                     color={country.accentColor}
-                    flag={country.flag}
                     speaking={vipActive}
                     size={avatarSize}
+                    flagIcon={<FlagIcon countryId={country.id} className="w-12 h-auto rounded-sm" />}
                   />
-                  <div className={`${textName} font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
+                  <div className={`flex items-center justify-center gap-2 ${textName} font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
                     vipActive ? 'text-white' : 'text-gray-600'
                   }`}>
+                    <FlagIcon countryId={country.id} className="w-8 h-auto rounded-sm" />
                     {countryDisplay}
                   </div>
                   {vipActive && (
@@ -521,6 +527,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
                     speaking={fixerActive}
                     size={avatarSize}
                   />
+
                   <div className={`${textName} font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
                     fixerActive ? 'text-accent' : 'text-gray-600'
                   }`}>
