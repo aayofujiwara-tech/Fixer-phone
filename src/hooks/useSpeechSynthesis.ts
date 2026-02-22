@@ -1,5 +1,21 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
+// Web Speech APIが読み間違える漢字の読み辞書（日本語TTS用）
+const JA_READING_FIXES: [RegExp, string][] = [
+  [/聖下/g, 'せいか'],
+  [/殿下/g, 'でんか'],
+  [/閣下/g, 'かっか'],
+];
+
+// 日本語テキストのTTS読み補正（表示には影響しない）
+function fixJaReading(text: string): string {
+  let fixed = text;
+  for (const [pattern, reading] of JA_READING_FIXES) {
+    fixed = fixed.replace(pattern, reading);
+  }
+  return fixed;
+}
+
 // 男性音声を名前パターンで判定
 const MALE_VOICE_PATTERNS = /male|otoya|takeru|ken|david|daniel|alex|james|mark|google.*male/i;
 const FEMALE_VOICE_PATTERNS = /female|kyoko|o-ren|haruka|samantha|karen|fiona|google.*female/i;
@@ -69,7 +85,8 @@ export function useSpeechSynthesis() {
       // 既存の読み上げを停止
       window.speechSynthesis.cancel();
 
-      const utterance = new SpeechSynthesisUtterance(text);
+      const ttsText = lang === 'ja' ? fixJaReading(text) : text;
+      const utterance = new SpeechSynthesisUtterance(ttsText);
       utteranceRef.current = utterance;
 
       const langCode = lang === 'ja' ? 'ja' : 'en';
