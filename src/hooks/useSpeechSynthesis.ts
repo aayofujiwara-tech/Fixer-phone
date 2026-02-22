@@ -176,7 +176,7 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   const priorityList = lang === 'ja' ? JA_MALE_VOICE_PRIORITY : EN_MALE_VOICE_PRIORITY;
 
   // --- デバッグログ（本番では削除可） ---
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.group(`[TTS] Voice selection for lang="${lang}"`);
     console.log('Available voices:', langVoices.map(v => `${v.name} (${v.lang})`));
   }
@@ -187,7 +187,7 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
       v => v.name.toLowerCase().includes(name.toLowerCase()) && !isKnownFemale(v)
     );
     if (match) {
-      if (process.env.NODE_ENV === 'development') {
+      if (import.meta.env.DEV) {
         console.log('✓ Selected (priority match):', match.name);
         console.groupEnd();
       }
@@ -198,7 +198,7 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   // Step 2: 名前パターンで男性と判定できる音声
   const knownMale = langVoices.find(v => isKnownMale(v) && !isKnownFemale(v));
   if (knownMale) {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log('✓ Selected (pattern match):', knownMale.name);
       console.groupEnd();
     }
@@ -208,7 +208,7 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   // Step 3: 女性と判定されない最初の音声（ピッチで補正）
   const nonFemale = langVoices.find(v => !isKnownFemale(v));
   if (nonFemale) {
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log('△ Selected (non-female fallback):', nonFemale.name);
       console.groupEnd();
     }
@@ -216,7 +216,7 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   }
 
   // Step 4: どうしても見つからない場合は最初の音声
-  if (process.env.NODE_ENV === 'development') {
+  if (import.meta.env.DEV) {
     console.log('✗ Fallback: first available voice:', langVoices[0]?.name ?? 'none');
     console.groupEnd();
   }
