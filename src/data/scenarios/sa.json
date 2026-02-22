@@ -211,8 +211,18 @@
         },
         {
           "speaker": "fixer",
-          "ja": "Instagramで既にバズっています。「グッチラクダ」のハッシュタグが世界トレンド1位です。広告効果は推定3億ドル。殿下、雪は天の恵みでした。",
-          "en": "It's already going viral on Instagram. The hashtag 'GucciCamel' is trending number one worldwide. Estimated advertising value: 300 million dollars. Your Highness, the snow was a gift from heaven."
+          "ja": "Instagramで既にバズっています。「グッチラクダ」のハッシュタグが世界トレンド1位です。広告効果は推定3億ドル。",
+          "en": "It's already going viral on Instagram. The hashtag 'GucciCamel' is trending number one worldwide. Estimated advertising value: 300 million dollars."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…災い転じて福となしたか。ところで、この雪はいつまで降り続ける？",
+          "en": "...Turning disaster into fortune. By the way, how long will this snow keep falling?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "気象庁によると明日には止むそうです。ただし殿下、来年も降るかもしれません。人工雪の施設は「バックアップ用」として維持しましょう。天に頼るだけでは、スキーリゾート経営は成り立ちません。",
+          "en": "The weather service says it'll stop tomorrow. However, Your Highness, it may snow again next year. Let's maintain the artificial snow facilities as 'backup.' You can't run a ski resort relying solely on the heavens."
         }
       ]
     },

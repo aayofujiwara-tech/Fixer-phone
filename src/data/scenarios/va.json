@@ -211,8 +211,18 @@
         },
         {
           "speaker": "fixer",
-          "ja": "フォロワーが一晩で500万人増えました。Netflixからは「教皇公認ドラマ」の監修オファーが来ています。バチカンの影響力が、ソーシャルメディアで史上最大になりました。ペテロの網は、今やインターネットに広がっています。",
-          "en": "You gained 5 million followers overnight. Netflix is offering a deal for 'Papal-approved dramas.' The Vatican's influence on social media has reached an all-time high. Peter's net now stretches across the internet."
+          "ja": "フォロワーが一晩で500万人増えました。Netflixからは「教皇公認ドラマ」の監修オファーが来ています。バチカンの影響力が、ソーシャルメディアで史上最大になりました。",
+          "en": "You gained 5 million followers overnight. Netflix is offering a deal for 'Papal-approved dramas.' The Vatican's influence on social media has reached an all-time high."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…まさかNetflixのオファーを受けるわけにはいかないだろう。枢機卿会議で何と言われるか。",
+          "en": "...Surely we can't accept Netflix's offer. What would the College of Cardinals say?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "Netflixは断りますが、バチカン公式YouTubeチャンネルを立ち上げましょう。聖下の日常を短い動画で発信するのです。ペテロの網は、今やインターネットに広がっています。福音宣教の形も、時代とともに進化するのです。",
+          "en": "We decline Netflix, but let's launch an official Vatican YouTube channel. Share short videos of Your Holiness's daily life. Peter's net now stretches across the internet. The form of evangelization must evolve with the times."
         }
       ]
     },
