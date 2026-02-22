@@ -11,11 +11,15 @@ if (import.meta.env.DEV && 'serviceWorker' in navigator) {
   });
 }
 
-// プロダクション: SW更新検知 → 更新バナー表示 or 自動リロード
+// プロダクション: SW更新検知 → 自動リロード
+// ※初回インストール時はリロード不要（hadController で判定）
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  const hadController = !!navigator.serviceWorker.controller;
   let refreshing = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!refreshing) {
+    // 初回インストール（hadController === false）ではリロードしない。
+    // SW更新時（hadController === true）のみリロードして新アセットを反映。
+    if (hadController && !refreshing) {
       refreshing = true;
       window.location.reload();
     }
