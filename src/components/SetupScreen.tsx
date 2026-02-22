@@ -94,12 +94,12 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
 
         {/* メインコンテンツ: 左右分割 */}
         <div className="flex flex-1 min-h-0">
-          {/* ----- 左パネル: 国選択 (28%) ----- */}
-          <div className="w-[28%] border-r border-gray-800 flex flex-col min-h-0 px-2 py-2">
-            <h2 className="text-[10px] font-mono text-gray-400 mb-1.5 px-1 uppercase tracking-wider shrink-0">
+          {/* ----- 左パネル: 国選択 (25%) ----- */}
+          <div className="w-[25%] border-r border-gray-800 flex flex-col min-h-0 px-1.5 py-1.5">
+            <h2 className="text-[10px] font-mono text-gray-400 mb-1 px-1 uppercase tracking-wider shrink-0">
               {t('targetCountry')}
             </h2>
-            <div className="grid grid-cols-2 gap-1 flex-1 auto-rows-fr overflow-y-auto min-h-0">
+            <div className="grid grid-cols-2 gap-[3px] flex-1 min-h-0 overflow-y-auto">
               {countries.map((country) => {
                 const isSelected = selectedCountry?.id === country.id;
                 return (
@@ -107,18 +107,21 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                     key={country.id}
                     onClick={() => setSelectedCountry(country)}
                     aria-label={`${country.name} ${country.leader}`}
-                    className={`flex flex-col items-center justify-center gap-0.5 px-1 rounded border-2 transition-all duration-200 ${
+                    className={`flex flex-col items-center justify-center gap-0.5 p-2 rounded border-2 transition-all duration-200 ${
                       isSelected
                         ? 'border-accent bg-accent/10 shadow-[0_0_10px_rgba(0,255,136,0.12)]'
                         : 'border-gray-700/60 bg-gray-900/50 hover:border-gray-500 hover:bg-gray-800/50'
                     }`}
                   >
-                    <span className="text-xl leading-none">{country.flag}</span>
-                    <div className="text-center w-full leading-tight">
-                      <div className="text-[10px] font-bold text-white">
+                    <span className="text-[2rem] leading-none">{country.flag}</span>
+                    <span className="text-[0.9rem] font-bold font-mono text-white leading-tight">
+                      {country.id.toUpperCase()}
+                    </span>
+                    <div className="text-center w-full">
+                      <div className="text-[0.7rem] text-gray-300 leading-tight">
                         {lang === 'ja' ? country.name : country.nameEn}
                       </div>
-                      <div className="text-[9px] text-gray-500 leading-tight">
+                      <div className="text-[0.6rem] text-gray-500 leading-tight">
                         {lang === 'ja' ? country.leader : country.leaderEn}
                       </div>
                     </div>
@@ -128,14 +131,15 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             </div>
           </div>
 
-          {/* ----- 右パネル: 設定ステップ (72%) ----- */}
-          <div className="flex-1 flex flex-col justify-center items-center min-h-0 p-4 overflow-y-auto">
+          {/* ----- 右パネル: 設定ステップ (75%) ----- */}
+          <div className="flex-1 min-h-0 overflow-y-auto p-4">
+            <div className="min-h-full flex flex-col items-center justify-center">
             {!selectedCountry ? (
               <p className="text-gray-600 text-lg font-mono tracking-wider">
                 ◀ {t('selectCountry')}
               </p>
             ) : (
-              <div className="w-full max-w-lg space-y-3">
+              <div className="w-full max-w-[550px] space-y-3">
                 {/* 選択中の国 */}
                 <div
                   className="p-3 rounded-lg border border-gray-700 animate-fade-in"
@@ -346,6 +350,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                 </div>
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>
