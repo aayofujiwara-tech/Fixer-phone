@@ -292,37 +292,25 @@ function setupIOSUnlock() {
   const unlock = () => {
     if (_iosUnlocked) return;
 
-    // iOS は cancel→resume→speak の順でないと動かないケースがある
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.resume();
-
-    // volume=0 や空白テキストではオーディオセッションがアクティベートされない。
-    // 短い実テキストと最小限の音量で実際の音声出力を発生させる。
+    // ── iOS Safari オーディオセッション有効化 ──
+    // iOS Safari はユーザージェスチャー1回につき speechSynthesis への
+    // "特権呼出し" を1回だけ認める。cancel()/resume() を先に呼ぶと
+    // ジェスチャー権限を消費してしまい speak() がアンロックとして機能しない。
+    // → speak() をジェスチャー内の **最初の** speechSynthesis 呼出しにする。
+    // → 直後に cancel() で発声を止め無音にする（セッション有効化は speak() 時点で完了）。
     const utterance = new SpeechSynthesisUtterance('.');
-    utterance.volume = 0.01;
-    utterance.rate = 4;
-    utterance.lang = 'en-US';
-    utterance.onend = () => {
-      _iosUnlocked = true;
-      ttsLog('Speech unlock: success (onend)');
-    };
-    utterance.onerror = (e) => {
-      // エラーでもユーザージェスチャー内で speak() を呼んだのでアンロック済み
-      _iosUnlocked = true;
-      ttsLog(`Speech unlock: error ${e.error} (treated as unlocked)`);
-    };
-    window.speechSynthesis.speak(utterance);
-    ttsLog('Speech unlock: attempted');
+    utterance.volume = 0;           // cancel が遅れた場合の保険
+    utterance.onend = () => ttsLog('Unlock utterance: onend fired');
+    utterance.onerror = (e) => ttsLog(`Unlock utterance: onerror ${e.error}`);
 
-    // iOS では onend/onerror が発火しないことがある（volume が小さい等）。
-    // ユーザージェスチャー内で speak() を呼んだ時点でセッションは有効化されるため、
-    // タイムアウトでフラグを立てる。
-    setTimeout(() => {
-      if (!_iosUnlocked) {
-        _iosUnlocked = true;
-        ttsLog('Speech unlock: success (timeout fallback)');
-      }
-    }, 500);
+    window.speechSynthesis.speak(utterance);
+    // speak() 呼出し時点でオーディオセッションは有効化される。即座に cancel。
+    window.speechSynthesis.cancel();
+    _iosUnlocked = true;
+
+    const s = window.speechSynthesis;
+    ttsLog(`Speech unlock: activated (speak+cancel)`);
+    ttsLog(`Synth post-unlock: speaking=${s.speaking} pending=${s.pending} paused=${s.paused}`);
 
     // 一度だけ実行
     document.removeEventListener('touchstart', unlock);
@@ -444,7 +432,7 @@ export function useSpeechSynthesis() {
 
       const ttsText = lang === 'ja' ? fixJaReading(text) : text;
 
-      ttsLog(`Speak called: "${text.slice(0, 10)}..." [${lang}]`);
+      ttsLog(`Speak called: "${text.slice(0, 30)}..." [${lang}] unlocked=${_iosUnlocked}`);
 
       const doSpeak = () => {
         // iOS: cancel() 後に resume() しないと speak() が無音になるバグを回避
@@ -477,18 +465,20 @@ export function useSpeechSynthesis() {
 
         utterance.volume = volumeRef.current;
 
+        ttsLog(`Utterance: voice=${utterance.voice?.name ?? 'default'} lang=${utterance.lang} rate=${utterance.rate} pitch=${utterance.pitch} vol=${utterance.volume}`);
+
         utterance.onstart = () => {
           setIsSpeaking(true);
-          ttsLog(`Speech state: speaking`);
+          ttsLog('Speech event: onstart');
         };
         utterance.onend = () => {
           setIsSpeaking(false);
-          ttsLog(`Speech state: ended`);
+          ttsLog('Speech event: onend');
           onEnd?.();
         };
         utterance.onerror = (e) => {
           setIsSpeaking(false);
-          ttsLog(`Speech state: error (${e.error})`);
+          ttsLog(`Speech event: onerror (${e.error})`);
           // iOS: "interrupted" / "canceled" はcancel()によるもので正常。onEndを呼ばない。
           // それ以外のエラー（"not-allowed" 等）は TTS 失敗だが、
           // 会話フローを継続するため onEnd を呼ぶ（呼ばないと次のセリフが永久に表示されない）。
@@ -499,15 +489,49 @@ export function useSpeechSynthesis() {
 
         window.speechSynthesis.speak(utterance);
 
-        // iOS: speechSynthesis が勝手に pause することがあるバグへの対策
-        // 定期的に speaking 状態を監視して resume する（500ms間隔で応答性を確保）
+        // speak() 直後の状態ログ
+        {
+          const s = window.speechSynthesis;
+          ttsLog(`After speak(): speaking=${s.speaking} pending=${s.pending} paused=${s.paused}`);
+        }
+
         if (isIOS()) {
+          // ── iOS kick-start ──
+          // speak() 後に pending のまま動かないケースがある。
+          // 100ms 後に pause→resume で蹴る。
+          setTimeout(() => {
+            const s = window.speechSynthesis;
+            ttsLog(`iOS @100ms: speaking=${s.speaking} pending=${s.pending} paused=${s.paused}`);
+            if (!s.speaking) {
+              ttsLog('iOS kick-start: pause→resume');
+              s.pause();
+              s.resume();
+            }
+          }, 100);
+
+          // ── ストール検出 ──
+          // 3秒経っても onstart が来ない場合、iOS が utterance を無視している。
+          // 会話フローが永久停止するのを防ぐため onEnd を強制呼出しする。
+          setTimeout(() => {
+            if (utteranceRef.current !== utterance) return;   // 別の speak() が走った
+            const s = window.speechSynthesis;
+            ttsLog(`Stall check @3s: speaking=${s.speaking} pending=${s.pending} paused=${s.paused}`);
+            if (!s.speaking) {
+              ttsLog('Speech stalled: forcing onEnd to continue flow');
+              s.cancel();
+              setIsSpeaking(false);
+              onEnd?.();
+            }
+          }, 3000);
+
+          // ── 自動 pause 復帰 watchdog ──
+          // iOS: speechSynthesis が勝手に pause することがあるバグへの対策
           const watchdog = setInterval(() => {
             if (window.speechSynthesis.paused && window.speechSynthesis.speaking) {
               ttsLog('Speech state: paused (auto-resuming)');
               window.speechSynthesis.resume();
             }
-            if (!window.speechSynthesis.speaking) {
+            if (!window.speechSynthesis.speaking && !window.speechSynthesis.pending) {
               clearInterval(watchdog);
             }
           }, 500);
