@@ -40,15 +40,17 @@ export default defineConfig(({ mode }) => ({
                 expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 },
               },
             },
-            {
-              // API呼び出し — NetworkFirst
-              urlPattern: /^https:\/\/api\.anthropic\.com\/.*/i,
-              handler: 'NetworkFirst',
-              options: {
-                cacheName: 'api-cache',
-                expiration: { maxEntries: 10, maxAgeSeconds: 60 * 5 },
-              },
-            },
+            // NOTE: API_MODE 無効化中のためAPIキャッシュは停止。
+            // API_MODE を復活させる場合は以下のコメントを解除すること。
+            // {
+            //   // API呼び出し — NetworkFirst
+            //   urlPattern: /^https:\/\/api\.anthropic\.com\/.*/i,
+            //   handler: 'NetworkFirst',
+            //   options: {
+            //     cacheName: 'api-cache',
+            //     expiration: { maxEntries: 10, maxAgeSeconds: 60 * 5 },
+            //   },
+            // },
           ],
         },
       }),
