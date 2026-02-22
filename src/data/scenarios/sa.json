@@ -1,0 +1,332 @@
+{
+  "serious": [
+    {
+      "scenario_title_ja": "OPEC原油価格の極秘操作",
+      "scenario_title_en": "Secret OPEC Oil Price Manipulation",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、来週のOPEC総会が問題だ。ロシアが増産を主張し、UAEも同調しかけている。",
+          "en": "Fixer, next week's OPEC general meeting is a problem. Russia is pushing for increased production, and the UAE is starting to side with them."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "殿下、状況は把握しております。しかし、ロシアの真意は増産ではありません。価格を一時的に下げて、アメリカのシェールオイル企業を潰すことが狙いです。",
+          "en": "Your Highness, I am aware of the situation. However, Russia's true intention is not increased production. Their aim is to temporarily crash prices and destroy American shale oil companies."
+        },
+        {
+          "speaker": "leader",
+          "ja": "それは我々にとっても危険だ。Vision 2030の資金源が枯れる。",
+          "en": "That's dangerous for us too. It would dry up the funding for Vision 2030."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ですので、逆手に取ります。減産に合意する代わりに、ロシアから極秘の条件を引き出します。北極圏のLNG権益の一部譲渡です。",
+          "en": "That's why we turn it to our advantage. In exchange for agreeing to production cuts, we extract a secret concession from Russia — a partial transfer of Arctic LNG rights."
+        },
+        {
+          "speaker": "leader",
+          "ja": "ロシアが北極圏の権益を手放すとは思えない。何をカードに使う？",
+          "en": "I can't imagine Russia giving up Arctic rights. What card will you play?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ロシア政府系ファンドが密かに王国内に保有する不動産資産のリストを入手しました。これが交渉の切り札になります。",
+          "en": "I've obtained a list of real estate assets secretly held by Russian sovereign wealth funds within the Kingdom. This will be our trump card."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…UAEへの対応は？彼らを黙らせなければならない。",
+          "en": "...What about the UAE? We need to keep them quiet."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "UAE皇太子には、NEOM経済特区への優先投資枠を提示します。彼らの弱点は、ドバイ以外の成長エンジンがないことです。",
+          "en": "We offer the UAE Crown Prince priority investment access to the NEOM special economic zone. Their weakness is having no growth engine beyond Dubai."
+        },
+        {
+          "speaker": "leader",
+          "ja": "石油の世界で生き残るには、石油以外の武器が要るということか。",
+          "en": "So to survive in the oil world, you need weapons beyond oil."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "その通りです。来週の総会後、原油価格は殿下の望む水準に落ち着くでしょう。そして誰も、それが操作だったとは気づきません。",
+          "en": "Exactly. After next week's meeting, oil prices will settle at the level you desire. And no one will realize it was orchestrated."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "王族内の権力闘争と粛清",
+      "scenario_title_en": "Royal Power Struggle and Purge",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、宮殿内で不穏な動きがある。叔父のアブドゥル親王が密かに軍幹部と接触しているという情報が入った。",
+          "en": "Fixer, there are troubling movements within the palace. I've received intelligence that my uncle, Prince Abdul, has been secretly meeting with military commanders."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "殿下、その情報は正確です。過去2週間で3回、親王はリヤド郊外の私邸で元参謀長と会談しています。",
+          "en": "Your Highness, that intelligence is accurate. Over the past two weeks, the Prince has met three times with the former Chief of Staff at his private residence outside Riyadh."
+        },
+        {
+          "speaker": "leader",
+          "ja": "クーデターを企てているのか？",
+          "en": "Is he planning a coup?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "直接的なクーデターではありません。国王の健康悪化を見越して、継承順位の変更を画策しています。王族会議の多数派工作です。",
+          "en": "Not a direct coup. He's anticipating the King's declining health and maneuvering to change the line of succession. He's building a majority in the Royal Council."
+        },
+        {
+          "speaker": "leader",
+          "ja": "何人の王族が叔父側についている？",
+          "en": "How many royals have sided with my uncle?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "現時点で確認できているのは7名。しかし、そのうち4名は「条件次第で寝返る」と私の協力者に伝えています。忠誠心は値段で買えるということです。",
+          "en": "Seven confirmed so far. However, four of them have told my contacts they would 'switch sides under the right conditions.' Loyalty can be bought."
+        },
+        {
+          "speaker": "leader",
+          "ja": "力ずくで排除すれば、国際社会の批判を浴びる。スマートに処理したい。",
+          "en": "If we remove them by force, we'll face international criticism. I want this handled smartly."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「反腐敗キャンペーン」として処理します。親王の海外口座の不正送金記録をすでに確保しています。リッツカールトンの一室を「特別会議室」として確保済みです。",
+          "en": "We process it as an 'anti-corruption campaign.' I've already secured records of the Prince's illegal overseas transfers. A suite at the Ritz-Carlton has been reserved as a 'special conference room.'"
+        },
+        {
+          "speaker": "leader",
+          "ja": "…腐敗撲滅は、誰も反対できない大義名分だな。",
+          "en": "...Anti-corruption is a cause no one can oppose."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "正義の名のもとに秩序を守る。それが最も美しい権力の行使です。48時間以内に、殿下のライバルは「自発的に」引退を表明するでしょう。",
+          "en": "Maintaining order in the name of justice — that is the most elegant exercise of power. Within 48 hours, your rival will 'voluntarily' announce his retirement."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "NEOM計画と消えた巨額資金",
+      "scenario_title_en": "Project NEOM and the Missing Billions",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、NEOM計画の監査報告書を見た。120億ドルが行方不明だ。どういうことだ？",
+          "en": "Fixer, I've seen the NEOM project audit report. Twelve billion dollars are unaccounted for. What is going on?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "殿下、資金は「消えた」のではありません。意図的に迂回されています。関与しているのは建設コンソーシアムの内部者と、ある王族メンバーです。",
+          "en": "Your Highness, the funds didn't 'disappear.' They were intentionally rerouted. Those involved include insiders from the construction consortium and a certain royal family member."
+        },
+        {
+          "speaker": "leader",
+          "ja": "NEOMは私のレガシーだ。これが公になれば、Vision 2030全体の信頼が崩壊する。",
+          "en": "NEOM is my legacy. If this goes public, it will destroy trust in the entire Vision 2030 program."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ご安心ください。資金の流れはすべて追跡済みです。ケイマン諸島、シンガポール、スイスの3カ所のペーパーカンパニーを経由しています。",
+          "en": "Rest assured. I've traced the entire money trail. It flows through shell companies in three locations: the Cayman Islands, Singapore, and Switzerland."
+        },
+        {
+          "speaker": "leader",
+          "ja": "外国の銀行が王国の資金を隠匿しているのか。どう取り戻す？",
+          "en": "Foreign banks are hiding our Kingdom's funds? How do we recover them?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "スイスの銀行には、王国の政府系ファンドとの取引継続を条件に、全額返還を要求します。彼らにとって、サウジマネーを失うことは死活問題です。",
+          "en": "We demand full restitution from the Swiss banks, conditional on continued business with our sovereign wealth fund. Losing Saudi money would be existential for them."
+        },
+        {
+          "speaker": "leader",
+          "ja": "建設コンソーシアムの連中は？",
+          "en": "What about the construction consortium people?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "CEOと副社長3名の不正証拠を確保しています。しかし、公に裁くのではなく、「静かな交代」を勧めます。後任には殿下に忠実な人材を配置済みです。",
+          "en": "I have evidence of fraud against the CEO and three vice presidents. But rather than public prosecution, I recommend a 'quiet transition.' I've already placed people loyal to you as successors."
+        },
+        {
+          "speaker": "leader",
+          "ja": "NEOMの完成が遅れることは許されない。砂漠に未来都市を建てると世界に約束した。",
+          "en": "Delays to NEOM's completion are unacceptable. I promised the world a future city in the desert."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "資金を回収し、人事を刷新すれば、むしろ加速します。3ヶ月後の投資家向け説明会では、進捗率を10%上方修正して発表できるでしょう。砂漠の蜃気楼は、現実にしてみせます。",
+          "en": "Once we recover the funds and refresh the leadership, progress will actually accelerate. At the investor briefing in three months, we can announce a 10% upward revision in progress. We'll turn the desert mirage into reality."
+        }
+      ]
+    }
+  ],
+  "comedy": [
+    {
+      "scenario_title_ja": "砂漠にスキーリゾートを建てたら雪が降った",
+      "scenario_title_en": "It Actually Snowed After Building a Desert Ski Resort",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、信じられない事態だ。50億ドルかけて人工雪のスキーリゾートを建設したら、本物の雪が降り始めた。",
+          "en": "Fixer, an unbelievable situation. We spent five billion dollars building a ski resort with artificial snow, and then real snow started falling."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "殿下、気象データを確認しました。サウジ北部で観測史上初の大雪です。現在の積雪量は…30センチです。",
+          "en": "Your Highness, I've checked the weather data. It's the first major snowfall ever recorded in northern Saudi Arabia. Current accumulation is... 30 centimeters."
+        },
+        {
+          "speaker": "leader",
+          "ja": "人工降雪機に500億リヤル投資したのに、自然が無料で降らせてきた。株主になんと説明する？",
+          "en": "We invested 50 billion riyals in snow machines, and nature delivers it for free. How do I explain this to shareholders?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「我々の環境技術が気候を変えた」とプレスリリースを出しましょう。因果関係は不明ですが、否定もできません。",
+          "en": "Let's issue a press release saying 'Our environmental technology changed the climate.' The causation is unclear, but it can't be disproven either."
+        },
+        {
+          "speaker": "leader",
+          "ja": "もっと問題がある。ラクダが雪を見たことがないから、パニックを起こしてリゾートの駐車場を占拠している。",
+          "en": "There's a bigger problem. The camels have never seen snow before and are panicking. They've taken over the resort parking lot."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ラクダ専用の除雪部隊を編成しました。また、ラクダ用防寒ジャケットを200着緊急発注しています。ブランドはもちろんグッチです。",
+          "en": "I've assembled a dedicated camel snow-clearing unit. I've also rush-ordered 200 cold-weather jackets for camels. Gucci, of course."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…グッチのラクダ用ジャケット？それは世界初だろうな。",
+          "en": "...Gucci camel jackets? That must be a world first."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "Instagramで既にバズっています。「グッチラクダ」のハッシュタグが世界トレンド1位です。広告効果は推定3億ドル。殿下、雪は天の恵みでした。",
+          "en": "It's already going viral on Instagram. The hashtag 'GucciCamel' is trending number one worldwide. Estimated advertising value: 300 million dollars. Your Highness, the snow was a gift from heaven."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "王族のラクダがF1グランプリに乱入",
+      "scenario_title_en": "Royal Camel Invades the F1 Grand Prix",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、ジェッダのF1グランプリで大事件だ。私の愛ラクダ「サンダーボルト」がコースに乱入した。",
+          "en": "Fixer, there's been a major incident at the Jeddah F1 Grand Prix. My beloved camel 'Thunderbolt' has invaded the track."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "映像を確認しました。サンダーボルトは現在、ターン14でフェルスタッペンと並走しています。…しかも、速いです。",
+          "en": "I've reviewed the footage. Thunderbolt is currently running alongside Verstappen at Turn 14. ...And he's fast."
+        },
+        {
+          "speaker": "leader",
+          "ja": "レッドブルのチーム代表が激怒している。FIAからも抗議が来ている。どうする？",
+          "en": "Red Bull's team principal is furious. We've received protests from the FIA too. What do we do?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "まず、レースは赤旗中断させました。問題はサンダーボルトが…コースを気に入ってしまい、戻ってこないことです。",
+          "en": "First, the race has been red-flagged. The problem is Thunderbolt... has taken a liking to the course and won't come back."
+        },
+        {
+          "speaker": "leader",
+          "ja": "サンダーボルトは王族の血統を引くラクダだ。傷つけることは許さん。",
+          "en": "Thunderbolt is a camel of royal bloodline. I won't allow him to be harmed."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ナツメヤシの実で誘導を試みています。しかし、サンダーボルトはピットレーンのエナジードリンクに夢中です。レッドブルを3缶飲みました。",
+          "en": "We're trying to lure him with dates. But Thunderbolt is obsessed with the pit lane energy drinks. He's had three cans of Red Bull."
+        },
+        {
+          "speaker": "leader",
+          "ja": "ラクダがレッドブルを飲んでいる…。これがニュースになったら…",
+          "en": "A camel drinking Red Bull... If this makes the news..."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "すでに世界中で生中継されています。しかし殿下、ここはピンチをチャンスに変えましょう。「サウジアラビアGPのマスコットキャラクター」として公式化するのです。",
+          "en": "It's already being broadcast live worldwide. But Your Highness, let's turn this crisis into an opportunity. We officially make him the 'Saudi Arabian GP mascot.'"
+        },
+        {
+          "speaker": "leader",
+          "ja": "マスコット…？F1にラクダのマスコットだと？",
+          "en": "A mascot...? A camel mascot for F1?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "レッドブルが既にスポンサー契約を打診してきました。キャッチコピーは「レッドブル、翼をさずける。ラクダにも。」です。契約金は年間2000万ドル。サンダーボルトは世界一稼ぐラクダになります。",
+          "en": "Red Bull has already approached us about a sponsorship deal. The tagline: 'Red Bull Gives You Wings. Even Camels.' Contract value: 20 million dollars annually. Thunderbolt will become the world's highest-earning camel."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "皇太子のAmazonレビューが世界に公開",
+      "scenario_title_en": "The Crown Prince's Amazon Reviews Go Public",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、最悪の事態だ。私のAmazonアカウントのレビュー履歴がハッキングされて全世界に公開された。",
+          "en": "Fixer, worst-case scenario. My Amazon account review history has been hacked and published worldwide."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "殿下、レビュー内容を確認しました。…金の便座カバーに星5つ。「宮殿の全トイレに導入。客人にも好評」というレビューが話題になっています。",
+          "en": "Your Highness, I've reviewed the contents. ...Five stars for a gold toilet seat cover. The review 'Installed in every palace bathroom. Guests love it' is trending."
+        },
+        {
+          "speaker": "leader",
+          "ja": "それだけならまだいい。問題は自己啓発本のレビューだ。",
+          "en": "That's not so bad. The problem is my self-help book reviews."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "『友達の作り方』に星3つ。レビュー：「実践してみたが、相手が緊張して本音を言わない。立場の問題か。」…これは確かに問題です。",
+          "en": "'How to Make Friends' — three stars. Review: 'Tried to put it into practice, but people get nervous and won't speak their mind. Maybe it's a status thing.' ...This is indeed problematic."
+        },
+        {
+          "speaker": "leader",
+          "ja": "BBCがもう特集を組んでいるぞ。「絶対権力者のAmazonカート」というタイトルで。",
+          "en": "BBC is already running a feature. Title: 'The Absolute Ruler's Amazon Cart.'"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "逆転の戦略があります。「皇太子おすすめリスト」を公式に発表するのです。殿下のレビューを「庶民的で親しみやすい」というナラティブに変えます。",
+          "en": "I have a counter-strategy. We officially publish a 'Crown Prince's Recommended List.' We reframe your reviews as 'down-to-earth and relatable.'"
+        },
+        {
+          "speaker": "leader",
+          "ja": "…ロボット掃除機のレビューも公開されているぞ。「宮殿が広すぎて迷子になった。10台追加購入」と書いた。",
+          "en": "...My robot vacuum review is public too. I wrote 'Got lost because the palace is too big. Bought 10 more.'"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ルンバ社がコラボレーションを提案してきました。「宮殿エディション」の共同開発です。そして、Amazonからは「殿下をインフルエンサーとして契約したい」とオファーが来ています。",
+          "en": "Roomba has proposed a collaboration — co-developing a 'Palace Edition.' And Amazon has offered to sign you as an influencer."
+        },
+        {
+          "speaker": "leader",
+          "ja": "皇太子がAmazonインフルエンサー…。父上に何と説明すればいい？",
+          "en": "The Crown Prince as an Amazon influencer... How do I explain this to my father?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「デジタル経済の推進はVision 2030の一環です」と。殿下の最初の公式レビューは、国王へのプレゼント選びにしましょう。親子の絆を見せれば、支持率は急上昇します。",
+          "en": "'Promoting the digital economy is part of Vision 2030.' Your first official review should be picking a gift for the King. Show the father-son bond, and approval ratings will soar."
+        }
+      ]
+    }
+  ]
+}

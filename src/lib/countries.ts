@@ -92,4 +92,22 @@ export const countries: Country[] = [
     flag: '\u{1F1EE}\u{1F1F3}',
     accentColor: '#ff9933',
   },
+  {
+    id: 'sa',
+    name: 'サウジアラビア',
+    nameEn: 'Saudi Arabia',
+    leader: '皇太子',
+    leaderEn: 'Crown Prince',
+    flag: '\u{1F1F8}\u{1F1E6}',
+    accentColor: '#006c35',
+  },
+  {
+    id: 'va',
+    name: 'バチカン',
+    nameEn: 'Vatican',
+    leader: '教皇',
+    leaderEn: 'Pope',
+    flag: '\u{1F1FB}\u{1F1E6}',
+    accentColor: '#ffe209',
+  },
 ];

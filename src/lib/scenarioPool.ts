@@ -12,13 +12,15 @@ import deData from '../data/scenarios/de.json';
 import krData from '../data/scenarios/kr.json';
 import ilData from '../data/scenarios/il.json';
 import inData from '../data/scenarios/in.json';
+import saData from '../data/scenarios/sa.json';
+import vaData from '../data/scenarios/va.json';
 
 interface ScenarioPool {
   serious: Scenario[];
   comedy: Scenario[];
 }
 
-// 国ごとのシナリオプール（全10カ国）
+// 国ごとのシナリオプール（全12カ国）
 const scenarioPools: Record<string, ScenarioPool> = {
   us: usData as unknown as ScenarioPool,
   jp: jpData as unknown as ScenarioPool,
@@ -30,6 +32,8 @@ const scenarioPools: Record<string, ScenarioPool> = {
   kr: krData as unknown as ScenarioPool,
   il: ilData as unknown as ScenarioPool,
   in: inData as unknown as ScenarioPool,
+  sa: saData as unknown as ScenarioPool,
+  va: vaData as unknown as ScenarioPool,
 };
 
 /**

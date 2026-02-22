@@ -1,0 +1,332 @@
+{
+  "serious": [
+    {
+      "scenario_title_ja": "バチカン銀行の闇資金疑惑",
+      "scenario_title_en": "Vatican Bank Dark Money Scandal",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、バチカン銀行の内部監査で恐ろしいものが見つかった。過去30年間に渡る不明朗な資金移動の記録だ。",
+          "en": "Fixer, the Vatican Bank's internal audit has uncovered something terrifying. Records of suspicious fund transfers spanning the past 30 years."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "聖下、その件については別ルートからも情報を得ています。総額は推定8億ユーロ。南米とアフリカの口座を経由しています。",
+          "en": "Your Holiness, I have information on this from a separate channel. The estimated total is 800 million euros, routed through accounts in South America and Africa."
+        },
+        {
+          "speaker": "leader",
+          "ja": "教会の資金が不正に流用されていたのか。信者たちの献金がどこに消えたのだ？",
+          "en": "Church funds have been misappropriated? Where did the faithful's donations disappear to?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "一部は政治献金に、一部は関係者の私的投資に流れています。しかし聖下、最も懸念すべきは、この件を知る枢機卿が複数いるということです。",
+          "en": "Some went to political donations, some to private investments by insiders. But Your Holiness, the greatest concern is that several cardinals are aware of this."
+        },
+        {
+          "speaker": "leader",
+          "ja": "枢機卿たちが…。この件を公にすべきか、内部で処理すべきか。どちらが教会のためになる？",
+          "en": "Cardinals... Should we make this public or handle it internally? Which serves the Church better?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "第三の道を提案します。自発的な透明化です。イタリア当局に先んじて、バチカンから改革を発表するのです。",
+          "en": "I propose a third path. Voluntary transparency. Before Italian authorities act, the Vatican announces reforms proactively."
+        },
+        {
+          "speaker": "leader",
+          "ja": "自ら傷を晒すということか。勇気がいる選択だ。",
+          "en": "Exposing our own wounds. That takes courage."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「告解」の精神です、聖下。罪を認め、悔い改める姿こそ、教会の原点ではないですか。国際会計事務所による独立監査を受け入れる声明を私が準備します。",
+          "en": "'Confession' in its truest form, Your Holiness. Isn't acknowledging sin and seeking repentance the very foundation of the Church? I'll prepare a statement accepting an independent audit by an international firm."
+        },
+        {
+          "speaker": "leader",
+          "ja": "関与した枢機卿たちの処遇は？",
+          "en": "What about the cardinals involved?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "静かに職務から外し、「祈りと瞑想の期間」として修道院へ。表向きは引退、実態は追放です。教会法の範囲内で、かつ世間に説明のつく形で処理します。",
+          "en": "Quietly remove them from their posts and send them to a monastery for 'a period of prayer and meditation.' Publicly it's retirement, in reality it's exile. Handled within canon law, in a way the world can understand."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "中国との極秘司教任命交渉",
+      "scenario_title_en": "Secret Bishop Appointment Negotiation with China",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、中国との司教任命に関する秘密協定の更新期限が迫っている。北京は条件の変更を求めてきた。",
+          "en": "Fixer, the deadline for renewing the secret agreement on bishop appointments with China is approaching. Beijing is demanding changes to the terms."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "聖下、中国側の新条件を入手しました。彼らは司教候補の事前拒否権に加え、バチカンの台湾との外交関係断絶を要求しています。",
+          "en": "Your Holiness, I've obtained China's new terms. In addition to veto power over bishop candidates, they're demanding the Vatican sever diplomatic ties with Taiwan."
+        },
+        {
+          "speaker": "leader",
+          "ja": "台湾を見捨てることはできない。しかし、中国の1400万人のカトリック信者も守らねばならない。",
+          "en": "We cannot abandon Taiwan. But we must also protect China's 14 million Catholic faithful."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "両方を守る方法があります。台湾との関係は「外交」ではなく「宗教的連帯」として再定義するのです。中国も面目を保てます。",
+          "en": "There's a way to protect both. We redefine the Taiwan relationship not as 'diplomacy' but as 'religious solidarity.' China saves face too."
+        },
+        {
+          "speaker": "leader",
+          "ja": "言葉の問題ではない。実質的な関係が維持できるのか？",
+          "en": "It's not about words. Can we maintain the substantive relationship?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "台湾側の大司教とはすでに協議済みです。名称変更に同意する代わりに、バチカンからの援助を増額する約束を取り付けました。",
+          "en": "I've already consulted with the Archbishop in Taiwan. In exchange for agreeing to the name change, we've secured a commitment to increase Vatican aid."
+        },
+        {
+          "speaker": "leader",
+          "ja": "中国の地下教会の信者たちの安全は？彼らが最も弱い立場にいる。",
+          "en": "What about the safety of China's underground church faithful? They're in the most vulnerable position."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "新協定に「信仰の自由の保障」条項を潜り込ませます。法的拘束力は弱いですが、中国が公式文書で信仰の自由に言及すること自体が、地下教会の盾になります。",
+          "en": "We slip a 'guarantee of religious freedom' clause into the new agreement. Its legal force is limited, but the mere fact that China references religious freedom in an official document becomes a shield for the underground church."
+        },
+        {
+          "speaker": "leader",
+          "ja": "神と政治の間で綱渡りをしているな。",
+          "en": "We're walking a tightrope between God and politics."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "2000年間、教会はそうしてきました。聖下、次の署名式は北京ではなく、中立地のマカオで行いましょう。東洋のバチカンと呼ばれた地です。象徴的に完璧です。",
+          "en": "The Church has done so for 2,000 years. Your Holiness, let's hold the next signing ceremony not in Beijing, but in neutral Macau — once called the Vatican of the East. Symbolically perfect."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "枢機卿の裏切りとコンクラーヴェ工作",
+      "scenario_title_en": "Cardinal's Betrayal and Conclave Manipulation",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、不穏な情報が入った。一部の枢機卿が、私の退位を画策しているという噂がある。",
+          "en": "Fixer, I've received disturbing information. There are rumors that some cardinals are plotting to force my resignation."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "聖下、噂ではありません。事実です。中心人物はミラノ大司教と、南米出身の枢機卿3名。彼らは次期教皇候補を既に選んでいます。",
+          "en": "Your Holiness, it's not a rumor. It's fact. The ringleader is the Archbishop of Milan, along with three South American cardinals. They've already chosen their candidate for the next pope."
+        },
+        {
+          "speaker": "leader",
+          "ja": "教皇を退位に追い込むのは、ベネディクト16世以来の前例がある。彼らはその前例を利用するつもりか。",
+          "en": "Forcing a pope to resign has precedent since Benedict XVI. Are they planning to use that precedent?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "はい。「健康上の理由」をでっち上げて、退位の圧力をかけるシナリオです。バチカンの医師団の一人が彼らに協力しています。",
+          "en": "Yes. Their scenario is to fabricate 'health reasons' and pressure a resignation. One of the Vatican's physicians is cooperating with them."
+        },
+        {
+          "speaker": "leader",
+          "ja": "ペテロの座を政治的陰謀で汚すつもりか…。どう対処すべきだ？",
+          "en": "They intend to stain the Chair of Peter with political conspiracy... How should we respond?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "正面から対決するのではなく、彼らの基盤を静かに崩します。ミラノ大司教の資金源を調査したところ、イタリアのマフィア系企業との繋がりが見つかりました。",
+          "en": "Rather than a direct confrontation, we quietly erode their base. My investigation into the Milan Archbishop's funding revealed connections to Italian Mafia-linked enterprises."
+        },
+        {
+          "speaker": "leader",
+          "ja": "マフィアと枢機卿…。教会の暗黒時代を思わせるな。",
+          "en": "The Mafia and cardinals... Reminiscent of the Church's darkest chapters."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "南米の3名には別のアプローチを。彼らの教区への支援金配分を見直す「行政改革」を発表しましょう。資金が減れば、影響力も減ります。",
+          "en": "For the three South Americans, a different approach. We announce 'administrative reforms' reviewing aid allocation to their dioceses. Less funding means less influence."
+        },
+        {
+          "speaker": "leader",
+          "ja": "教会の分裂だけは避けなければならない。それが最優先だ。",
+          "en": "We must avoid a schism at all costs. That is the top priority."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "ご安心ください。彼らを排除するのではなく、「和解」の形で取り込みます。次回の枢機卿会議で、聖下が改革路線の拡大を発表すれば、反対派の大義名分は消えます。敵を倒す最善の方法は、敵を味方にすることです。",
+          "en": "Rest assured. Rather than purging them, we absorb them through 'reconciliation.' If you announce an expansion of your reform agenda at the next consistory, the opposition loses its cause. The best way to defeat an enemy is to make them an ally."
+        }
+      ]
+    }
+  ],
+  "comedy": [
+    {
+      "scenario_title_ja": "教皇のSNSアカウントが炎上",
+      "scenario_title_en": "The Pope's Social Media Account Goes Viral",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、大変なことになった。私のInstagramに投稿された写真が世界中で大炎上している。",
+          "en": "Fixer, we have a disaster. A photo posted on my Instagram has gone viral worldwide — in the worst way."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "聖下、確認しました。深夜2時に投稿された写真ですね。教皇がピザを片手にNetflixを観ている自撮り…。キャプションは「金曜の夜、最高」。",
+          "en": "Your Holiness, I've confirmed it. The photo posted at 2 AM. A selfie of the Pope eating pizza while watching Netflix... Caption: 'Friday night, living my best life.'"
+        },
+        {
+          "speaker": "leader",
+          "ja": "あれは事故だ！甥にスマホの使い方を教わっていて、間違えて投稿してしまった。",
+          "en": "That was an accident! My nephew was teaching me how to use the phone and I posted it by mistake."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "問題は拡大しています。「いいね」がすでに1200万件。さらに、Netflixの画面に映っていたのが犯罪ドラマだったため、「教皇の趣味」がトレンド入りしています。",
+          "en": "The situation is escalating. Already 12 million likes. Furthermore, the Netflix screen showed a crime drama, so 'The Pope's Taste in Shows' is now trending."
+        },
+        {
+          "speaker": "leader",
+          "ja": "あれは…教会の堕落を学ぶための資料映像だ。断じてエンタメではない。",
+          "en": "That was... educational material for studying corruption within the Church. Absolutely not entertainment."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "もちろんです。しかし聖下、ここは逆転の発想で。「教皇も人間です」キャンペーンとして活用しましょう。若者の教会離れが深刻な今、これは千載一遇のチャンスです。",
+          "en": "Of course. But Your Holiness, let's flip the script. We use this as a 'The Pope is human too' campaign. With young people leaving the Church, this is a once-in-a-lifetime opportunity."
+        },
+        {
+          "speaker": "leader",
+          "ja": "ピザの自撮りで若者を教会に呼び戻すのか…？2000年の教会史で前例がないぞ。",
+          "en": "Bringing young people back to Church with a pizza selfie...? There's no precedent in 2,000 years of Church history."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "フォロワーが一晩で500万人増えました。Netflixからは「教皇公認ドラマ」の監修オファーが来ています。バチカンの影響力が、ソーシャルメディアで史上最大になりました。ペテロの網は、今やインターネットに広がっています。",
+          "en": "You gained 5 million followers overnight. Netflix is offering a deal for 'Papal-approved dramas.' The Vatican's influence on social media has reached an all-time high. Peter's net now stretches across the internet."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "システィーナ礼拝堂でドローン撮影事件",
+      "scenario_title_en": "Drone Filming Incident in the Sistine Chapel",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、システィーナ礼拝堂で騒ぎが起きた。観光客がドローンを飛ばして天井画を撮影しようとした。",
+          "en": "Fixer, there's been a commotion in the Sistine Chapel. A tourist tried to fly a drone to photograph the ceiling."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "聖下、状況は把握しています。ドローンはミケランジェロの「アダムの創造」に接触し、現在…神の指に引っかかって動けなくなっています。",
+          "en": "Your Holiness, I'm aware of the situation. The drone made contact with Michelangelo's 'Creation of Adam' and is currently... stuck on God's finger and can't move."
+        },
+        {
+          "speaker": "leader",
+          "ja": "神の指にドローンが…！ミケランジェロが天国で泣いているぞ！",
+          "en": "A drone on God's finger...! Michelangelo is weeping in heaven!"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "修復専門家を緊急招集しました。幸い、ドローンが軽量だったため、フレスコ画への損傷は最小限です。問題は…ドローンのカメラがまだ生配信中です。視聴者80万人。",
+          "en": "I've summoned restoration experts immediately. Fortunately, the drone was lightweight, so damage to the fresco is minimal. The problem is... the drone's camera is still livestreaming. 800,000 viewers."
+        },
+        {
+          "speaker": "leader",
+          "ja": "生配信!? 世界中が神の指に引っかかったドローンを見ているのか？",
+          "en": "Livestreaming!? The whole world is watching a drone stuck on God's finger?"
+        },
+        {
+          "speaker": "fixer",
+          "ja": "コメント欄は「神がドローンをキャッチした」「これぞ神の手」で溢れています。ミーム化は不可避です。しかし聖下、これを「神のメッセージ」として解釈してみてはいかがでしょう。",
+          "en": "The comments are flooded with 'God caught the drone' and 'The Hand of God.' Memeification is inevitable. But Your Holiness, what if we interpret this as 'a message from God'?"
+        },
+        {
+          "speaker": "leader",
+          "ja": "…ドローンが神のメッセージだと？さすがに無理があるだろう。",
+          "en": "...A drone as God's message? That's quite a stretch."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "「テクノロジーも神の創造物の一部である」という声明を発表するのです。そして、システィーナ礼拝堂のVRツアーを公式に発表します。ドローンが教えてくれたのは、芸術を世界に開くべきだということです。",
+          "en": "'Technology too is part of God's creation' — we issue this statement. Then we officially announce a VR tour of the Sistine Chapel. What the drone taught us is that art should be opened to the world."
+        },
+        {
+          "speaker": "leader",
+          "ja": "…災いを転じて福となす、か。まさにフィクサーだな。",
+          "en": "...Turning misfortune into fortune. That's a true fixer."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "VRツアーの収益は慈善事業に。そしてドローンは…バチカン美術館に「現代アート」として展示しましょう。タイトルは「神の指とテクノロジー」。ミケランジェロも天国で微笑むはずです。",
+          "en": "VR tour revenue goes to charity. And the drone... we display it in the Vatican Museums as 'contemporary art.' Title: 'God's Finger and Technology.' Even Michelangelo would smile from heaven."
+        }
+      ]
+    },
+    {
+      "scenario_title_ja": "教皇の猫がミサ中に祭壇を占拠",
+      "scenario_title_en": "The Pope's Cat Takes Over the Altar During Mass",
+      "lines": [
+        {
+          "speaker": "leader",
+          "ja": "フィクサー、サン・ピエトロ大聖堂のミサ中に、私の猫のベネディクトが祭壇の上に飛び乗った。全世界に生中継されていた。",
+          "en": "Fixer, during Mass at St. Peter's Basilica, my cat Benedict jumped onto the altar. It was being broadcast live worldwide."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "聖下、映像を確認しました。ベネディクトは聖体のパンを…食べています。そして今、聖杯の中でワインを舐めています。",
+          "en": "Your Holiness, I've reviewed the footage. Benedict is... eating the communion bread. And now he's lapping up wine from the chalice."
+        },
+        {
+          "speaker": "leader",
+          "ja": "聖体拝領を猫が行うのは教会法に規定がない事態だ！枢機卿たちが凍りついている。",
+          "en": "A cat performing communion is a situation not covered by canon law! The cardinals are frozen in shock."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "信者の反応は意外にも好意的です。「猫にも神の恵みを」というハッシュタグが世界トレンド1位です。動物愛護団体からは感謝状が届いています。",
+          "en": "The faithful's response is surprisingly positive. The hashtag 'God's Grace for Cats Too' is trending number one worldwide. Animal welfare groups are sending thank-you letters."
+        },
+        {
+          "speaker": "leader",
+          "ja": "好意的？しかし、保守派の枢機卿たちは激怒しているだろう。",
+          "en": "Positive? But the conservative cardinals must be furious."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "保守派への対策は、アッシジの聖フランチェスコの故事を引用します。「動物も神の被造物である」は正統な神学です。猫を祭壇から降ろすのではなく、教義を味方につけるのです。",
+          "en": "For the conservatives, we cite Saint Francis of Assisi. 'Animals too are God's creatures' is orthodox theology. Rather than removing the cat from the altar, we make doctrine our ally."
+        },
+        {
+          "speaker": "leader",
+          "ja": "ベネディクトは今、祭壇の上で丸くなって寝始めた。ミサが続行できない。",
+          "en": "Benedict is now curling up on the altar to sleep. Mass can't continue."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "マタタビ入りのクッションをサクリスティに用意しました。3分で祭壇から移動させます。その間、聖下は「すべての生き物に祝福を」と即興のスピーチをお願いします。",
+          "en": "I've prepared a catnip-infused cushion in the sacristy. We'll have him off the altar in three minutes. In the meantime, please give an impromptu speech about 'Blessings for all living creatures.'"
+        },
+        {
+          "speaker": "leader",
+          "ja": "…猫のためにミサの内容を変更するのか。前代未聞だぞ。",
+          "en": "...Changing the Mass for a cat. This is unprecedented."
+        },
+        {
+          "speaker": "fixer",
+          "ja": "前代未聞だからこそ、歴史に残ります。来月の動物祝福の日を「聖ベネディクト猫の日」として制定しましょう。グッズ販売の収益は動物保護施設へ。教皇の猫は、教会最高の広報担当になりました。",
+          "en": "Precisely because it's unprecedented, it will make history. Let's establish next month's animal blessing day as 'Saint Benedict the Cat Day.' Merchandise revenue goes to animal shelters. The Pope's cat has become the Church's greatest PR asset."
+        }
+      ]
+    }
+  ]
+}
