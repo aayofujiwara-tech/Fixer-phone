@@ -21,8 +21,9 @@ if (import.meta.env.DEV && 'serviceWorker' in navigator) {
   });
 }
 
-// プロダクション: SW更新検知 → 自動リロード
-// ※初回インストール時はリロード不要（hadController で判定）
+// プロダクション: SW登録 + 更新検知 → 自動リロード
+// VitePWA の injectRegister: false により、ここで手動登録する。
+// これにより hadController ガードで初回インストール時のリロードを確実に防止できる。
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   const hadController = !!navigator.serviceWorker.controller;
   let refreshing = false;
@@ -35,16 +36,19 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
     }
   });
 
-  // 新しいSWが待機中の場合、即座にアクティブ化を促す
-  navigator.serviceWorker.ready.then(registration => {
-    registration.addEventListener('updatefound', () => {
-      const newWorker = registration.installing;
-      if (!newWorker) return;
-      newWorker.addEventListener('statechange', () => {
-        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-          // 新バージョンが待機中 → skipWaiting を送信して即座に切り替え
-          newWorker.postMessage({ type: 'SKIP_WAITING' });
-        }
+  // SW登録（VitePWAが生成する registerSW.js の代わり）
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(registration => {
+      // 新しいSWが見つかった場合、即座にアクティブ化を促す
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            // 新バージョンが待機中 → skipWaiting を送信して即座に切り替え
+            newWorker.postMessage({ type: 'SKIP_WAITING' });
+          }
+        });
       });
     });
   });

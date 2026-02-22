@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => ({
     ...(mode === 'production' ? [
       VitePWA({
         registerType: 'autoUpdate',
+        injectRegister: false,
         manifest: {
           name: 'Fixer Phone - 極秘回線',
           short_name: 'FixerPhone',
