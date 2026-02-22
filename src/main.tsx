@@ -11,7 +11,7 @@ if (import.meta.env.DEV && 'serviceWorker' in navigator) {
   });
 }
 
-// プロダクション: SW更新時に自動リロード（手動Ctrl+Shift+R不要）
+// プロダクション: SW更新検知 → 更新バナー表示 or 自動リロード
 if (import.meta.env.PROD && 'serviceWorker' in navigator) {
   let refreshing = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -19,6 +19,20 @@ if (import.meta.env.PROD && 'serviceWorker' in navigator) {
       refreshing = true;
       window.location.reload();
     }
+  });
+
+  // 新しいSWが待機中の場合、即座にアクティブ化を促す
+  navigator.serviceWorker.ready.then(registration => {
+    registration.addEventListener('updatefound', () => {
+      const newWorker = registration.installing;
+      if (!newWorker) return;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // 新バージョンが待機中 → skipWaiting を送信して即座に切り替え
+          newWorker.postMessage({ type: 'SKIP_WAITING' });
+        }
+      });
+    });
   });
 }
 

@@ -26,11 +26,22 @@ export default defineConfig(({ mode }) => ({
           ],
         },
         workbox: {
-          // アプリシェルをキャッシュ
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-          // API呼び出しはネットワークファースト
+          // HTMLは事前キャッシュから除外（NavigationRouteで制御）
+          globPatterns: ['**/*.{js,css,ico,png,svg,woff2}'],
+          // ナビゲーション（HTML）はNetworkFirst — 常に最新を取得、オフライン時のみキャッシュ使用
+          navigateFallback: undefined,
           runtimeCaching: [
             {
+              // HTMLナビゲーション — NetworkFirst
+              urlPattern: ({ request }) => request.mode === 'navigate',
+              handler: 'NetworkFirst',
+              options: {
+                cacheName: 'html-cache',
+                expiration: { maxEntries: 5, maxAgeSeconds: 60 * 60 * 24 },
+              },
+            },
+            {
+              // API呼び出し — NetworkFirst
               urlPattern: /^https:\/\/api\.anthropic\.com\/.*/i,
               handler: 'NetworkFirst',
               options: {
