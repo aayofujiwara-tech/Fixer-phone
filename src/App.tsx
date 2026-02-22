@@ -5,6 +5,7 @@ import { useLanguage } from './i18n/LanguageContext';
 import { fallbackScenario } from './lib/scenarios';
 import { getScenario } from './lib/scenarioPool';
 import { getApiKey } from './lib/claude';
+import { FEATURES } from './lib/features';
 import { SetupScreen } from './components/SetupScreen';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CallScreen } from './components/CallScreen';
@@ -28,7 +29,7 @@ function App() {
       setCallMode(mode);
       setScreen('loading');
 
-      const apiKey = getApiKey();
+      const apiKey = FEATURES.API_MODE ? getApiKey() : null;
 
       if (apiKey && scenarioIndex === null) {
         try {

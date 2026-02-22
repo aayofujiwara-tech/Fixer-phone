@@ -4,6 +4,7 @@ import { CountrySelector } from './CountrySelector';
 import { getApiKey, setApiKey } from '../lib/claude';
 import { getScenarioList, hasScenarioPool } from '../lib/scenarioPool';
 import { useLanguage } from '../i18n/LanguageContext';
+import { FEATURES } from '../lib/features';
 
 interface Props {
   onStart: (country: Country, mood: Mood, callMode: CallMode, scenarioIndex: number | null) => void;
@@ -25,6 +26,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
   const { lang, setLang, t } = useLanguage();
 
   useEffect(() => {
+    if (!FEATURES.API_MODE) return;
     const savedKey = getApiKey();
     if (savedKey) {
       setApiKeyState(savedKey);
@@ -44,7 +46,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
   const handleStart = () => {
     if (!selectedCountry) return;
 
-    if (apiKey.trim()) {
+    if (FEATURES.API_MODE && apiKey.trim()) {
       setApiKey(apiKey.trim());
     }
 
@@ -276,8 +278,8 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
           </div>
         </section>
 
-        {/* APIキーなしの場合のデモモード表示 */}
-        {!apiKey.trim() && !getApiKey() && (
+        {/* APIキーなしの場合のデモモード表示（API_MODE 有効時のみ） */}
+        {FEATURES.API_MODE && !apiKey.trim() && !getApiKey() && (
           <div className="text-center animate-fade-in">
             <p className="text-gray-500 text-xs font-mono">
               {lang === 'ja' ? 'デモモードで開始します（事前生成シナリオ）' : 'Starting in demo mode (pre-generated scenarios)'}
@@ -285,7 +287,8 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
           </div>
         )}
 
-        {/* APIキー入力（折りたたみ可能） */}
+        {/* APIキー入力（API_MODE 有効時のみ表示） */}
+        {FEATURES.API_MODE && (
         <section>
           <button
             onClick={() => setShowApiKeyInput(!showApiKeyInput)}
@@ -311,6 +314,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             </div>
           )}
         </section>
+        )}
       </div>
 
       {/* 通話開始ボタン */}
