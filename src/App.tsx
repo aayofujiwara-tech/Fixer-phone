@@ -16,6 +16,7 @@ function App() {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [callDuration, setCallDuration] = useState(0);
   const [callMode, setCallMode] = useState<CallMode>('auto');
+  const [currentMood, setCurrentMood] = useState<Mood>('serious');
   const [jaSpeed, setJaSpeed] = useState(4);
   const [enSpeed, setEnSpeed] = useState(3);
 
@@ -27,6 +28,7 @@ function App() {
     async (country: Country, mood: Mood, mode: CallMode = 'auto', scenarioIndex: number | null = null) => {
       setSelectedCountry(country);
       setCallMode(mode);
+      setCurrentMood(mood);
       setScreen('loading');
 
       const apiKey = FEATURES.API_MODE ? getApiKey() : null;
@@ -81,7 +83,7 @@ function App() {
   }, [reset]);
 
   return (
-    <div className="max-w-[480px] mx-auto">
+    <div className={`mx-auto ${screen === 'call' ? 'max-w-[480px] md:max-w-none' : 'max-w-[480px]'}`}>
       {screen === 'setup' && (
         <SetupScreen
           onStart={handleStart}
@@ -133,6 +135,7 @@ function App() {
           country={selectedCountry}
           scenario={scenario}
           callMode={callMode}
+          mood={currentMood}
           onEnd={handleCallEnd}
           jaSpeed={jaSpeed}
           enSpeed={enSpeed}

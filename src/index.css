@@ -86,6 +86,44 @@ button {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* PC: 回線パルスアニメーション（上→下 = VIP→Fixer） */
+@keyframes pulse-line-down {
+  0%   { top: 5%; opacity: 0; transform: scale(0.5); }
+  15%  { opacity: 1; transform: scale(1); }
+  85%  { opacity: 1; transform: scale(1); }
+  100% { top: 95%; opacity: 0; transform: scale(0.5); }
+}
+
+/* PC: 回線パルスアニメーション（下→上 = Fixer→VIP） */
+@keyframes pulse-line-up {
+  0%   { top: 95%; opacity: 0; transform: scale(0.5); }
+  15%  { opacity: 1; transform: scale(1); }
+  85%  { opacity: 1; transform: scale(1); }
+  100% { top: 5%; opacity: 0; transform: scale(0.5); }
+}
+
+.animate-pulse-line-down {
+  animation: pulse-line-down 1.8s ease-in-out infinite;
+}
+.animate-pulse-line-down-delayed {
+  animation: pulse-line-down 1.8s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+.animate-pulse-line-up {
+  animation: pulse-line-up 1.8s ease-in-out infinite;
+}
+.animate-pulse-line-up-delayed {
+  animation: pulse-line-up 1.8s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+/* PC: ボタン min-height 上書き（コンパクト化） */
+@media (min-width: 768px) {
+  .pc-compact-btn {
+    min-height: auto;
+  }
+}
+
 /* dvh単位フォールバック */
 @supports not (min-height: 100dvh) {
   .min-h-dvh {

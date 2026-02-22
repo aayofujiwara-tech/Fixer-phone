@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { Country, Scenario, CallMode } from '../types';
+import type { Country, Scenario, CallMode, Mood, ScenarioLine } from '../types';
 import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
 import { useCallTimer } from '../hooks/useCallTimer';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import { SpeechBubble } from './SpeechBubble';
+import { TypewriterText } from './TypewriterText';
+import { ConnectionLine } from './ConnectionLine';
 import { useLanguage } from '../i18n/LanguageContext';
 import { safeGetItem, safeSetItem } from '../lib/storage';
 
@@ -10,6 +13,7 @@ interface Props {
   country: Country;
   scenario: Scenario;
   callMode: CallMode;
+  mood: Mood;
   onEnd: (duration: number) => void;
   jaSpeed: number;
   enSpeed: number;
@@ -18,7 +22,7 @@ interface Props {
 }
 
 // 通話メイン画面
-export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpeed, onJaSpeedChange, onEnSpeedChange }: Props) {
+export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, enSpeed, onJaSpeedChange, onEnSpeedChange }: Props) {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [showLeaderLine, setShowLeaderLine] = useState(false);
   const [showFixerLine, setShowFixerLine] = useState(false);
@@ -35,6 +39,13 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
   const { speak, stop, isSpeaking, setVolume } = useSpeechSynthesis();
   const timer = useCallTimer();
   const { lang, t } = useLanguage();
+
+  // PC判定（768px以上）
+  const isPC = useMediaQuery('(min-width: 768px)');
+
+  // PC用: 前回のセリフを保持（非アクティブパネルで薄く表示）
+  const prevLeaderRef = useRef<ScenarioLine | null>(null);
+  const prevFixerRef = useRef<ScenarioLine | null>(null);
 
   // スピーカーモード変更時に音量を切り替え
   useEffect(() => {
@@ -122,6 +133,19 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
 
     return () => clearTimeout(thinkTimer);
   }, [currentLineIndex]);
+
+  // PC用: 表示されたセリフを記録（非アクティブ時のゴースト表示用）
+  useEffect(() => {
+    if (showLeaderLine && pair.leader) {
+      prevLeaderRef.current = pair.leader;
+    }
+  }, [showLeaderLine, pair.leader]);
+
+  useEffect(() => {
+    if (showFixerLine && pair.fixer) {
+      prevFixerRef.current = pair.fixer;
+    }
+  }, [showFixerLine, pair.fixer]);
 
   // リーダーのセリフ表示後: 選択言語のみTTS読み上げ → フィクサーセリフ表示
   // 練習モード・自動進行モード共通
@@ -250,9 +274,17 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
   // 自動モード中はボタンの透明度を下げる
   const manualButtonOpacity = callMode === 'auto' && autoMode ? 'opacity-40' : '';
 
+  // PC用: パネルのアクティブ状態
+  const vipActive = showLeaderLine && !showFixerLine;
+  const fixerActive = showFixerLine;
+
+  // PC用: パルス方向と色
+  const pulseDirection = vipActive ? 'to-fixer' as const : fixerActive ? 'to-vip' as const : 'idle' as const;
+  const pulseColor = mood === 'serious' ? '#3b82f6' : '#22c55e';
+
   return (
-    <div className="min-h-dvh bg-dark flex flex-col">
-      {/* ヘッダー */}
+    <div className={`min-h-dvh bg-dark flex flex-col ${isPC ? 'h-screen overflow-hidden' : ''}`}>
+      {/* ===== ヘッダー（共通） ===== */}
       <div
         className="p-4 border-b border-gray-800"
         style={{
@@ -367,173 +399,424 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
         </div>
       </div>
 
-      {/* セリフエリア */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {/* 相手のセリフ */}
-        <div className="min-h-[80px]">
-          {isThinking && (
-            <div className="animate-fade-in">
-              <div className="text-xs text-gray-500 mb-2 font-mono">
-                {country.flag} {t('leaderSpeaking')}
-              </div>
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+      {isPC ? (
+        /* ===== PC: スプリットスクリーン ===== */
+        <>
+          <div className="flex flex-1 min-h-0">
+            {/* ----- VIP パネル (45%) ----- */}
+            <div className="w-[45%] relative flex flex-col overflow-hidden">
+              {/* アクティブ時のグロー背景 */}
+              <div
+                className="absolute inset-0 pointer-events-none transition-opacity duration-700"
+                style={{
+                  background: `radial-gradient(ellipse at 70% 50%, ${country.accentColor}12, transparent 70%)`,
+                  opacity: vipActive ? 1 : 0,
+                }}
+              />
+
+              <div className={`relative flex-1 flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${
+                vipActive ? 'opacity-100' : fixerActive ? 'opacity-40' : 'opacity-70'
+              }`}>
+                {/* キャラクター情報 */}
+                <div className="text-center mb-8">
+                  <span className="text-5xl block mb-3">{country.flag}</span>
+                  <div className={`text-sm font-mono font-bold tracking-wider transition-colors duration-500 ${
+                    vipActive ? 'text-white' : 'text-gray-600'
+                  }`}>
+                    {countryDisplay}
+                  </div>
+                  {vipActive && (
+                    <div
+                      className="h-0.5 mx-auto mt-2 rounded-full animate-fade-in"
+                      style={{ width: '40px', backgroundColor: country.accentColor }}
+                    />
+                  )}
+                </div>
+
+                {/* VIP 吹き出し */}
+                <div className="w-full max-w-md">
+                  {showLeaderLine && pair.leader ? (
+                    <div className="relative bg-gray-800/50 rounded-2xl p-6 ml-auto mr-2 max-w-[95%] animate-fade-in">
+                      {/* 右向き三角（尻尾） */}
+                      <div className="absolute -right-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gray-800/50" />
+                      <TypewriterText
+                        text={lang === 'ja' ? pair.leader.en : pair.leader.ja}
+                        className="text-gray-300 text-base leading-relaxed italic block"
+                        duration={2000}
+                      />
+                      <div className="text-gray-500 text-xs mt-3">
+                        {lang === 'ja' ? pair.leader.ja : pair.leader.en}
+                      </div>
+                    </div>
+                  ) : !vipActive && prevLeaderRef.current ? (
+                    /* 前回のセリフ（ゴースト表示） */
+                    <div className="relative bg-gray-800/20 rounded-2xl p-6 ml-auto mr-2 max-w-[95%] opacity-50">
+                      <div className="absolute -right-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-gray-800/20" />
+                      <div className="text-gray-600 text-sm leading-relaxed italic">
+                        {lang === 'ja' ? prevLeaderRef.current.en : prevLeaderRef.current.ja}
+                      </div>
+                    </div>
+                  ) : isThinking ? (
+                    <div className="flex gap-1.5 justify-center py-4">
+                      <span className="w-2.5 h-2.5 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <span className="w-2.5 h-2.5 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <span className="w-2.5 h-2.5 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    </div>
+                  ) : null}
+                </div>
               </div>
             </div>
-          )}
-          {showLeaderLine && pair.leader && (
-            <SpeechBubble
-              speaker="leader"
-              ja={pair.leader.ja}
-              en={pair.leader.en}
-              countryFlag={country.flag}
-            />
-          )}
-        </div>
 
-        {/* 区切り線 */}
-        {showFixerLine && (
-          <div className="border-t border-gray-800 animate-fade-in" />
-        )}
+            {/* ----- 回線ビジュアル (10%) ----- */}
+            <div className="w-[10%] py-8">
+              <ConnectionLine direction={pulseDirection} color={pulseColor} />
+            </div>
 
-        {/* 自分のセリフ */}
-        <div className="min-h-[120px]">
-          {showFixerLine && pair.fixer && callMode !== 'practice' && (
-            <SpeechBubble
-              speaker="fixer"
-              ja={pair.fixer.ja}
-              en={pair.fixer.en}
-            />
-          )}
+            {/* ----- フィクサーパネル (45%) ----- */}
+            <div className="w-[45%] relative flex flex-col overflow-hidden">
+              {/* アクティブ時のグロー背景 */}
+              <div
+                className="absolute inset-0 pointer-events-none transition-opacity duration-700"
+                style={{
+                  background: 'radial-gradient(ellipse at 30% 50%, rgba(0,255,136,0.07), transparent 70%)',
+                  opacity: fixerActive ? 1 : 0,
+                }}
+              />
 
-          {/* 練習モード: フィクサーセリフ（言語切替付き） */}
-          {showFixerLine && pair.fixer && callMode === 'practice' && (
-            <div className="animate-fade-in">
-              <div className="text-xs text-accent/60 mb-2 font-mono font-bold uppercase tracking-wider">
-                {t('yourLine')}
+              <div className={`relative flex-1 flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${
+                fixerActive ? 'opacity-100' : vipActive ? 'opacity-40' : 'opacity-70'
+              }`}>
+                {/* キャラクター情報 */}
+                <div className="text-center mb-8">
+                  <span className="text-5xl block mb-3">🕶️</span>
+                  <div className={`text-sm font-mono font-bold tracking-wider transition-colors duration-500 ${
+                    fixerActive ? 'text-accent' : 'text-gray-600'
+                  }`}>
+                    FIXER
+                  </div>
+                  {fixerActive && (
+                    <div className="h-0.5 w-10 mx-auto mt-2 rounded-full bg-accent animate-fade-in" />
+                  )}
+                </div>
+
+                {/* フィクサー吹き出し */}
+                <div className="w-full max-w-md">
+                  {showFixerLine && pair.fixer && callMode !== 'practice' ? (
+                    <div className="relative bg-accent/5 border border-accent/20 rounded-2xl p-6 mr-auto ml-2 max-w-[95%] animate-fade-in">
+                      {/* 左向き三角（尻尾） */}
+                      <div className="absolute -left-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-accent/20" />
+                      <TypewriterText
+                        text={lang === 'ja' ? `「${pair.fixer.ja}」` : `"${pair.fixer.en}"`}
+                        className="text-white text-base font-bold leading-relaxed block"
+                        duration={2000}
+                      />
+                      <div className="text-accent/60 text-sm mt-3 font-mono">
+                        "{lang === 'ja' ? pair.fixer.en : pair.fixer.ja}"
+                      </div>
+                    </div>
+                  ) : showFixerLine && pair.fixer && callMode === 'practice' ? (
+                    /* 練習モード */
+                    <div className="mr-auto ml-2 max-w-[95%] animate-fade-in">
+                      <div className="text-xs text-accent/60 mb-2 font-mono font-bold uppercase tracking-wider">
+                        {t('yourLine')}
+                      </div>
+                      <div className="text-white text-lg leading-relaxed mb-2">
+                        {selectedLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
+                      </div>
+                      <div className="text-gray-500 text-sm leading-relaxed">
+                        {selectedLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
+                      </div>
+                      <button
+                        onClick={handlePracticeNext}
+                        className="mt-4 w-full py-3 rounded-xl bg-accent/20 text-accent border border-accent/50 font-mono text-sm hover:bg-accent/30 transition-all active:scale-[0.98]"
+                      >
+                        {t('practiceNext')}
+                      </button>
+                    </div>
+                  ) : !fixerActive && prevFixerRef.current ? (
+                    /* 前回のセリフ（ゴースト表示） */
+                    <div className="relative bg-accent/5 rounded-2xl p-6 mr-auto ml-2 max-w-[95%] opacity-30">
+                      <div className="absolute -left-2 top-8 w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-r-[8px] border-r-accent/10" />
+                      <div className="text-gray-500 text-sm leading-relaxed">
+                        {lang === 'ja' ? `「${prevFixerRef.current.ja}」` : `"${prevFixerRef.current.en}"`}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
               </div>
+            </div>
+          </div>
 
-              {/* メインの言語（大きく表示） */}
-              <div className="text-white text-base leading-relaxed mb-2">
-                {selectedLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
-              </div>
-
-              {/* サブの言語（小さく薄く表示 = カンニング用） */}
-              <div className="text-gray-500 text-xs leading-relaxed">
-                {selectedLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
-              </div>
-
-              {/* 「読めた！次へ」ボタン */}
+          {/* PC コントロールバー */}
+          <div className="p-3 border-t border-gray-800">
+            <div className="max-w-4xl mx-auto flex items-center justify-center gap-3 flex-wrap">
+              {/* スピーカー切替 */}
               <button
-                onClick={handlePracticeNext}
-                className="mt-4 w-full py-3 rounded-xl bg-accent/20 text-accent border border-accent/50 font-mono text-sm hover:bg-accent/30 transition-all active:scale-[0.98]"
+                onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
+                className={`pc-compact-btn px-3 py-1.5 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+                  speakerMode === 'speaker'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                    : 'bg-gray-800 text-gray-400 border border-gray-700'
+                }`}
               >
-                {t('practiceNext')}
+                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F4F1}'}</span>
+                {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+              </button>
+
+              {/* 自動/手動切替 */}
+              {callMode === 'auto' && (
+                <button
+                  onClick={() => {
+                    if (autoMode) clearAutoTimers();
+                    setAutoMode(!autoMode);
+                  }}
+                  className={`pc-compact-btn px-3 py-1.5 rounded-full text-xs font-mono transition-all ${
+                    autoMode
+                      ? 'bg-accent/20 text-accent border border-accent/50'
+                      : 'bg-gray-800 text-gray-500 border border-gray-700'
+                  }`}
+                >
+                  {autoMode ? 'AUTO' : 'MANUAL'}
+                </button>
+              )}
+
+              <div className="h-5 w-px bg-gray-700" />
+
+              {/* ナビゲーション */}
+              <button
+                onClick={handlePrev}
+                disabled={currentLineIndex === 0}
+                className={`pc-compact-btn px-4 py-1.5 rounded-lg font-mono text-xs transition-all ${
+                  currentLineIndex === 0
+                    ? 'bg-gray-900 text-gray-700 cursor-not-allowed'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:scale-[0.97]'
+                }`}
+              >
+                ◀ {t('prev')}
+              </button>
+              <span className="text-gray-600 text-xs font-mono tabular-nums">
+                {currentLineIndex + 1} / {totalPairs}
+              </span>
+              <button
+                onClick={handleNext}
+                className="pc-compact-btn px-4 py-1.5 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-mono text-xs transition-all active:scale-[0.97]"
+              >
+                {isLastPair ? t('endCallNext') : t('next')} ▶
+              </button>
+
+              {/* 読み上げボタン */}
+              {callMode === 'auto' && showFixerLine && pair.fixer && (
+                <>
+                  <div className="h-5 w-px bg-gray-700" />
+                  <button
+                    onClick={speakJa}
+                    disabled={isSpeaking}
+                    className={`pc-compact-btn px-3 py-1.5 rounded-lg border font-mono text-xs transition-all ${
+                      isSpeaking
+                        ? 'border-accent/50 text-accent/50 animate-pulse-border'
+                        : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
+                    }`}
+                  >
+                    {t('speakJa')}
+                  </button>
+                  <button
+                    onClick={speakEn}
+                    disabled={isSpeaking}
+                    className={`pc-compact-btn px-3 py-1.5 rounded-lg border font-mono text-xs transition-all ${
+                      isSpeaking
+                        ? 'border-accent/50 text-accent/50 animate-pulse-border'
+                        : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
+                    }`}
+                  >
+                    {t('speakEn')}
+                  </button>
+                </>
+              )}
+
+              <div className="h-5 w-px bg-gray-700" />
+
+              {/* 通話終了 */}
+              <button
+                onClick={handleEndCall}
+                className="pc-compact-btn px-5 py-1.5 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono text-xs transition-all active:scale-[0.98]"
+              >
+                {t('endCall')}
               </button>
             </div>
-          )}
-        </div>
-      </div>
-
-      {/* コントロールエリア */}
-      <div className="p-4 space-y-3 border-t border-gray-800">
-        {/* スピーカー切替 + 自動/手動切替 */}
-        <div className="flex items-center justify-between">
-          {/* スピーカー / 受話器 切替 */}
-          <button
-            onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
-            className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
-              speakerMode === 'speaker'
-                ? 'bg-green-500/20 text-green-400 border border-green-500/50'
-                : 'bg-gray-800 text-gray-400 border border-gray-700'
-            }`}
-          >
-            <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F4F1}'}</span>
-            {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
-          </button>
-
-          {/* 自動/手動切替（AUTOモードの時のみ） */}
-          {callMode === 'auto' && (
-            <button
-              onClick={() => {
-                if (autoMode) clearAutoTimers();
-                setAutoMode(!autoMode);
-              }}
-              className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
-                autoMode
-                  ? 'bg-accent/20 text-accent border border-accent/50'
-                  : 'bg-gray-800 text-gray-500 border border-gray-700'
-              }`}
-            >
-              {autoMode ? 'AUTO' : 'MANUAL'}
-            </button>
-          )}
-        </div>
-
-        {/* 読み上げボタン（AUTOモードの時のみ表示） */}
-        {callMode === 'auto' && showFixerLine && pair.fixer && (
-          <div className={`flex gap-3 animate-fade-in ${manualButtonOpacity}`}>
-            <button
-              onClick={speakJa}
-              disabled={isSpeaking}
-              className={`flex-1 py-3 rounded-lg border font-mono text-sm transition-all ${
-                isSpeaking
-                  ? 'border-accent/50 text-accent/50 animate-pulse-border'
-                  : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
-              }`}
-            >
-              {t('speakJa')}
-            </button>
-            <button
-              onClick={speakEn}
-              disabled={isSpeaking}
-              className={`flex-1 py-3 rounded-lg border font-mono text-sm transition-all ${
-                isSpeaking
-                  ? 'border-accent/50 text-accent/50 animate-pulse-border'
-                  : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
-              }`}
-            >
-              {t('speakEn')}
-            </button>
           </div>
-        )}
+        </>
+      ) : (
+        /* ===== モバイル: 既存レイアウト（変更なし） ===== */
+        <>
+          {/* セリフエリア */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-6">
+            {/* 相手のセリフ */}
+            <div className="min-h-[80px]">
+              {isThinking && (
+                <div className="animate-fade-in">
+                  <div className="text-xs text-gray-500 mb-2 font-mono">
+                    {country.flag} {t('leaderSpeaking')}
+                  </div>
+                  <div className="flex gap-1">
+                    <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  </div>
+                </div>
+              )}
+              {showLeaderLine && pair.leader && (
+                <SpeechBubble
+                  speaker="leader"
+                  ja={pair.leader.ja}
+                  en={pair.leader.en}
+                  countryFlag={country.flag}
+                />
+              )}
+            </div>
 
-        {/* ナビゲーション */}
-        <div className={`flex gap-3 ${manualButtonOpacity}`}>
-          <button
-            onClick={handlePrev}
-            disabled={currentLineIndex === 0}
-            className={`flex-1 py-3 rounded-lg font-mono text-sm transition-all ${
-              currentLineIndex === 0
-                ? 'bg-gray-900 text-gray-700 cursor-not-allowed'
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:scale-[0.97]'
-            }`}
-          >
-            {t('prev')}
-          </button>
-          <button
-            onClick={handleNext}
-            className="flex-1 py-3 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-mono text-sm transition-all active:scale-[0.97]"
-          >
-            {isLastPair ? t('endCallNext') : t('next')}
-          </button>
-        </div>
+            {/* 区切り線 */}
+            {showFixerLine && (
+              <div className="border-t border-gray-800 animate-fade-in" />
+            )}
 
-        {/* 通話終了ボタン */}
-        <button
-          onClick={handleEndCall}
-          className="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono transition-all active:scale-[0.98]"
-        >
-          {t('endCall')}
-        </button>
+            {/* 自分のセリフ */}
+            <div className="min-h-[120px]">
+              {showFixerLine && pair.fixer && callMode !== 'practice' && (
+                <SpeechBubble
+                  speaker="fixer"
+                  ja={pair.fixer.ja}
+                  en={pair.fixer.en}
+                />
+              )}
 
-        {/* セリフ進行表示 */}
-        <div className="text-center text-gray-600 text-xs font-mono">
-          {currentLineIndex + 1} / {totalPairs}
-        </div>
-      </div>
+              {/* 練習モード: フィクサーセリフ（言語切替付き） */}
+              {showFixerLine && pair.fixer && callMode === 'practice' && (
+                <div className="animate-fade-in">
+                  <div className="text-xs text-accent/60 mb-2 font-mono font-bold uppercase tracking-wider">
+                    {t('yourLine')}
+                  </div>
+
+                  {/* メインの言語（大きく表示） */}
+                  <div className="text-white text-base leading-relaxed mb-2">
+                    {selectedLang === 'ja' ? pair.fixer.ja : pair.fixer.en}
+                  </div>
+
+                  {/* サブの言語（小さく薄く表示 = カンニング用） */}
+                  <div className="text-gray-500 text-xs leading-relaxed">
+                    {selectedLang === 'ja' ? pair.fixer.en : pair.fixer.ja}
+                  </div>
+
+                  {/* 「読めた！次へ」ボタン */}
+                  <button
+                    onClick={handlePracticeNext}
+                    className="mt-4 w-full py-3 rounded-xl bg-accent/20 text-accent border border-accent/50 font-mono text-sm hover:bg-accent/30 transition-all active:scale-[0.98]"
+                  >
+                    {t('practiceNext')}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* コントロールエリア */}
+          <div className="p-4 space-y-3 border-t border-gray-800">
+            {/* スピーカー切替 + 自動/手動切替 */}
+            <div className="flex items-center justify-between">
+              {/* スピーカー / 受話器 切替 */}
+              <button
+                onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
+                className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+                  speakerMode === 'speaker'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                    : 'bg-gray-800 text-gray-400 border border-gray-700'
+                }`}
+              >
+                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F4F1}'}</span>
+                {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+              </button>
+
+              {/* 自動/手動切替（AUTOモードの時のみ） */}
+              {callMode === 'auto' && (
+                <button
+                  onClick={() => {
+                    if (autoMode) clearAutoTimers();
+                    setAutoMode(!autoMode);
+                  }}
+                  className={`px-3 py-1 rounded-full text-xs font-mono transition-all ${
+                    autoMode
+                      ? 'bg-accent/20 text-accent border border-accent/50'
+                      : 'bg-gray-800 text-gray-500 border border-gray-700'
+                  }`}
+                >
+                  {autoMode ? 'AUTO' : 'MANUAL'}
+                </button>
+              )}
+            </div>
+
+            {/* 読み上げボタン（AUTOモードの時のみ表示） */}
+            {callMode === 'auto' && showFixerLine && pair.fixer && (
+              <div className={`flex gap-3 animate-fade-in ${manualButtonOpacity}`}>
+                <button
+                  onClick={speakJa}
+                  disabled={isSpeaking}
+                  className={`flex-1 py-3 rounded-lg border font-mono text-sm transition-all ${
+                    isSpeaking
+                      ? 'border-accent/50 text-accent/50 animate-pulse-border'
+                      : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
+                  }`}
+                >
+                  {t('speakJa')}
+                </button>
+                <button
+                  onClick={speakEn}
+                  disabled={isSpeaking}
+                  className={`flex-1 py-3 rounded-lg border font-mono text-sm transition-all ${
+                    isSpeaking
+                      ? 'border-accent/50 text-accent/50 animate-pulse-border'
+                      : 'border-gray-600 text-gray-300 hover:border-accent hover:text-accent active:scale-[0.97]'
+                  }`}
+                >
+                  {t('speakEn')}
+                </button>
+              </div>
+            )}
+
+            {/* ナビゲーション */}
+            <div className={`flex gap-3 ${manualButtonOpacity}`}>
+              <button
+                onClick={handlePrev}
+                disabled={currentLineIndex === 0}
+                className={`flex-1 py-3 rounded-lg font-mono text-sm transition-all ${
+                  currentLineIndex === 0
+                    ? 'bg-gray-900 text-gray-700 cursor-not-allowed'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 active:scale-[0.97]'
+                }`}
+              >
+                {t('prev')}
+              </button>
+              <button
+                onClick={handleNext}
+                className="flex-1 py-3 rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 font-mono text-sm transition-all active:scale-[0.97]"
+              >
+                {isLastPair ? t('endCallNext') : t('next')}
+              </button>
+            </div>
+
+            {/* 通話終了ボタン */}
+            <button
+              onClick={handleEndCall}
+              className="w-full py-3 rounded-xl bg-red-600 hover:bg-red-500 text-white font-bold font-mono transition-all active:scale-[0.98]"
+            >
+              {t('endCall')}
+            </button>
+
+            {/* セリフ進行表示 */}
+            <div className="text-center text-gray-600 text-xs font-mono">
+              {currentLineIndex + 1} / {totalPairs}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
