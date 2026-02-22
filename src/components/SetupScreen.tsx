@@ -36,21 +36,18 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
     setSelectedScenarioIndex(null);
   }, [mood]);
 
-  const handleStart = () => {
-    console.log('=== SETUP: handleStart ===');
-    console.log('selectedCountry:', selectedCountry?.id);
-    console.log('mood:', mood);
-    console.log('apiKey in state:', apiKey ? '(set)' : '(empty)');
-    console.log('apiKey in localStorage:', getApiKey() ? '(set)' : '(empty)');
+  // 国変更時にシナリオ選択をリセット
+  useEffect(() => {
+    setSelectedScenarioIndex(null);
+  }, [selectedCountry]);
 
+  const handleStart = () => {
     if (!selectedCountry) return;
 
-    // APIキーがあれば保存
     if (apiKey.trim()) {
       setApiKey(apiKey.trim());
     }
 
-    console.log('=== SETUP: calling onStart ===');
     onStart(selectedCountry, mood, callMode, selectedScenarioIndex);
   };
 

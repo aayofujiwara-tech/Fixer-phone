@@ -44,25 +44,17 @@ const scenarioPools: Record<string, ScenarioPool> = {
  * @returns Scenario | null（該当国のプールがなければnull）
  */
 export function getScenario(countryId: string, mood: 'serious' | 'comedy', index: number | null = null): Scenario | null {
-  console.log('=== POOL: getScenario ===');
-  console.log('countryId:', countryId, 'mood:', mood, 'index:', index);
-
   const pool = scenarioPools[countryId];
-  console.log('pool exists:', !!pool);
   if (!pool) return null;
 
   const scenarios = pool[mood];
-  console.log('scenarios count:', scenarios?.length ?? 0);
   if (!scenarios || scenarios.length === 0) return null;
 
   if (index !== null && index >= 0 && index < scenarios.length) {
-    console.log('selected index:', index, 'title:', scenarios[index].scenario_title_ja);
     return scenarios[index];
   }
 
-  // ランダム
   const randomIndex = Math.floor(Math.random() * scenarios.length);
-  console.log('random index:', randomIndex, 'title:', scenarios[randomIndex].scenario_title_ja);
   return scenarios[randomIndex];
 }
 

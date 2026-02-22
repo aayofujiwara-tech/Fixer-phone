@@ -31,12 +31,3 @@ export type Mood = 'serious' | 'comedy';
 
 // 通話モード
 export type CallMode = 'auto' | 'practice';
-
-// アプリの状態
-export interface AppState {
-  screen: AppScreen;
-  selectedCountry: Country | null;
-  mood: Mood;
-  scenario: Scenario | null;
-  callDuration: number;
-}

@@ -2,9 +2,10 @@ import { useState, useCallback } from 'react';
 import type { Country, Mood, Scenario } from '../types';
 import { generateScenario } from '../lib/claude';
 import { translations, type Lang } from '../i18n/translations';
+import { safeGetItem } from '../lib/storage';
 
 function getLang(): Lang {
-  const saved = localStorage.getItem('fixer-phone-lang');
+  const saved = safeGetItem('fixer-phone-lang');
   return saved === 'en' ? 'en' : 'ja';
 }
 
@@ -41,8 +42,6 @@ export function useScenarioGenerator() {
 
   // フォールバックシナリオをセット（API失敗時に使用）
   const setFallback = useCallback((fallback: Scenario) => {
-    console.log('=== GENERATOR: setFallback called ===');
-    console.log('fallback scenario:', fallback.scenario_title_ja);
     setScenario(fallback);
     setError(null);
     setIsLoading(false);

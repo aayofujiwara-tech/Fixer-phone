@@ -1,0 +1,16 @@
+// localStorage安全ラッパー（プライベートブラウジング対応）
+export function safeGetItem(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+export function safeSetItem(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // プライベートブラウジングでQuotaExceededErrorが発生する場合がある
+  }
+}

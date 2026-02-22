@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback, type ReactNode } from 'react';
 import { translations, type Lang, type TranslationKey } from './translations';
+import { safeGetItem, safeSetItem } from '../lib/storage';
 
 interface LanguageContextValue {
   lang: Lang;
@@ -12,9 +13,8 @@ const LanguageContext = createContext<LanguageContextValue | null>(null);
 const STORAGE_KEY = 'fixer-phone-lang';
 
 function getInitialLang(): Lang {
-  const saved = localStorage.getItem(STORAGE_KEY);
+  const saved = safeGetItem(STORAGE_KEY);
   if (saved === 'ja' || saved === 'en') return saved;
-  // ブラウザ言語から推定
   const browserLang = navigator.language.toLowerCase();
   return browserLang.startsWith('ja') ? 'ja' : 'en';
 }
@@ -24,7 +24,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const setLang = useCallback((newLang: Lang) => {
     setLangState(newLang);
-    localStorage.setItem(STORAGE_KEY, newLang);
+    safeSetItem(STORAGE_KEY, newLang);
   }, []);
 
   const t = useCallback(

@@ -4,6 +4,7 @@ import { useSpeechSynthesis } from '../hooks/useSpeechSynthesis';
 import { useCallTimer } from '../hooks/useCallTimer';
 import { SpeechBubble } from './SpeechBubble';
 import { useLanguage } from '../i18n/LanguageContext';
+import { safeGetItem, safeSetItem } from '../lib/storage';
 
 interface Props {
   country: Country;
@@ -27,7 +28,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
 
   // スピーカーモード: 'speaker' = スピーカー（大音量）, 'earpiece' = 受話器（小音量）
   const [speakerMode, setSpeakerMode] = useState<'speaker' | 'earpiece'>(() => {
-    const saved = localStorage.getItem('fixer-phone-speaker-mode');
+    const saved = safeGetItem('fixer-phone-speaker-mode');
     return saved === 'earpiece' ? 'earpiece' : 'speaker';
   });
 
@@ -38,7 +39,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
   // スピーカーモード変更時に音量を切り替え
   useEffect(() => {
     setVolume(speakerMode === 'speaker' ? 1.0 : 0.3);
-    localStorage.setItem('fixer-phone-speaker-mode', speakerMode);
+    safeSetItem('fixer-phone-speaker-mode', speakerMode);
   }, [speakerMode, setVolume]);
 
   const SPEED_LEVELS: Record<number, number> = {
@@ -297,6 +298,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
             <div className="flex gap-1">
               <button
                 onClick={() => setSelectedLang('ja')}
+                aria-label="日本語に切替"
                 className={`px-2 py-1 rounded text-xs font-mono transition-all ${
                   selectedLang === 'ja'
                     ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
@@ -307,6 +309,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
               </button>
               <button
                 onClick={() => setSelectedLang('en')}
+                aria-label="Switch to English"
                 className={`px-2 py-1 rounded text-xs font-mono transition-all ${
                   selectedLang === 'en'
                     ? 'bg-blue-500/20 text-blue-400 border border-blue-500/50'
@@ -322,6 +325,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
                 <span className="text-[10px]">🇯🇵</span>
                 <button
                   onClick={() => onJaSpeedChange(Math.max(1, jaSpeed - 1))}
+                  aria-label="日本語速度を下げる"
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={jaSpeed <= 1}
                 >
@@ -330,6 +334,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
                 <span className="text-accent text-[10px] font-mono w-3 text-center">{jaSpeed}</span>
                 <button
                   onClick={() => onJaSpeedChange(Math.min(7, jaSpeed + 1))}
+                  aria-label="日本語速度を上げる"
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={jaSpeed >= 7}
                 >
@@ -341,6 +346,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
                 <span className="text-[10px]">🇺🇸</span>
                 <button
                   onClick={() => onEnSpeedChange(Math.max(1, enSpeed - 1))}
+                  aria-label="Decrease English speed"
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={enSpeed <= 1}
                 >
@@ -349,6 +355,7 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
                 <span className="text-accent text-[10px] font-mono w-3 text-center">{enSpeed}</span>
                 <button
                   onClick={() => onEnSpeedChange(Math.min(7, enSpeed + 1))}
+                  aria-label="Increase English speed"
                   className="text-gray-500 text-[10px] px-0.5 hover:text-gray-300 disabled:opacity-30"
                   disabled={enSpeed >= 7}
                 >
