@@ -169,17 +169,21 @@ function isKnownMale(voice: SpeechSynthesisVoice): boolean {
   return MALE_VOICE_PATTERNS.test(voice.name);
 }
 
+// 音声の性別判定ラベル
+function genderLabel(voice: SpeechSynthesisVoice): string {
+  if (isKnownFemale(voice)) return 'Female';
+  if (isKnownMale(voice)) return 'Male';
+  return 'Unknown';
+}
+
 // 指定言語の男性音声を取得（優先順位付き）
 function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
   const voices = window.speechSynthesis.getVoices();
   const langVoices = voices.filter(v => v.lang.startsWith(lang));
   const priorityList = lang === 'ja' ? JA_MALE_VOICE_PRIORITY : EN_MALE_VOICE_PRIORITY;
 
-  // --- デバッグログ（本番では削除可） ---
-  if (import.meta.env.DEV) {
-    console.group(`[TTS] Voice selection for lang="${lang}"`);
-    console.log('Available voices:', langVoices.map(v => `${v.name} (${v.lang})`));
-  }
+  let selectedVoice: SpeechSynthesisVoice | null = null;
+  let selectionMethod = '';
 
   // Step 1: 優先リストから順に探す
   for (const name of priorityList) {
@@ -187,40 +191,56 @@ function findMaleVoice(lang: string): SpeechSynthesisVoice | null {
       v => v.name.toLowerCase().includes(name.toLowerCase()) && !isKnownFemale(v)
     );
     if (match) {
-      if (import.meta.env.DEV) {
-        console.log('✓ Selected (priority match):', match.name);
-        console.groupEnd();
-      }
-      return match;
+      selectedVoice = match;
+      selectionMethod = 'priority match';
+      break;
     }
   }
 
   // Step 2: 名前パターンで男性と判定できる音声
-  const knownMale = langVoices.find(v => isKnownMale(v) && !isKnownFemale(v));
-  if (knownMale) {
-    if (import.meta.env.DEV) {
-      console.log('✓ Selected (pattern match):', knownMale.name);
-      console.groupEnd();
+  if (!selectedVoice) {
+    const knownMale = langVoices.find(v => isKnownMale(v) && !isKnownFemale(v));
+    if (knownMale) {
+      selectedVoice = knownMale;
+      selectionMethod = 'pattern match';
     }
-    return knownMale;
   }
 
   // Step 3: 女性と判定されない最初の音声（ピッチで補正）
-  const nonFemale = langVoices.find(v => !isKnownFemale(v));
-  if (nonFemale) {
-    if (import.meta.env.DEV) {
-      console.log('△ Selected (non-female fallback):', nonFemale.name);
-      console.groupEnd();
+  if (!selectedVoice) {
+    const nonFemale = langVoices.find(v => !isKnownFemale(v));
+    if (nonFemale) {
+      selectedVoice = nonFemale;
+      selectionMethod = 'non-female fallback';
     }
-    return nonFemale;
   }
 
   // Step 4: どうしても見つからない場合は最初の音声
+  if (!selectedVoice && langVoices.length > 0) {
+    selectedVoice = langVoices[0];
+    selectionMethod = 'last-resort fallback';
+  }
+
+  // --- 音声診断ログ ---
   if (import.meta.env.DEV) {
-    console.log('✗ Fallback: first available voice:', langVoices[0]?.name ?? 'none');
+    const langLabel = lang === 'ja' ? 'JA' : 'EN';
+    console.group(`[TTS] Available ${langLabel} voices:`);
+    langVoices.forEach((v, i) => {
+      const gender = genderLabel(v);
+      const isSelected = v === selectedVoice;
+      const mark = isSelected ? ' (selected)' : '';
+      const icon = isKnownFemale(v) ? '\u2717' : isKnownMale(v) ? '\u2713' : '?';
+      console.log(`  ${i + 1}. "${v.name}" [${v.lang}] \u2192 ${gender} ${icon}${mark}`);
+    });
+    if (selectedVoice) {
+      console.log(`\u2501 Result: "${selectedVoice.name}" via ${selectionMethod}`);
+    } else {
+      console.log('\u2501 Result: No voice available');
+    }
     console.groupEnd();
   }
-  return langVoices[0] ?? null;
+
+  return selectedVoice;
 }
 
 // TTS制御フック
@@ -280,16 +300,16 @@ export function useSpeechSynthesis() {
       }
 
       // --- 男性的な重厚感を出すための音声パラメータ ---
-      // pitch: 0.5(最低)〜0.7 が男性域。0.6前後が聞き取りやすく低い声。
-      // rate : やや遅め(0.95〜1.1)で落ち着いた印象に。
+      // pitch: 0.4〜0.5 で十分に低い男性域。
+      // rate : 遅め(0.85〜0.95)で落ち着いた重厚な印象に。
       if (lang === 'ja') {
         utterance.lang = 'ja-JP';
-        utterance.rate = rate ?? 1.05;
-        utterance.pitch = 0.6;
+        utterance.rate = rate ?? 0.95;
+        utterance.pitch = 0.45;
       } else {
         utterance.lang = 'en-US';
-        utterance.rate = rate ?? 0.95;
-        utterance.pitch = 0.65;
+        utterance.rate = rate ?? 0.85;
+        utterance.pitch = 0.5;
       }
 
       utterance.volume = volumeRef.current;
