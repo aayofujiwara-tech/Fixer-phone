@@ -83,7 +83,7 @@ function App() {
   }, [reset]);
 
   return (
-    <div className={`mx-auto ${screen === 'call' ? 'max-w-[480px] md:max-w-none' : 'max-w-[480px]'}`}>
+    <div className={`mx-auto ${(screen === 'call' || screen === 'setup') ? 'max-w-[480px] md:max-w-none' : 'max-w-[480px]'}`}>
       {screen === 'setup' && (
         <SetupScreen
           onStart={handleStart}
