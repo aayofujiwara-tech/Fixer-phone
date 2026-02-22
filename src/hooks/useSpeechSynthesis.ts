@@ -1,18 +1,46 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 
-// Web Speech APIが読み間違える漢字の読み辞書（日本語TTS用）
-const JA_READING_FIXES: [RegExp, string][] = [
-  [/聖下/g, 'せいか'],
-  [/殿下/g, 'でんか'],
-  [/閣下/g, 'かっか'],
+// ======================================================
+// Web Speech API 日本語TTS 読み補正辞書
+// 表示テキストには影響しない。TTS送信前に変換する。
+// ======================================================
+
+// Phase 1: 敬称・VIP呼称・頻出政治用語
+const PHASE1_FIXES: [string, string][] = [
+  // --- 敬称 ---
+  ['閣下', 'かっか'],
+  ['殿下', 'でんか'],
+  ['聖下', 'せいか'],
+  ['陛下', 'へいか'],
+  // --- VIP呼称 ---
+  ['国家主席', 'こっかしゅせき'],
+  ['皇太子', 'こうたいし'],
+  ['枢機卿', 'すうききょう'],
+  ['教皇', 'きょうこう'],
+  // --- 頻出政治用語 ---
+  ['支持率', 'しじりつ'],
+  ['国防総省', 'こくぼうそうしょう'],
+  ['与党', 'よとう'],
+  ['野党', 'やとう'],
+  ['内閣', 'ないかく'],
+  ['官邸', 'かんてい'],
+  ['打診', 'だしん'],
+  ['根回し', 'ねまわし'],
+  ['水面下', 'すいめんか'],
+  ['密約', 'みつやく'],
 ];
 
-// 日本語テキストのTTS読み補正（表示には影響しない）
+// 完全一致変換（部分文字列を安全に置換）
 function fixJaReading(text: string): string {
   let fixed = text;
-  for (const [pattern, reading] of JA_READING_FIXES) {
-    fixed = fixed.replace(pattern, reading);
+  for (const [word, reading] of PHASE1_FIXES) {
+    fixed = fixed.split(word).join(reading);
   }
+  // 三点リーダー: 句読点の前なら削除、それ以外は短いポーズに変換
+  fixed = fixed.replace(/[…。]{2,}|…[。！？]/g, (m) => m.replace(/…/g, ''));
+  fixed = fixed.replace(/\.{3}[。！？]/g, (m) => m.slice(3));
+  fixed = fixed.replace(/…/g, '、');
+  fixed = fixed.replace(/\.{3}/g, '、');
   return fixed;
 }
 
