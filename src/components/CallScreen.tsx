@@ -159,7 +159,9 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
     const ttsLang = selectedLangRef.current;
     const text = ttsLang === 'ja' ? leader.ja : leader.en;
 
-    const rate = ttsLang === 'ja' ? SPEED_LEVELS[jaSpeedRef.current] : SPEED_LEVELS[enSpeedRef.current];
+    const baseRate = ttsLang === 'ja' ? SPEED_LEVELS[jaSpeedRef.current] : SPEED_LEVELS[enSpeedRef.current];
+    const vip = country.vipVoice;
+    const rate = baseRate * vip.rateFactor;
 
     // 0.1秒待ってリーダー読み上げ（選択言語のみ）
     addAutoTimer(() => {
@@ -171,7 +173,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
           if (!autoActiveRef.current) return;
           setShowFixerLine(true);
         }, 200);
-      }, rate);
+      }, rate, vip.pitch);
     }, 100);
 
     return () => clearAutoTimers();

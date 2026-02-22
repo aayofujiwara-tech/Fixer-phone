@@ -2,6 +2,11 @@ import type { Country } from '../types';
 
 // 対応国データ
 export const countries: Country[] = [
+  // ── VIP 音声パラメータ設計 ──
+  // フィクサー: pitch 0.45(ja)/0.5(en) — 低く重厚な声
+  // VIP: pitch 0.6〜0.95 — フィクサーより高めの声域で差別化しつつ、
+  //       国ごとに pitch/rateFactor を微調整してキャラクターの個性を出す。
+  //       rateFactor はユーザー設定速度への乗数（1.0 = 変更なし）。
   {
     id: 'jp',
     name: '日本',
@@ -10,6 +15,7 @@ export const countries: Country[] = [
     leaderEn: 'Prime Minister',
     flag: '\u{1F1EF}\u{1F1F5}',
     accentColor: '#bc002d',
+    vipVoice: { pitch: 0.70, rateFactor: 0.92 },  // 落ち着いた慎重な話し方
   },
   {
     id: 'us',
@@ -19,6 +25,7 @@ export const countries: Country[] = [
     leaderEn: 'President',
     flag: '\u{1F1FA}\u{1F1F8}',
     accentColor: '#1a3a5c',
+    vipVoice: { pitch: 0.85, rateFactor: 1.05 },  // はっきり力強く
   },
   {
     id: 'cn',
@@ -28,6 +35,7 @@ export const countries: Country[] = [
     leaderEn: 'Chairman',
     flag: '\u{1F1E8}\u{1F1F3}',
     accentColor: '#c41e3a',
+    vipVoice: { pitch: 0.60, rateFactor: 0.95 },  // 威厳ある低めの声
   },
   {
     id: 'ru',
@@ -37,6 +45,7 @@ export const countries: Country[] = [
     leaderEn: 'President',
     flag: '\u{1F1F7}\u{1F1FA}',
     accentColor: '#0039a6',
+    vipVoice: { pitch: 0.60, rateFactor: 0.90 },  // 低く冷徹、ゆっくり
   },
   {
     id: 'uk',
@@ -46,6 +55,7 @@ export const countries: Country[] = [
     leaderEn: 'Prime Minister',
     flag: '\u{1F1EC}\u{1F1E7}',
     accentColor: '#003078',
+    vipVoice: { pitch: 0.80, rateFactor: 0.97 },  // 格式ある落ち着き
   },
   {
     id: 'fr',
@@ -55,6 +65,7 @@ export const countries: Country[] = [
     leaderEn: 'President',
     flag: '\u{1F1EB}\u{1F1F7}',
     accentColor: '#002395',
+    vipVoice: { pitch: 0.90, rateFactor: 1.02 },  // 情熱的でやや高め
   },
   {
     id: 'de',
@@ -64,6 +75,7 @@ export const countries: Country[] = [
     leaderEn: 'Chancellor',
     flag: '\u{1F1E9}\u{1F1EA}',
     accentColor: '#dd0000',
+    vipVoice: { pitch: 0.75, rateFactor: 1.00 },  // 実直で安定した口調
   },
   {
     id: 'kr',
@@ -73,6 +85,7 @@ export const countries: Country[] = [
     leaderEn: 'President',
     flag: '\u{1F1F0}\u{1F1F7}',
     accentColor: '#003478',
+    vipVoice: { pitch: 0.80, rateFactor: 1.00 },  // 実務的で明瞭
   },
   {
     id: 'il',
@@ -82,6 +95,7 @@ export const countries: Country[] = [
     leaderEn: 'Prime Minister',
     flag: '\u{1F1EE}\u{1F1F1}',
     accentColor: '#0038b8',
+    vipVoice: { pitch: 0.75, rateFactor: 1.05 },  // 直截的でやや速い
   },
   {
     id: 'in',
@@ -91,6 +105,7 @@ export const countries: Country[] = [
     leaderEn: 'Prime Minister',
     flag: '\u{1F1EE}\u{1F1F3}',
     accentColor: '#ff9933',
+    vipVoice: { pitch: 0.70, rateFactor: 0.95 },  // 重厚で落ち着いた
   },
   {
     id: 'sa',
@@ -100,6 +115,7 @@ export const countries: Country[] = [
     leaderEn: 'Crown Prince',
     flag: '\u{1F1F8}\u{1F1E6}',
     accentColor: '#006c35',
+    vipVoice: { pitch: 0.65, rateFactor: 1.03 },  // 堂々と低め、やや速い
   },
   {
     id: 'va',
@@ -109,5 +125,6 @@ export const countries: Country[] = [
     leaderEn: 'Pope',
     flag: '\u{1F1FB}\u{1F1E6}',
     accentColor: '#ffe209',
+    vipVoice: { pitch: 0.80, rateFactor: 0.88 },  // ゆっくり穏やか
   },
 ];

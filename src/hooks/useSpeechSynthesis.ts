@@ -418,7 +418,7 @@ export function useSpeechSynthesis() {
 
   // テキスト読み上げ
   const speak = useCallback(
-    (text: string, lang: 'ja' | 'en', onEnd?: () => void, rate?: number) => {
+    (text: string, lang: 'ja' | 'en', onEnd?: () => void, rate?: number, pitch?: number) => {
       if (!isSupported) return;
 
       // iOS用の遅延speakタイマーが残っていたらクリア
@@ -450,17 +450,17 @@ export function useSpeechSynthesis() {
           utterance.voice = maleVoice;
         }
 
-        // --- 男性的な重厚感を出すための音声パラメータ ---
-        // pitch: 0.4〜0.5 で十分に低い男性域。
-        // rate : 遅め(0.85〜0.95)で落ち着いた重厚な印象に。
+        // --- 音声パラメータ ---
+        // pitch 未指定時はフィクサー用デフォルト（低い男性域 0.45〜0.5）。
+        // VIP 等は呼び出し側から pitch を指定して声質を変える。
         if (lang === 'ja') {
           utterance.lang = 'ja-JP';
           utterance.rate = rate ?? 0.95;
-          utterance.pitch = 0.45;
+          utterance.pitch = pitch ?? 0.45;
         } else {
           utterance.lang = 'en-US';
           utterance.rate = rate ?? 0.85;
-          utterance.pitch = 0.5;
+          utterance.pitch = pitch ?? 0.5;
         }
 
         utterance.volume = volumeRef.current;
