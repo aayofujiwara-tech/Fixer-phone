@@ -263,8 +263,14 @@ function getPlatformLabel(): string {
   return 'other';
 }
 
+// デバッグオーバーレイ用のイベントログ（モジュールレベル）
+export const _ttsDebugLog: { time: number; msg: string }[] = [];
+export function _isTtsUnlocked() { return _iosUnlocked; }
+
 function ttsLog(message: string, ...args: unknown[]) {
   console.log(`[TTS-iOS] ${message}`, ...args);
+  _ttsDebugLog.push({ time: Date.now(), msg: message });
+  if (_ttsDebugLog.length > 50) _ttsDebugLog.shift();
 }
 
 // ======================================================
@@ -282,7 +288,7 @@ function setupIOSUnlock() {
 
   const unlock = () => {
     if (_iosUnlocked) return;
-    const utterance = new SpeechSynthesisUtterance('');
+    const utterance = new SpeechSynthesisUtterance(' ');
     utterance.volume = 0;
     utterance.rate = 10;       // 最速で完了させる
     utterance.onend = () => {
@@ -307,13 +313,18 @@ function setupIOSUnlock() {
   ttsLog('Speech unlock: listener registered');
 }
 
+// モジュールロード時にアンロックリスナーを登録。
+// CallScreen マウントを待たず、SetupScreen でのユーザー操作（国選択・ボタン押下等）で
+// speechSynthesis をアンロックする。これにより CallScreen の最初の speak() が動作する。
+setupIOSUnlock();
+
 // ======================================================
 // iOS 安全な speak（cancel→遅延→speak）
 // iOS Safari では cancel() 直後の speak() が無音になるバグがある。
-// 100ms の遅延を入れて回避する。
+// 200ms の遅延を入れて回避する。
 // ======================================================
 
-const IOS_CANCEL_SPEAK_DELAY = 100;
+const IOS_CANCEL_SPEAK_DELAY = 200;
 
 // TTS制御フック
 export function useSpeechSynthesis() {
@@ -452,14 +463,18 @@ export function useSpeechSynthesis() {
         utterance.onerror = (e) => {
           setIsSpeaking(false);
           ttsLog(`Speech state: error (${e.error})`);
-          // iOS: "interrupted" エラーはcancel()によるもので正常。onEndを呼ばない
-          // iOS: "not-allowed" はアンロック前のアクセス。次回タップで解消
+          // iOS: "interrupted" / "canceled" はcancel()によるもので正常。onEndを呼ばない。
+          // それ以外のエラー（"not-allowed" 等）は TTS 失敗だが、
+          // 会話フローを継続するため onEnd を呼ぶ（呼ばないと次のセリフが永久に表示されない）。
+          if (e.error !== 'interrupted' && e.error !== 'canceled') {
+            onEnd?.();
+          }
         };
 
         window.speechSynthesis.speak(utterance);
 
         // iOS: speechSynthesis が勝手に pause することがあるバグへの対策
-        // 定期的に speaking 状態を監視して resume する
+        // 定期的に speaking 状態を監視して resume する（500ms間隔で応答性を確保）
         if (isIOS()) {
           const watchdog = setInterval(() => {
             if (window.speechSynthesis.paused && window.speechSynthesis.speaking) {
@@ -469,7 +484,7 @@ export function useSpeechSynthesis() {
             if (!window.speechSynthesis.speaking) {
               clearInterval(watchdog);
             }
-          }, 1000);
+          }, 500);
           // 最大30秒で監視打ち切り
           setTimeout(() => clearInterval(watchdog), 30000);
         }

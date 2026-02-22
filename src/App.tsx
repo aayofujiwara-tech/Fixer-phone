@@ -10,6 +10,7 @@ import { SetupScreen } from './components/SetupScreen';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CallScreen } from './components/CallScreen';
 import { CallEndScreen } from './components/CallEndScreen';
+import { TtsDebugOverlay } from './components/TtsDebugOverlay';
 
 function App() {
   const [screen, setScreen] = useState<AppScreen>('setup');
@@ -151,6 +152,7 @@ function App() {
           onRestart={handleRestart}
         />
       )}
+      {FEATURES.TTS_DEBUG_OVERLAY && <TtsDebugOverlay />}
     </div>
   );
 }

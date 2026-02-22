@@ -5,4 +5,6 @@ export const FEATURES = {
   API_MODE: false,
   /** PWAインストールプロンプト（バナー）を表示するか */
   PWA_INSTALL_PROMPT: false,
+  /** TTS デバッグオーバーレイ（検証時のみ true） */
+  TTS_DEBUG_OVERLAY: true,
 } as const;
