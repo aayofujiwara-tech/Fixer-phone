@@ -117,6 +117,16 @@ button {
   animation-delay: 0.6s;
 }
 
+/* PC: アバター呼吸アニメーション（発言中） */
+@keyframes avatar-breathe {
+  0%, 100% { transform: scaleY(0.99); }
+  50%      { transform: scaleY(1.01); }
+}
+.avatar-breathing {
+  animation: avatar-breathe 3s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
 /* PC: ボタン min-height 上書き（コンパクト化） */
 @media (min-width: 768px) {
   .pc-compact-btn {

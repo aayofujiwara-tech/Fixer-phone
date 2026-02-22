@@ -6,6 +6,7 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 import { SpeechBubble } from './SpeechBubble';
 import { TypewriterText } from './TypewriterText';
 import { ConnectionLine } from './ConnectionLine';
+import { AvatarSilhouette } from './AvatarSilhouette';
 import { useLanguage } from '../i18n/LanguageContext';
 import { safeGetItem, safeSetItem } from '../lib/storage';
 
@@ -417,10 +418,16 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               <div className={`relative flex-1 flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${
                 vipActive ? 'opacity-100' : fixerActive ? 'opacity-40' : 'opacity-70'
               }`}>
-                {/* キャラクター情報 */}
-                <div className="text-center mb-8">
-                  <span className="text-5xl block mb-3">{country.flag}</span>
-                  <div className={`text-sm font-mono font-bold tracking-wider transition-colors duration-500 ${
+                {/* VIP アバター */}
+                <div className="text-center mb-6">
+                  <AvatarSilhouette
+                    variant="vip"
+                    color={country.accentColor}
+                    flag={country.flag}
+                    speaking={vipActive}
+                    size={140}
+                  />
+                  <div className={`text-sm font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
                     vipActive ? 'text-white' : 'text-gray-600'
                   }`}>
                     {countryDisplay}
@@ -486,10 +493,15 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               <div className={`relative flex-1 flex flex-col items-center justify-center p-8 transition-opacity duration-500 ${
                 fixerActive ? 'opacity-100' : vipActive ? 'opacity-40' : 'opacity-70'
               }`}>
-                {/* キャラクター情報 */}
-                <div className="text-center mb-8">
-                  <span className="text-5xl block mb-3">🕶️</span>
-                  <div className={`text-sm font-mono font-bold tracking-wider transition-colors duration-500 ${
+                {/* フィクサーアバター */}
+                <div className="text-center mb-6">
+                  <AvatarSilhouette
+                    variant="fixer"
+                    color="#4a4a4a"
+                    speaking={fixerActive}
+                    size={140}
+                  />
+                  <div className={`text-sm font-mono font-bold tracking-wider mt-3 transition-colors duration-500 ${
                     fixerActive ? 'text-accent' : 'text-gray-600'
                   }`}>
                     FIXER
