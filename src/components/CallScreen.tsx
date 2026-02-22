@@ -25,9 +25,21 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
   const [autoMode, setAutoMode] = useState(true);
   const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>('ja');
 
-  const { speak, stop, isSpeaking } = useSpeechSynthesis();
+  // スピーカーモード: 'speaker' = スピーカー（大音量）, 'earpiece' = 受話器（小音量）
+  const [speakerMode, setSpeakerMode] = useState<'speaker' | 'earpiece'>(() => {
+    const saved = localStorage.getItem('fixer-phone-speaker-mode');
+    return saved === 'earpiece' ? 'earpiece' : 'speaker';
+  });
+
+  const { speak, stop, isSpeaking, setVolume } = useSpeechSynthesis();
   const timer = useCallTimer();
   const { lang, t } = useLanguage();
+
+  // スピーカーモード変更時に音量を切り替え
+  useEffect(() => {
+    setVolume(speakerMode === 'speaker' ? 1.0 : 0.3);
+    localStorage.setItem('fixer-phone-speaker-mode', speakerMode);
+  }, [speakerMode, setVolume]);
 
   const SPEED_LEVELS: Record<number, number> = {
     1: 0.7,
@@ -418,12 +430,23 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
 
       {/* コントロールエリア */}
       <div className="p-4 space-y-3 border-t border-gray-800">
-        {/* 自動/手動切替（AUTOモードの時のみ表示） */}
-        {callMode === 'auto' && (
-          <div className="flex items-center justify-between">
-            <span className="text-gray-400 text-xs font-mono">
-              {autoMode ? t('autoModeOn') : t('autoModeOff')}
-            </span>
+        {/* スピーカー切替 + 自動/手動切替 */}
+        <div className="flex items-center justify-between">
+          {/* スピーカー / 受話器 切替 */}
+          <button
+            onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
+            className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
+              speakerMode === 'speaker'
+                ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                : 'bg-gray-800 text-gray-400 border border-gray-700'
+            }`}
+          >
+            <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F4F1}'}</span>
+            {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+          </button>
+
+          {/* 自動/手動切替（AUTOモードの時のみ） */}
+          {callMode === 'auto' && (
             <button
               onClick={() => {
                 if (autoMode) clearAutoTimers();
@@ -437,8 +460,8 @@ export function CallScreen({ country, scenario, callMode, onEnd, jaSpeed, enSpee
             >
               {autoMode ? 'AUTO' : 'MANUAL'}
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* 読み上げボタン（AUTOモードの時のみ表示） */}
         {callMode === 'auto' && showFixerLine && pair.fixer && (

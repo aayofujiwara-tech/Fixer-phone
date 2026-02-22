@@ -4,9 +4,15 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 export function useSpeechSynthesis() {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const volumeRef = useRef(1.0);
 
   // ブラウザがTTSに対応しているか
   const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
+
+  // 音量設定（0.0〜1.0）
+  const setVolume = useCallback((vol: number) => {
+    volumeRef.current = Math.max(0, Math.min(1, vol));
+  }, []);
 
   // 読み上げ停止
   const stop = useCallback(() => {
@@ -37,6 +43,8 @@ export function useSpeechSynthesis() {
         utterance.pitch = 0.9;
       }
 
+      utterance.volume = volumeRef.current;
+
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => {
         setIsSpeaking(false);
@@ -60,5 +68,5 @@ export function useSpeechSynthesis() {
     };
   }, [isSupported]);
 
-  return { speak, stop, isSpeaking, isSupported };
+  return { speak, stop, isSpeaking, isSupported, setVolume };
 }
