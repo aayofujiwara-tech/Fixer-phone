@@ -2,7 +2,17 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import { LanguageProvider } from './i18n/LanguageContext'
+import { FEATURES } from './lib/features'
 import App from './App.tsx'
+
+// PWAインストールプロンプト制御
+// FEATURES.PWA_INSTALL_PROMPT が false の間、ブラウザネイティブの
+// 「ホーム画面に追加」バナーを抑制する。true に戻せば復活する。
+window.addEventListener('beforeinstallprompt', (e) => {
+  if (!FEATURES.PWA_INSTALL_PROMPT) {
+    e.preventDefault();
+  }
+});
 
 // 開発モード: 残存Service Workerを自動解除（キャッシュ干渉防止）
 if (import.meta.env.DEV && 'serviceWorker' in navigator) {

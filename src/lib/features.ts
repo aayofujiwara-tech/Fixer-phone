@@ -3,4 +3,6 @@
 export const FEATURES = {
   /** APIキー入力・API経由シナリオ生成（上級モード） */
   API_MODE: false,
+  /** PWAインストールプロンプト（バナー）を表示するか */
+  PWA_INSTALL_PROMPT: false,
 } as const;
