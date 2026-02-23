@@ -8,6 +8,7 @@ import { useMediaQuery } from '../hooks/useMediaQuery';
 import { countries } from '../lib/countries';
 import { FlagIcon } from './FlagIcon';
 import { FEATURES } from '../lib/features';
+import { safeGetItem, safeSetItem } from '../lib/storage';
 import { LeftDecoration } from './LeftDecoration';
 import { RightDecoration } from './RightDecoration';
 
@@ -27,6 +28,20 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
   const [selectedScenarioIndex, setSelectedScenarioIndex] = useState<number | null>(null);
   const [apiKey, setApiKeyState] = useState('');
   const [showApiKeyInput, setShowApiKeyInput] = useState(false);
+
+  // スピーカーモード: 'speaker' = スピーカー（大音量 1.0）, 'earpiece' = 小音量（0.3）
+  const [speakerMode, setSpeakerMode] = useState<'speaker' | 'earpiece'>(() => {
+    const saved = safeGetItem('fixer-phone-speaker-mode');
+    return saved === 'earpiece' ? 'earpiece' : 'speaker';
+  });
+
+  const toggleSpeakerMode = () => {
+    setSpeakerMode(prev => {
+      const next = prev === 'speaker' ? 'earpiece' : 'speaker';
+      safeSetItem('fixer-phone-speaker-mode', next);
+      return next;
+    });
+  };
 
   const { lang, setLang, t } = useLanguage();
   const isPC = useMediaQuery('(min-width: 768px)');
@@ -78,27 +93,42 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
               </h1>
               <p className="text-gray-500 text-[10px] font-mono leading-none">{t('subtitle')}</p>
             </div>
-            <div className="flex gap-1">
+            <div className="flex items-center gap-2">
+              {/* スピーカー / 小音量 切替 */}
               <button
-                onClick={() => setLang('ja')}
-                className={`px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn ${
-                  lang === 'ja'
-                    ? 'bg-accent/20 text-accent border border-accent/50'
-                    : 'text-gray-500 border border-gray-700 hover:text-gray-300'
+                onClick={toggleSpeakerMode}
+                className={`px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn flex items-center gap-1 ${
+                  speakerMode === 'speaker'
+                    ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                    : 'bg-gray-800 text-gray-400 border border-gray-700 hover:text-gray-300'
                 }`}
               >
-                JA
+                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
+                {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
               </button>
-              <button
-                onClick={() => setLang('en')}
-                className={`px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn ${
-                  lang === 'en'
-                    ? 'bg-accent/20 text-accent border border-accent/50'
-                    : 'text-gray-500 border border-gray-700 hover:text-gray-300'
-                }`}
-              >
-                EN
-              </button>
+              <div className="h-4 w-px bg-gray-700" />
+              <div className="flex gap-1">
+                <button
+                  onClick={() => setLang('ja')}
+                  className={`px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn ${
+                    lang === 'ja'
+                      ? 'bg-accent/20 text-accent border border-accent/50'
+                      : 'text-gray-500 border border-gray-700 hover:text-gray-300'
+                  }`}
+                >
+                  JA
+                </button>
+                <button
+                  onClick={() => setLang('en')}
+                  className={`px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn ${
+                    lang === 'en'
+                      ? 'bg-accent/20 text-accent border border-accent/50'
+                      : 'text-gray-500 border border-gray-700 hover:text-gray-300'
+                  }`}
+                >
+                  EN
+                </button>
+              </div>
             </div>
           </div>
 
@@ -351,6 +381,20 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
     <div className="min-h-dvh bg-dark flex flex-col">
       {/* ヘッダー */}
       <div className="p-6 text-center relative">
+        {/* スピーカー切替 */}
+        <div className="absolute top-4 left-4">
+          <button
+            onClick={toggleSpeakerMode}
+            className={`px-2 py-1 text-xs font-mono rounded transition-all flex items-center gap-1 ${
+              speakerMode === 'speaker'
+                ? 'bg-green-500/20 text-green-400 border border-green-500/50'
+                : 'bg-gray-800 text-gray-400 border border-gray-700'
+            }`}
+          >
+            <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
+            {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+          </button>
+        </div>
         {/* 言語切替 */}
         <div className="absolute top-4 right-4 flex gap-1">
           <button
