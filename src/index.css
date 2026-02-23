@@ -193,7 +193,7 @@ button {
     will-change: top;
   }
 
-  /* データストリーム — ランダム速度・多カラム */
+  /* データストリーム — 個別フェード方式 */
   .deco-stream {
     position: absolute;
     inset: 0;
@@ -201,22 +201,26 @@ button {
     justify-content: space-around;
     padding: 0 2px;
     overflow: hidden;
-  }
-  @keyframes deco-fall {
-    0%   { transform: translateY(-100%); }
-    100% { transform: translateY(100%); }
+    pointer-events: none;
   }
   .deco-stream-col {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .stream-slot {
+    position: absolute;
+    left: 0;
+    right: 0;
+    opacity: 0;
     font-family: 'JetBrains Mono', 'Noto Sans JP', monospace, sans-serif;
     font-size: 0.78rem;
-    line-height: 1.35;
-    color: rgba(0,200,60,0.30);
+    line-height: 1;
+    color: rgba(0,200,60,0.35);
     white-space: nowrap;
-    animation: deco-fall 14s linear infinite;
-    will-change: transform;
+    transition: opacity 0.3s ease-in-out, color 0.4s ease-out, text-shadow 0.4s ease-out;
+    will-change: opacity;
   }
 
   /* 座標・ステータス — 大きく */
