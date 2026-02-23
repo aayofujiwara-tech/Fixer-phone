@@ -131,13 +131,6 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                 <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
               </button>
               <div className="h-4 w-px bg-gray-700" />
-              <button
-                onClick={() => setShowAbout(true)}
-                className="px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn text-gray-500 border border-gray-700 hover:text-accent hover:border-accent/50"
-              >
-                ?
-              </button>
-              <div className="h-4 w-px bg-gray-700" />
               <div className="flex gap-1">
                 <button
                   onClick={() => setLang('ja')}
@@ -165,6 +158,17 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
 
           {/* メインコンテンツ（スクロールなし1画面） */}
           <div className="flex-1 min-h-0 flex flex-col justify-center px-4 py-3 gap-2.5 overflow-hidden">
+            {/* About / How to Play */}
+            <section className="shrink-0">
+              <button
+                onClick={() => setShowAbout(true)}
+                className="w-full py-1.5 rounded-lg border border-gray-700 bg-gray-800/50 hover:bg-gray-800 hover:border-gray-600 transition-all font-mono text-xs text-gray-400 hover:text-gray-200 flex items-center justify-center gap-2 pc-compact-btn"
+              >
+                <span className="text-sm">📖</span>
+                {lang === 'ja' ? 'HOW TO PLAY — 遊び方・About' : 'HOW TO PLAY — About This App'}
+              </button>
+            </section>
+
             {/* 全ランダムボタン */}
             <section className="shrink-0">
               <button
@@ -502,14 +506,8 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
           </button>
         </div>
-        {/* 言語切替 + INFO */}
+        {/* 言語切替 */}
         <div className="absolute top-4 right-4 flex gap-1">
-          <button
-            onClick={() => setShowAbout(true)}
-            className="px-2 py-1 text-xs font-mono rounded transition-all text-gray-500 border border-gray-700 hover:text-accent hover:border-accent/50"
-          >
-            ?
-          </button>
           <button
             onClick={() => setLang('ja')}
             className={`px-2 py-1 text-xs font-mono rounded transition-all ${
@@ -540,6 +538,17 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-6">
+        {/* About / How to Play */}
+        <section>
+          <button
+            onClick={() => setShowAbout(true)}
+            className="w-full py-2.5 rounded-lg border border-gray-700 bg-gray-800/50 hover:bg-gray-800 hover:border-gray-600 transition-all font-mono text-sm text-gray-400 hover:text-gray-200 flex items-center justify-center gap-2 active:scale-[0.98]"
+          >
+            <span className="text-base">📖</span>
+            {lang === 'ja' ? 'HOW TO PLAY — 遊び方・About' : 'HOW TO PLAY — About This App'}
+          </button>
+        </section>
+
         {/* 全ランダムボタン */}
         <section>
           <button
