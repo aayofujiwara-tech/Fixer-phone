@@ -33,7 +33,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
   const { lang, t } = useLanguage();
   const [selectedLang, setSelectedLang] = useState<'ja' | 'en'>(lang);
 
-  // スピーカーモード: 'speaker' = スピーカー（大音量）, 'earpiece' = 受話器（小音量）
+  // スピーカーモード: 'speaker' = SPEAKER（大音量 1.0）, 'earpiece' = STEALTH（小音量 0.3）
   const [speakerMode, setSpeakerMode] = useState<'speaker' | 'earpiece'>(() => {
     const saved = safeGetItem('fixer-phone-speaker-mode');
     return saved === 'earpiece' ? 'earpiece' : 'speaker';
@@ -614,14 +614,15 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
               {/* スピーカー切替 */}
               <button
                 onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
+                aria-label={speakerMode === 'speaker' ? 'SPEAKER' : 'STEALTH'}
                 className={`pc-compact-btn ${btnPad} rounded-full ${btnText} font-mono transition-all flex items-center gap-1.5 ${
                   speakerMode === 'speaker'
                     ? 'bg-green-500/20 text-green-400 border border-green-500/50'
                     : 'bg-gray-800 text-gray-400 border border-gray-700'
                 }`}
               >
-                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F4F1}'}</span>
                 {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
               </button>
 
               {/* 自動/手動切替 */}
@@ -786,17 +787,18 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
           <div className="p-4 space-y-3 border-t border-gray-800">
             {/* スピーカー切替 + 自動/手動切替 */}
             <div className="flex items-center justify-between">
-              {/* スピーカー / 受話器 切替 */}
+              {/* スピーカー / STEALTH 切替 */}
               <button
                 onClick={() => setSpeakerMode(prev => prev === 'speaker' ? 'earpiece' : 'speaker')}
+                aria-label={speakerMode === 'speaker' ? 'SPEAKER' : 'STEALTH'}
                 className={`px-3 py-1 rounded-full text-xs font-mono transition-all flex items-center gap-1.5 ${
                   speakerMode === 'speaker'
                     ? 'bg-green-500/20 text-green-400 border border-green-500/50'
                     : 'bg-gray-800 text-gray-400 border border-gray-700'
                 }`}
               >
-                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F4F1}'}</span>
                 {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
               </button>
 
               {/* 自動/手動切替（AUTOモードの時のみ） */}

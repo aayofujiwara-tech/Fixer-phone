@@ -94,17 +94,18 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
               <p className="text-gray-500 text-[10px] font-mono leading-none">{t('subtitle')}</p>
             </div>
             <div className="flex items-center gap-2">
-              {/* スピーカー / 小音量 切替 */}
+              {/* スピーカー / STEALTH 切替 */}
               <button
                 onClick={toggleSpeakerMode}
+                aria-label={speakerMode === 'speaker' ? 'SPEAKER' : 'STEALTH'}
                 className={`px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn flex items-center gap-1 ${
                   speakerMode === 'speaker'
                     ? 'bg-green-500/20 text-green-400 border border-green-500/50'
                     : 'bg-gray-800 text-gray-400 border border-gray-700 hover:text-gray-300'
                 }`}
               >
-                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
                 {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+                <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
               </button>
               <div className="h-4 w-px bg-gray-700" />
               <div className="flex gap-1">
@@ -385,14 +386,15 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
         <div className="absolute top-4 left-4">
           <button
             onClick={toggleSpeakerMode}
+            aria-label={speakerMode === 'speaker' ? 'SPEAKER' : 'STEALTH'}
             className={`px-2 py-1 text-xs font-mono rounded transition-all flex items-center gap-1 ${
               speakerMode === 'speaker'
                 ? 'bg-green-500/20 text-green-400 border border-green-500/50'
                 : 'bg-gray-800 text-gray-400 border border-gray-700'
             }`}
           >
-            <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
             {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
+            <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
           </button>
         </div>
         {/* 言語切替 */}

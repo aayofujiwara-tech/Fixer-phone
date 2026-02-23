@@ -104,12 +104,12 @@ export const translations = {
     en: 'Manual Mode',
   },
   speakerMode: {
-    ja: 'スピーカー',
-    en: 'Speaker',
+    ja: 'SPEAKER',
+    en: 'SPEAKER',
   },
   earpieceMode: {
-    ja: '受話器',
-    en: 'Earpiece',
+    ja: 'STEALTH',
+    en: 'STEALTH',
   },
   scenarioSelectLabel: {
     ja: 'シナリオ選択',
