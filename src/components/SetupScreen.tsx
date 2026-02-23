@@ -169,7 +169,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                 className="w-full py-1.5 rounded-lg border border-gray-700 bg-gray-800/50 hover:bg-gray-800 hover:border-gray-600 transition-all font-mono text-xs text-gray-400 hover:text-gray-200 flex items-center justify-center gap-2 pc-compact-btn"
               >
                 <span className="text-sm">📖</span>
-                {lang === 'ja' ? 'HOW TO PLAY — 遊び方・About' : 'HOW TO PLAY — About This App'}
+                {lang === 'ja' ? 'MISSION BRIEFING — 遊び方・About' : 'MISSION BRIEFING — About This App'}
               </button>
             </section>
 
@@ -578,7 +578,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             className="w-full py-2.5 rounded-lg border border-gray-700 bg-gray-800/50 hover:bg-gray-800 hover:border-gray-600 transition-all font-mono text-sm text-gray-400 hover:text-gray-200 flex items-center justify-center gap-2 active:scale-[0.98]"
           >
             <span className="text-base">📖</span>
-            {lang === 'ja' ? 'HOW TO PLAY — 遊び方・About' : 'HOW TO PLAY — About This App'}
+            {lang === 'ja' ? 'MISSION BRIEFING — 遊び方・About' : 'MISSION BRIEFING — About This App'}
           </button>
         </section>
 

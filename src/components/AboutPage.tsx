@@ -48,13 +48,13 @@ export function AboutPage({ onClose }: Props) {
             <p className="text-gray-300">
               {ja
                 ? 'あなたは世界を裏で動かす「フィクサー」。各国の首脳から極秘回線で直接電話がかかってくる——そんな設定の外交ロールプレイアプリです。'
-                : 'You are a "Fixer" — a behind-the-scenes power broker. World leaders call you directly on a classified line. This is a diplomatic role-play app built around that premise.'}
+                : 'You are a "Fixer" — a behind-the-scenes negotiator. World leaders call you directly on a classified line. This is a diplomatic role-play app built around that premise.'}
             </p>
           </section>
 
           {/* 3. 遊び方 */}
           <section>
-            <h2 className="about-heading">{ja ? 'HOW TO PLAY // 遊び方' : 'HOW TO PLAY'}</h2>
+            <h2 className="about-heading">{ja ? 'MISSION BRIEFING // 遊び方' : 'MISSION BRIEFING'}</h2>
             <ol className="list-none space-y-1.5 text-gray-300">
               <li className="flex gap-2">
                 <span className="text-accent font-mono text-xs shrink-0 mt-0.5">01</span>
@@ -84,7 +84,7 @@ export function AboutPage({ onClose }: Props) {
                 <p className="text-gray-300">
                   {ja
                     ? '全自動進行。相手の発言も自分のセリフも自動で読み上げられ、通話が進行します。シャドーイングに最適。'
-                    : 'Fully automatic. Both the counterpart\'s lines and your lines are read aloud automatically. Ideal for shadowing practice.'}
+                    : 'Fully automatic. Both the leader\'s lines and your lines are read aloud automatically. Ideal for shadowing practice.'}
                 </p>
               </div>
               <div className="border border-gray-700 rounded-lg px-4 py-3">
@@ -112,7 +112,7 @@ export function AboutPage({ onClose }: Props) {
                 <span className="text-accent font-mono text-xs shrink-0 mt-0.5">STEP 2</span>
                 <span>{ja
                   ? 'その後 AUTO モードで同じシナリオをシャドーイングし、フィクサー感を味わう'
-                  : 'Then run the same scenario in AUTO mode and shadow along to feel like a true Fixer'}</span>
+                  : 'Then run the same scenario in AUTO mode and shadow the dialogue to feel like a true Fixer'}</span>
               </div>
             </div>
           </section>
@@ -159,7 +159,7 @@ export function AboutPage({ onClose }: Props) {
             <p className="text-gray-300">
               {ja
                 ? '「全ランダム — 極秘任務」ボタンを押すと、国・モード・シナリオがすべて自動で選定されます。どの国のどんなシナリオが来るかわからない緊張感を楽しめます。'
-                : 'Tap "ALL RANDOM — Classified Mission" to auto-select country, mode, and scenario. Enjoy the thrill of not knowing which country or situation you\'ll face.'}
+                : 'Tap "ALL RANDOM — Classified Mission" to auto-select country, mode, and scenario. Experience the thrill of a random assignment.'}
             </p>
           </section>
 
