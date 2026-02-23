@@ -318,10 +318,13 @@ button {
     animation: deco-sweep 2.5s linear infinite;
     will-change: transform;
   }
-  /* レーダードット — 大きく明るく */
-  @keyframes deco-dot-blink {
-    0%, 60%, 100% { opacity: 0; }
-    10%, 50% { opacity: 1; }
+  /* レーダードット — スイープ同期（実レーダー挙動） */
+  @keyframes deco-dot-radar {
+    0%   { opacity: 1; box-shadow: 0 0 12px rgba(0,255,136,0.9); }
+    15%  { opacity: 0.7; box-shadow: 0 0 8px rgba(0,255,136,0.5); }
+    50%  { opacity: 0.25; box-shadow: 0 0 4px rgba(0,255,136,0.15); }
+    85%  { opacity: 0.05; box-shadow: none; }
+    100% { opacity: 0; box-shadow: none; }
   }
   .deco-radar-dot {
     position: absolute;
@@ -329,14 +332,31 @@ button {
     height: 6px;
     border-radius: 50%;
     background: rgba(0,255,136,0.8);
-    box-shadow: 0 0 8px rgba(0,255,136,0.6);
-    animation: deco-dot-blink 3s ease-in-out infinite;
+    opacity: 0;
+    animation: deco-dot-radar 2.5s linear infinite;
   }
-  .deco-radar-dot-1 { top: 22%; left: 62%; animation-delay: 0.3s; }
-  .deco-radar-dot-2 { top: 68%; left: 28%; animation-delay: 1.2s; }
-  .deco-radar-dot-3 { top: 35%; left: 78%; animation-delay: 2.0s; }
-  .deco-radar-dot-4 { top: 55%; left: 18%; animation-delay: 0.8s; }
-  .deco-radar-dot-5 { top: 80%; left: 65%; animation-delay: 1.8s; }
+  /* delay = (角度/360) × 2.5s でスイープ通過時に出現 */
+  .deco-radar-dot-1 { top: 22%; left: 62%; animation-delay: 2.04s; }  /* ~293° */
+  .deco-radar-dot-2 { top: 68%; left: 28%; animation-delay: 0.98s; }  /* ~141° */
+  .deco-radar-dot-3 { top: 35%; left: 78%; animation-delay: 2.30s; }  /* ~332° */
+  .deco-radar-dot-4 { top: 55%; left: 18%; animation-delay: 1.19s; }  /* ~171° */
+  .deco-radar-dot-5 { top: 80%; left: 65%; animation-delay: 0.44s; }  /* ~63°  */
+
+  /* レーダー残光（スイープ後の蛍光体フェード） */
+  .deco-radar-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(
+      from 0deg,
+      rgba(0,255,136,0.06) 0deg,
+      rgba(0,255,136,0.03) 20deg,
+      transparent 50deg
+    );
+    animation: deco-sweep 2.5s linear infinite;
+    will-change: transform;
+    pointer-events: none;
+  }
 
   /* 音声波形 — 中央配置 */
   .deco-waveform-wrap {

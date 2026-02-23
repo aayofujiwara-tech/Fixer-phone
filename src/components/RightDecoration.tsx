@@ -11,6 +11,7 @@ export function RightDecoration() {
           <div className="deco-radar-circle deco-radar-circle-2" />
           <div className="deco-radar-circle deco-radar-circle-3" />
           <div className="deco-radar-circle deco-radar-circle-4" />
+          <div className="deco-radar-glow" />
           <div className="deco-radar-sweep" />
           <div className="deco-radar-dot deco-radar-dot-1" />
           <div className="deco-radar-dot deco-radar-dot-2" />
