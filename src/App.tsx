@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { AppScreen, Country, Mood, CallMode } from './types';
 import { useScenarioGenerator } from './hooks/useScenarioGenerator';
 import { useLanguage } from './i18n/LanguageContext';
@@ -24,13 +24,46 @@ function App() {
   const { scenario, isLoading, error, generate, reset, setFallback } = useScenarioGenerator();
   const { t } = useLanguage();
 
+  // --- History API 連携 ---
+  // screenRef: popstate 内で最新の screen を同期的に参照するための ref
+  const screenRef = useRef<AppScreen>('setup');
+
+  // セットアップ画面に戻る共通処理
+  const returnToSetup = useCallback(() => {
+    reset();
+    setSelectedCountry(null);
+    setCallDuration(0);
+    screenRef.current = 'setup';
+    setScreen('setup');
+  }, [reset]);
+
+  // 初回マウント時: 現在の history entry を setup で上書き
+  useEffect(() => {
+    history.replaceState({ screen: 'setup' }, '');
+  }, []);
+
+  // popstate リスナー（ブラウザ戻る/進む）
+  useEffect(() => {
+    const handlePopState = () => {
+      // 画面遷移中（loading / call / callEnd）→ setup に戻す
+      if (screenRef.current !== 'setup') {
+        returnToSetup();
+      }
+      // screen が 'setup' の場合はモーダル閉じ（SetupScreen 側の popstate で処理）
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [returnToSetup]);
+
   // 通話開始
   const handleStart = useCallback(
     async (country: Country, mood: Mood, mode: CallMode = 'auto', scenarioIndex: number | null = null) => {
       setSelectedCountry(country);
       setCallMode(mode);
       setCurrentMood(mood);
+      screenRef.current = 'loading';
       setScreen('loading');
+      history.pushState({ screen: 'loading' }, '');
 
       const apiKey = FEATURES.API_MODE ? getApiKey() : null;
 
@@ -54,7 +87,9 @@ function App() {
 
   // ローディング完了 → 通話画面へ
   const handleLoadingComplete = useCallback(() => {
+    screenRef.current = 'call';
     setScreen('call');
+    history.replaceState({ screen: 'call' }, '');
   }, []);
 
   // フォールバックシナリオで通話開始（選択国のプールを優先）
@@ -72,16 +107,17 @@ function App() {
   // 通話終了
   const handleCallEnd = useCallback((duration: number) => {
     setCallDuration(duration);
+    screenRef.current = 'callEnd';
     setScreen('callEnd');
+    history.replaceState({ screen: 'callEnd' }, '');
   }, []);
 
   // 新しい通話を開始（リセット）
   const handleRestart = useCallback(() => {
-    reset();
-    setSelectedCountry(null);
-    setCallDuration(0);
-    setScreen('setup');
-  }, [reset]);
+    returnToSetup();
+    // history stack を setup に戻す
+    history.back();
+  }, [returnToSetup]);
 
   return (
     <div className={`mx-auto ${(screen === 'call' || screen === 'setup') ? 'max-w-[480px] md:max-w-none' : 'max-w-[480px]'}`}>

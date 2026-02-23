@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Country, Mood, CallMode } from '../types';
 import { CountrySelector } from './CountrySelector';
 import { getApiKey, setApiKey } from '../lib/claude';
@@ -45,6 +45,59 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
   const [randomMood, setRandomMood] = useState<Mood>('serious');
   const [randomScenarioIndex, setRandomScenarioIndex] = useState<number>(0);
 
+  // --- モーダル用 History API 連携 ---
+  const showAboutRef = useRef(false);
+  const showRandomRef = useRef(false);
+
+  const openAbout = useCallback(() => {
+    setShowAbout(true);
+    showAboutRef.current = true;
+    history.pushState({ modal: 'about' }, '');
+  }, []);
+
+  const closeAbout = useCallback(() => {
+    setShowAbout(false);
+    showAboutRef.current = false;
+  }, []);
+
+  const closeAboutWithBack = useCallback(() => {
+    closeAbout();
+    history.back();
+  }, [closeAbout]);
+
+  const openRandomModal = useCallback(() => {
+    if (!showRandomRef.current) {
+      history.pushState({ modal: 'random' }, '');
+    }
+    setShowRandomCallModeSelect(true);
+    showRandomRef.current = true;
+  }, []);
+
+  const closeRandomModal = useCallback(() => {
+    setShowRandomCallModeSelect(false);
+    showRandomRef.current = false;
+  }, []);
+
+  const closeRandomModalWithBack = useCallback(() => {
+    closeRandomModal();
+    history.back();
+  }, [closeRandomModal]);
+
+  // popstate: モーダルが開いていれば閉じる
+  useEffect(() => {
+    const handlePopState = () => {
+      if (showAboutRef.current) {
+        closeAbout();
+        return;
+      }
+      if (showRandomRef.current) {
+        closeRandomModal();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [closeAbout, closeRandomModal]);
+
   const handleAllRandom = () => {
     const rc = countries[Math.floor(Math.random() * countries.length)];
     const rm: Mood = Math.random() < 0.5 ? 'serious' : 'comedy';
@@ -53,12 +106,14 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
     setRandomCountry(rc);
     setRandomMood(rm);
     setRandomScenarioIndex(ri);
-    setShowRandomCallModeSelect(true);
+    openRandomModal();
   };
 
   const handleRandomStart = (mode: CallMode) => {
     if (!randomCountry) return;
-    setShowRandomCallModeSelect(false);
+    closeRandomModal();
+    // モーダルの history entry を setup に戻してから onStart が loading を push する
+    history.replaceState({ screen: 'setup' }, '');
     onStart(randomCountry, randomMood, mode, randomScenarioIndex);
   };
 
@@ -165,7 +220,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             {/* About / How to Play */}
             <section className="shrink-0">
               <button
-                onClick={() => setShowAbout(true)}
+                onClick={openAbout}
                 className="w-full py-1.5 rounded-lg border border-gray-700 bg-gray-800/50 hover:bg-gray-800 hover:border-gray-600 transition-all font-mono text-xs text-gray-400 hover:text-gray-200 flex items-center justify-center gap-2 pc-compact-btn"
               >
                 <span className="text-sm">📖</span>
@@ -502,7 +557,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                     🎲 {lang === 'ja' ? '再抽選' : 'Re-roll'}
                   </button>
                   <button
-                    onClick={() => setShowRandomCallModeSelect(false)}
+                    onClick={closeRandomModalWithBack}
                     className="flex-1 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
                   >
                     {lang === 'ja' ? '← 戻る' : '← Back'}
@@ -514,7 +569,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
         })()}
 
         {/* About ページ */}
-        {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
+        {showAbout && <AboutPage onClose={closeAboutWithBack} />}
       </div>
     );
   }
@@ -574,7 +629,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
         {/* About / How to Play */}
         <section>
           <button
-            onClick={() => setShowAbout(true)}
+            onClick={openAbout}
             className="w-full py-2.5 rounded-lg border border-gray-700 bg-gray-800/50 hover:bg-gray-800 hover:border-gray-600 transition-all font-mono text-sm text-gray-400 hover:text-gray-200 flex items-center justify-center gap-2 active:scale-[0.98]"
           >
             <span className="text-base">📖</span>
@@ -919,7 +974,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                   🎲 {lang === 'ja' ? '再抽選' : 'Re-roll'}
                 </button>
                 <button
-                  onClick={() => setShowRandomCallModeSelect(false)}
+                  onClick={closeRandomModalWithBack}
                   className="flex-1 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
                 >
                   {lang === 'ja' ? '← 戻る' : '← Back'}
@@ -931,7 +986,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
       })()}
 
       {/* About ページ */}
-      {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
+      {showAbout && <AboutPage onClose={closeAboutWithBack} />}
     </div>
   );
 }
