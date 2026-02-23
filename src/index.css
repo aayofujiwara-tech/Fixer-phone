@@ -223,6 +223,24 @@ button {
     will-change: opacity;
   }
 
+  /* 落下テキストレイヤー */
+  .deco-stream-fall {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .stream-fall-slot {
+    position: absolute;
+    top: 0;
+    opacity: 0;
+    font-family: 'JetBrains Mono', 'Noto Sans JP', monospace, sans-serif;
+    font-size: 0.72rem;
+    line-height: 1;
+    color: rgba(0,200,60,0.22);
+    white-space: nowrap;
+  }
+
   /* 座標・ステータス — 大きく */
   .deco-status {
     position: absolute;

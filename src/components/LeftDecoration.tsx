@@ -76,19 +76,26 @@ function randEntry(): { text: string; bright: boolean } {
 /* ========== 定数 ========== */
 
 const COL_COUNT = 6;
-const SLOTS_PER_COL = 7; // 固定プール: 6×7 = 42 DOM要素
+const SLOTS_PER_COL = 7;  // フェードスロット固定プール: 6×7 = 42 DOM要素
+const FALL_COUNT = 6;      // 落下テキスト固定プール: 6 DOM要素
 
 /* ========== コンポーネント ========== */
 
 export function LeftDecoration() {
+  /* ---- フェードスロット用 refs ---- */
   const slotsRef = useRef<(HTMLSpanElement | null)[][]>(
     Array.from({ length: COL_COUNT }, () => new Array<HTMLSpanElement | null>(SLOTS_PER_COL).fill(null)),
   );
 
+  /* ---- 落下テキスト用 refs ---- */
+  const fallRef = useRef<(HTMLSpanElement | null)[]>(
+    new Array<HTMLSpanElement | null>(FALL_COUNT).fill(null),
+  );
+
+  /* ======== Effect 1: フェードイン・アウトスロット ======== */
   useEffect(() => {
     let active = true;
 
-    /** 1スロットの表示サイクル（再帰） */
     const cycle = (col: number, slot: number) => {
       if (!active) return;
       const el = slotsRef.current[col]?.[slot];
@@ -97,7 +104,6 @@ export function LeftDecoration() {
       const { text, bright } = randEntry();
       const isFlash = Math.random() < 0.08;
 
-      /* ---- Phase 1: 非表示のまま再配置・テキスト変更 ---- */
       el.style.transition = 'none';
       el.style.opacity = '0';
       el.textContent = text;
@@ -111,17 +117,15 @@ export function LeftDecoration() {
         el.style.textShadow = '';
       }
 
-      /* ---- Phase 2: transition再有効化 → フェードイン ---- */
       requestAnimationFrame(() => {
         if (!active) return;
-        el.style.transition = '';           // CSS定義のtransitionに戻す
+        el.style.transition = '';
         requestAnimationFrame(() => {
           if (!active) return;
-          el.style.opacity = '1';           // フェードイン開始
+          el.style.opacity = '1';
         });
       });
 
-      /* ---- Phase 3: フラッシュ色を戻す（smooth transition） ---- */
       if (isFlash) {
         setTimeout(() => {
           if (!active) return;
@@ -130,17 +134,15 @@ export function LeftDecoration() {
         }, 400);
       }
 
-      /* ---- Phase 4: ホールド → フェードアウト → 次サイクル ---- */
-      const hold = 1000 + Math.random() * 3000;         // 1–4秒表示
+      const hold = 1000 + Math.random() * 3000;
       setTimeout(() => {
         if (!active) return;
-        el.style.opacity = '0';                          // フェードアウト
-        const gap = 400 + Math.random() * 1100;          // 0.4–1.5秒の空白
+        el.style.opacity = '0';
+        const gap = 400 + Math.random() * 1100;
         setTimeout(() => cycle(col, slot), gap);
       }, hold);
     };
 
-    // 初期スタガー（0–5秒でバラバラに開始）
     for (let c = 0; c < COL_COUNT; c++) {
       for (let s = 0; s < SLOTS_PER_COL; s++) {
         setTimeout(() => cycle(c, s), Math.random() * 5000);
@@ -150,12 +152,71 @@ export function LeftDecoration() {
     return () => { active = false; };
   }, []);
 
+  /* ======== Effect 2: 上→下 落下テキスト ======== */
+  useEffect(() => {
+    let active = true;
+    const animations: (Animation | null)[] = new Array(FALL_COUNT).fill(null);
+
+    const fallCycle = (idx: number) => {
+      if (!active) return;
+      const el = fallRef.current[idx];
+      if (!el) return;
+      const container = el.parentElement;
+      if (!container) return;
+
+      const { text, bright } = randEntry();
+      const col = Math.floor(Math.random() * COL_COUNT);
+      const duration = 3000 + Math.random() * 5000;   // 3–8秒で落下
+      const containerH = container.clientHeight;
+
+      // テキスト・水平位置を設定
+      el.textContent = text;
+      const colWidth = 100 / COL_COUNT;
+      el.style.left = `${col * colWidth + Math.random() * colWidth * 0.8}%`;
+      el.style.color = bright ? 'rgba(0,255,136,0.40)' : '';
+
+      // 前回のアニメーションをクリア
+      animations[idx]?.cancel();
+
+      // Web Animations API で GPU composited な transform 落下
+      const startY = -20;
+      const endY = containerH + 20;
+      const anim = el.animate([
+        { transform: `translateY(${startY}px)`, opacity: 0 },
+        { transform: `translateY(${startY + (endY - startY) * 0.05}px)`, opacity: 0.4, offset: 0.05 },
+        { transform: `translateY(${startY + (endY - startY) * 0.90}px)`, opacity: 0.4, offset: 0.90 },
+        { transform: `translateY(${endY}px)`, opacity: 0 },
+      ], {
+        duration,
+        easing: 'linear',
+        fill: 'forwards',
+      });
+
+      animations[idx] = anim;
+      anim.onfinish = () => {
+        if (!active) return;
+        const gap = 1500 + Math.random() * 3500;      // 1.5–5秒の空白
+        setTimeout(() => fallCycle(idx), gap);
+      };
+    };
+
+    // 0–8秒でバラバラに開始
+    for (let i = 0; i < FALL_COUNT; i++) {
+      setTimeout(() => fallCycle(i), Math.random() * 8000);
+    }
+
+    return () => {
+      active = false;
+      animations.forEach(a => a?.cancel());
+    };
+  }, []);
+
   return (
     <div className="deco-left">
       {/* スキャンライン */}
       <div className="deco-scanline" />
 
-      {/* データストリーム — 個別フェード方式 */}
+      {/* レイヤー1: フェードイン・アウトスロット */}
       <div className="deco-stream">
         {Array.from({ length: COL_COUNT }, (_, ci) => (
           <div key={ci} className="deco-stream-col">
@@ -167,6 +228,17 @@ export function LeftDecoration() {
               />
             ))}
           </div>
+        ))}
+      </div>
+
+      {/* レイヤー2: 上→下 落下テキスト */}
+      <div className="deco-stream-fall">
+        {Array.from({ length: FALL_COUNT }, (_, i) => (
+          <span
+            key={i}
+            className="stream-fall-slot"
+            ref={(el) => { fallRef.current[i] = el; }}
+          />
         ))}
       </div>
 
