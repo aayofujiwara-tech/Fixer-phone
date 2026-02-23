@@ -43,19 +43,23 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
   const [showRandomCallModeSelect, setShowRandomCallModeSelect] = useState(false);
   const [randomCountry, setRandomCountry] = useState<Country | null>(null);
   const [randomMood, setRandomMood] = useState<Mood>('serious');
+  const [randomScenarioIndex, setRandomScenarioIndex] = useState<number>(0);
 
   const handleAllRandom = () => {
     const rc = countries[Math.floor(Math.random() * countries.length)];
     const rm: Mood = Math.random() < 0.5 ? 'serious' : 'comedy';
+    const scenarios = getScenarioList(rc.id, rm);
+    const ri = scenarios.length > 0 ? Math.floor(Math.random() * scenarios.length) : 0;
     setRandomCountry(rc);
     setRandomMood(rm);
+    setRandomScenarioIndex(ri);
     setShowRandomCallModeSelect(true);
   };
 
   const handleRandomStart = (mode: CallMode) => {
     if (!randomCountry) return;
     setShowRandomCallModeSelect(false);
-    onStart(randomCountry, randomMood, mode, null);
+    onStart(randomCountry, randomMood, mode, randomScenarioIndex);
   };
 
   const toggleSpeakerMode = () => {
@@ -420,65 +424,94 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
           <RightDecoration />
         </div>
 
-        {/* 全ランダム: AUTO/PRACTICE選択モーダル */}
-        {showRandomCallModeSelect && randomCountry && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
-            <div className="w-full max-w-sm mx-4 bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl shadow-accent/10">
-              {/* 選定結果 */}
-              <div className="text-center mb-5">
-                <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-2">
-                  Mission Assigned
-                </div>
-                <div className="flex items-center justify-center gap-3 mb-2">
-                  <FlagIcon countryId={randomCountry.id} className="w-10 h-auto rounded-sm" />
-                  <div className="text-left">
-                    <div className="text-white font-bold font-mono">
-                      {lang === 'ja'
-                        ? `${randomCountry.name} ${randomCountry.leader}`
-                        : `${randomCountry.nameEn} ${randomCountry.leaderEn}`}
-                    </div>
-                    <div className={`text-xs font-mono ${randomMood === 'serious' ? 'text-red-400' : 'text-yellow-400'}`}>
-                      {randomMood === 'serious' ? t('serious') : t('comedy')}
-                    </div>
+        {/* 全ランダム: 確認モーダル */}
+        {showRandomCallModeSelect && randomCountry && (() => {
+          const scenarios = getScenarioList(randomCountry.id, randomMood);
+          const scenarioTitle = scenarios[randomScenarioIndex];
+          return (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+              <div className="w-full max-w-sm mx-4 bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl shadow-accent/10">
+                {/* ヘッダー */}
+                <div className="text-center mb-4">
+                  <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-3">
+                    Mission Assigned
                   </div>
-                </div>
-              </div>
 
-              {/* AUTO/PRACTICE選択 */}
-              <div className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-2 text-center">
-                {t('selectCallMode')}
-              </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => handleRandomStart('auto')}
-                  className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all"
-                >
-                  ▶ AUTO
-                  <div className="text-[10px] mt-1 opacity-70">
-                    {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+                  {/* 国 */}
+                  <div className="flex items-center justify-center gap-3 mb-3">
+                    <FlagIcon countryId={randomCountry.id} className="w-10 h-auto rounded-sm" />
+                    <div className="text-left">
+                      <div className="text-white font-bold font-mono">
+                        {lang === 'ja'
+                          ? `${randomCountry.name} ${randomCountry.leader}`
+                          : `${randomCountry.nameEn} ${randomCountry.leaderEn}`}
+                      </div>
+                    </div>
                   </div>
-                </button>
-                <button
-                  onClick={() => handleRandomStart('practice')}
-                  className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all"
-                >
-                  🎙 PRACTICE
-                  <div className="text-[10px] mt-1 opacity-70">
-                    {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
-                  </div>
-                </button>
-              </div>
 
-              {/* キャンセル */}
-              <button
-                onClick={() => setShowRandomCallModeSelect(false)}
-                className="w-full mt-3 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
-              >
-                {lang === 'ja' ? '← 戻る' : '← Back'}
-              </button>
+                  {/* モード + シナリオ */}
+                  <div className="bg-gray-800/70 rounded-lg px-3 py-2 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500 text-[10px] font-mono uppercase">Mode</span>
+                      <span className={`text-xs font-mono font-bold ${randomMood === 'serious' ? 'text-red-400' : 'text-yellow-400'}`}>
+                        {randomMood === 'serious' ? t('serious') : t('comedy')}
+                      </span>
+                    </div>
+                    {scenarioTitle && (
+                      <div className="flex items-start justify-between gap-3">
+                        <span className="text-gray-500 text-[10px] font-mono uppercase shrink-0 mt-0.5">Scenario</span>
+                        <span className="text-gray-200 text-xs font-mono text-right">
+                          {lang === 'ja' ? scenarioTitle.title_ja : scenarioTitle.title_en}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* AUTO/PRACTICE選択 */}
+                <div className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-2 text-center">
+                  {t('selectCallMode')}
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleRandomStart('auto')}
+                    className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all"
+                  >
+                    ▶ AUTO
+                    <div className="text-[10px] mt-1 opacity-70">
+                      {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+                    </div>
+                  </button>
+                  <button
+                    onClick={() => handleRandomStart('practice')}
+                    className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all"
+                  >
+                    🎙 PRACTICE
+                    <div className="text-[10px] mt-1 opacity-70">
+                      {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
+                    </div>
+                  </button>
+                </div>
+
+                {/* 再抽選 + 戻る */}
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={handleAllRandom}
+                    className="flex-1 py-2 text-accent text-xs font-mono border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors"
+                  >
+                    🎲 {lang === 'ja' ? '再抽選' : 'Re-roll'}
+                  </button>
+                  <button
+                    onClick={() => setShowRandomCallModeSelect(false)}
+                    className="flex-1 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
+                  >
+                    {lang === 'ja' ? '← 戻る' : '← Back'}
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* About ページ */}
         {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
@@ -808,65 +841,94 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
         </button>
       </div>
 
-      {/* 全ランダム: AUTO/PRACTICE選択モーダル */}
-      {showRandomCallModeSelect && randomCountry && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="w-full max-w-sm mx-4 bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl shadow-accent/10">
-            {/* 選定結果 */}
-            <div className="text-center mb-5">
-              <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-2">
-                Mission Assigned
-              </div>
-              <div className="flex items-center justify-center gap-3 mb-2">
-                <FlagIcon countryId={randomCountry.id} className="w-10 h-auto rounded-sm" />
-                <div className="text-left">
-                  <div className="text-white font-bold font-mono">
-                    {lang === 'ja'
-                      ? `${randomCountry.name} ${randomCountry.leader}`
-                      : `${randomCountry.nameEn} ${randomCountry.leaderEn}`}
-                  </div>
-                  <div className={`text-xs font-mono ${randomMood === 'serious' ? 'text-red-400' : 'text-yellow-400'}`}>
-                    {randomMood === 'serious' ? t('serious') : t('comedy')}
-                  </div>
+      {/* 全ランダム: 確認モーダル */}
+      {showRandomCallModeSelect && randomCountry && (() => {
+        const scenarios = getScenarioList(randomCountry.id, randomMood);
+        const scenarioTitle = scenarios[randomScenarioIndex];
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="w-full max-w-sm mx-4 bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl shadow-accent/10">
+              {/* ヘッダー */}
+              <div className="text-center mb-4">
+                <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-3">
+                  Mission Assigned
                 </div>
-              </div>
-            </div>
 
-            {/* AUTO/PRACTICE選択 */}
-            <div className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-2 text-center">
-              {t('selectCallMode')}
-            </div>
-            <div className="flex gap-3">
-              <button
-                onClick={() => handleRandomStart('auto')}
-                className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all active:scale-[0.98]"
-              >
-                ▶ AUTO
-                <div className="text-[10px] mt-1 opacity-70">
-                  {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+                {/* 国 */}
+                <div className="flex items-center justify-center gap-3 mb-3">
+                  <FlagIcon countryId={randomCountry.id} className="w-10 h-auto rounded-sm" />
+                  <div className="text-left">
+                    <div className="text-white font-bold font-mono">
+                      {lang === 'ja'
+                        ? `${randomCountry.name} ${randomCountry.leader}`
+                        : `${randomCountry.nameEn} ${randomCountry.leaderEn}`}
+                    </div>
+                  </div>
                 </div>
-              </button>
-              <button
-                onClick={() => handleRandomStart('practice')}
-                className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all active:scale-[0.98]"
-              >
-                🎙 PRACTICE
-                <div className="text-[10px] mt-1 opacity-70">
-                  {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
-                </div>
-              </button>
-            </div>
 
-            {/* キャンセル */}
-            <button
-              onClick={() => setShowRandomCallModeSelect(false)}
-              className="w-full mt-3 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
-            >
-              {lang === 'ja' ? '← 戻る' : '← Back'}
-            </button>
+                {/* モード + シナリオ */}
+                <div className="bg-gray-800/70 rounded-lg px-3 py-2 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-500 text-[10px] font-mono uppercase">Mode</span>
+                    <span className={`text-xs font-mono font-bold ${randomMood === 'serious' ? 'text-red-400' : 'text-yellow-400'}`}>
+                      {randomMood === 'serious' ? t('serious') : t('comedy')}
+                    </span>
+                  </div>
+                  {scenarioTitle && (
+                    <div className="flex items-start justify-between gap-3">
+                      <span className="text-gray-500 text-[10px] font-mono uppercase shrink-0 mt-0.5">Scenario</span>
+                      <span className="text-gray-200 text-xs font-mono text-right">
+                        {lang === 'ja' ? scenarioTitle.title_ja : scenarioTitle.title_en}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* AUTO/PRACTICE選択 */}
+              <div className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-2 text-center">
+                {t('selectCallMode')}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handleRandomStart('auto')}
+                  className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all active:scale-[0.98]"
+                >
+                  ▶ AUTO
+                  <div className="text-[10px] mt-1 opacity-70">
+                    {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+                  </div>
+                </button>
+                <button
+                  onClick={() => handleRandomStart('practice')}
+                  className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all active:scale-[0.98]"
+                >
+                  🎙 PRACTICE
+                  <div className="text-[10px] mt-1 opacity-70">
+                    {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
+                  </div>
+                </button>
+              </div>
+
+              {/* 再抽選 + 戻る */}
+              <div className="flex gap-2 mt-3">
+                <button
+                  onClick={handleAllRandom}
+                  className="flex-1 py-2 text-accent text-xs font-mono border border-accent/30 rounded-lg hover:bg-accent/10 transition-colors active:scale-[0.98]"
+                >
+                  🎲 {lang === 'ja' ? '再抽選' : 'Re-roll'}
+                </button>
+                <button
+                  onClick={() => setShowRandomCallModeSelect(false)}
+                  className="flex-1 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
+                >
+                  {lang === 'ja' ? '← 戻る' : '← Back'}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
       {/* About ページ */}
       {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
