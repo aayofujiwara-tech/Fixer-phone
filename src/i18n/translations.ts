@@ -111,6 +111,18 @@ export const translations = {
     ja: 'STEALTH',
     en: 'STEALTH',
   },
+  allRandom: {
+    ja: '全ランダム — 極秘任務',
+    en: 'ALL RANDOM — Classified Mission',
+  },
+  allRandomDesc: {
+    ja: '国・モード・シナリオを自動選定',
+    en: 'Auto-select country, mode & scenario',
+  },
+  selectCallMode: {
+    ja: '通話モードを選択',
+    en: 'Select Call Mode',
+  },
   scenarioSelectLabel: {
     ja: 'シナリオ選択',
     en: 'Select Scenario',

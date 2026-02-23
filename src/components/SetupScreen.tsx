@@ -35,6 +35,25 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
     return saved === 'earpiece' ? 'earpiece' : 'speaker';
   });
 
+  // 全ランダム: AUTO/PRACTICE選択モーダル用
+  const [showRandomCallModeSelect, setShowRandomCallModeSelect] = useState(false);
+  const [randomCountry, setRandomCountry] = useState<Country | null>(null);
+  const [randomMood, setRandomMood] = useState<Mood>('serious');
+
+  const handleAllRandom = () => {
+    const rc = countries[Math.floor(Math.random() * countries.length)];
+    const rm: Mood = Math.random() < 0.5 ? 'serious' : 'comedy';
+    setRandomCountry(rc);
+    setRandomMood(rm);
+    setShowRandomCallModeSelect(true);
+  };
+
+  const handleRandomStart = (mode: CallMode) => {
+    if (!randomCountry) return;
+    setShowRandomCallModeSelect(false);
+    onStart(randomCountry, randomMood, mode, null);
+  };
+
   const toggleSpeakerMode = () => {
     setSpeakerMode(prev => {
       const next = prev === 'speaker' ? 'earpiece' : 'speaker';
@@ -135,6 +154,18 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
 
           {/* メインコンテンツ（スクロールなし1画面） */}
           <div className="flex-1 min-h-0 flex flex-col justify-center px-4 py-3 gap-2.5 overflow-hidden">
+            {/* 全ランダムボタン */}
+            <section className="shrink-0">
+              <button
+                onClick={handleAllRandom}
+                className="w-full py-2 rounded-lg border-2 border-dashed border-accent/40 bg-accent/5 hover:bg-accent/10 hover:border-accent/70 transition-all font-mono text-sm text-accent flex items-center justify-center gap-2 pc-compact-btn"
+              >
+                <span className="text-base">🎲</span>
+                {t('allRandom')}
+                <span className="text-[10px] text-accent/60 ml-1">[ {t('allRandomDesc')} ]</span>
+              </button>
+            </section>
+
             {/* TARGET COUNTRY: 4列×3段グリッド */}
             <section className="shrink-0">
               <h2 className="text-[10px] font-mono text-gray-400 mb-1.5 uppercase tracking-wider">
@@ -373,6 +404,66 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
         <div className="flex-1 min-w-0 border-l border-gray-800/50">
           <RightDecoration />
         </div>
+
+        {/* 全ランダム: AUTO/PRACTICE選択モーダル */}
+        {showRandomCallModeSelect && randomCountry && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+            <div className="w-full max-w-sm mx-4 bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl shadow-accent/10">
+              {/* 選定結果 */}
+              <div className="text-center mb-5">
+                <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-2">
+                  Mission Assigned
+                </div>
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <FlagIcon countryId={randomCountry.id} className="w-10 h-auto rounded-sm" />
+                  <div className="text-left">
+                    <div className="text-white font-bold font-mono">
+                      {lang === 'ja'
+                        ? `${randomCountry.name} ${randomCountry.leader}`
+                        : `${randomCountry.nameEn} ${randomCountry.leaderEn}`}
+                    </div>
+                    <div className={`text-xs font-mono ${randomMood === 'serious' ? 'text-red-400' : 'text-yellow-400'}`}>
+                      {randomMood === 'serious' ? t('serious') : t('comedy')}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* AUTO/PRACTICE選択 */}
+              <div className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-2 text-center">
+                {t('selectCallMode')}
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => handleRandomStart('auto')}
+                  className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all"
+                >
+                  ▶ AUTO
+                  <div className="text-[10px] mt-1 opacity-70">
+                    {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+                  </div>
+                </button>
+                <button
+                  onClick={() => handleRandomStart('practice')}
+                  className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all"
+                >
+                  🎙 PRACTICE
+                  <div className="text-[10px] mt-1 opacity-70">
+                    {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
+                  </div>
+                </button>
+              </div>
+
+              {/* キャンセル */}
+              <button
+                onClick={() => setShowRandomCallModeSelect(false)}
+                className="w-full mt-3 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
+              >
+                {lang === 'ja' ? '← 戻る' : '← Back'}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -429,6 +520,20 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
       </div>
 
       <div className="flex-1 overflow-y-auto px-4 pb-4 space-y-6">
+        {/* 全ランダムボタン */}
+        <section>
+          <button
+            onClick={handleAllRandom}
+            className="w-full py-3 rounded-lg border-2 border-dashed border-accent/40 bg-accent/5 hover:bg-accent/10 hover:border-accent/70 transition-all font-mono text-sm text-accent flex flex-col items-center justify-center gap-1 active:scale-[0.98]"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🎲</span>
+              {t('allRandom')}
+            </div>
+            <span className="text-[10px] text-accent/60">[ {t('allRandomDesc')} ]</span>
+          </button>
+        </section>
+
         {/* 国選択 */}
         <section>
           <h2 className="text-sm font-mono text-gray-400 mb-3 uppercase tracking-wider">
@@ -673,6 +778,66 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             : t('selectCountry')}
         </button>
       </div>
+
+      {/* 全ランダム: AUTO/PRACTICE選択モーダル */}
+      {showRandomCallModeSelect && randomCountry && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm animate-fade-in">
+          <div className="w-full max-w-sm mx-4 bg-gray-900 border border-gray-700 rounded-2xl p-6 shadow-2xl shadow-accent/10">
+            {/* 選定結果 */}
+            <div className="text-center mb-5">
+              <div className="text-gray-500 text-[10px] font-mono uppercase tracking-widest mb-2">
+                Mission Assigned
+              </div>
+              <div className="flex items-center justify-center gap-3 mb-2">
+                <FlagIcon countryId={randomCountry.id} className="w-10 h-auto rounded-sm" />
+                <div className="text-left">
+                  <div className="text-white font-bold font-mono">
+                    {lang === 'ja'
+                      ? `${randomCountry.name} ${randomCountry.leader}`
+                      : `${randomCountry.nameEn} ${randomCountry.leaderEn}`}
+                  </div>
+                  <div className={`text-xs font-mono ${randomMood === 'serious' ? 'text-red-400' : 'text-yellow-400'}`}>
+                    {randomMood === 'serious' ? t('serious') : t('comedy')}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* AUTO/PRACTICE選択 */}
+            <div className="text-gray-400 text-xs font-mono uppercase tracking-wider mb-2 text-center">
+              {t('selectCallMode')}
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => handleRandomStart('auto')}
+                className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all active:scale-[0.98]"
+              >
+                ▶ AUTO
+                <div className="text-[10px] mt-1 opacity-70">
+                  {lang === 'ja' ? '全自動進行' : 'Full Auto'}
+                </div>
+              </button>
+              <button
+                onClick={() => handleRandomStart('practice')}
+                className="flex-1 p-3 rounded-lg border-2 border-accent bg-accent/10 text-accent font-mono text-sm hover:bg-accent/20 transition-all active:scale-[0.98]"
+              >
+                🎙 PRACTICE
+                <div className="text-[10px] mt-1 opacity-70">
+                  {lang === 'ja' ? '声に出して練習' : 'Speak Aloud'}
+                </div>
+              </button>
+            </div>
+
+            {/* キャンセル */}
+            <button
+              onClick={() => setShowRandomCallModeSelect(false)}
+              className="w-full mt-3 py-2 text-gray-500 text-xs font-mono hover:text-gray-300 transition-colors"
+            >
+              {lang === 'ja' ? '← 戻る' : '← Back'}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
