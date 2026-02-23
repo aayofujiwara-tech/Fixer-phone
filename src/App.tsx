@@ -57,13 +57,17 @@ function App() {
 
   // 通話開始
   const handleStart = useCallback(
-    async (country: Country, mood: Mood, mode: CallMode = 'auto', scenarioIndex: number | null = null) => {
+    async (country: Country, mood: Mood, mode: CallMode = 'auto', scenarioIndex: number | null = null, replaceHistory = false) => {
       setSelectedCountry(country);
       setCallMode(mode);
       setCurrentMood(mood);
       screenRef.current = 'loading';
       setScreen('loading');
-      history.pushState({ screen: 'loading' }, '');
+      if (replaceHistory) {
+        history.replaceState({ screen: 'loading' }, '');
+      } else {
+        history.pushState({ screen: 'loading' }, '');
+      }
 
       const apiKey = FEATURES.API_MODE ? getApiKey() : null;
 

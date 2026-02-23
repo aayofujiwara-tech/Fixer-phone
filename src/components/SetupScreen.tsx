@@ -14,7 +14,7 @@ import { RightDecoration } from './RightDecoration';
 import { AboutPage } from './AboutPage';
 
 interface Props {
-  onStart: (country: Country, mood: Mood, callMode: CallMode, scenarioIndex: number | null) => void;
+  onStart: (country: Country, mood: Mood, callMode: CallMode, scenarioIndex: number | null, replaceHistory?: boolean) => void;
   jaSpeed: number;
   enSpeed: number;
   onJaSpeedChange: (speed: number) => void;
@@ -112,9 +112,8 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
   const handleRandomStart = (mode: CallMode) => {
     if (!randomCountry) return;
     closeRandomModal();
-    // モーダルの history entry を setup に戻してから onStart が loading を push する
-    history.replaceState({ screen: 'setup' }, '');
-    onStart(randomCountry, randomMood, mode, randomScenarioIndex);
+    // replaceHistory=true: モーダルの history entry を loading で直接上書き
+    onStart(randomCountry, randomMood, mode, randomScenarioIndex, true);
   };
 
   const toggleSpeakerMode = () => {
