@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { _ttsDebugLog, _isTtsUnlocked } from '../hooks/useSpeechSynthesis';
+import { _ttsDebugLog, _isTtsUnlocked, _getPlatformInfo } from '../hooks/useSpeechSynthesis';
 
 // TTS デバッグオーバーレイ
 // FEATURES.TTS_DEBUG_OVERLAY が true の時のみ表示される。
@@ -20,6 +20,7 @@ export function TtsDebugOverlay() {
 
   const voices = synth ? synth.getVoices() : [];
   const unlocked = _isTtsUnlocked();
+  const platform = _getPlatformInfo();
   const recentLogs = _ttsDebugLog.slice(-8);
 
   if (minimized) {
@@ -53,9 +54,15 @@ export function TtsDebugOverlay() {
         </div>
       </div>
 
-      {/* アンロック状態 */}
-      <div className={`mb-1 ${unlocked ? 'text-green-400' : 'text-red-400'}`}>
-        iOS unlock: {unlocked ? 'OK' : 'PENDING'}
+      {/* プラットフォーム判定 */}
+      <div className="text-gray-400 mb-1">
+        platform: <span className="text-white">{platform.label}</span>
+        {' '}| delay: <span className="text-white">{platform.cancelDelay}ms</span>
+      </div>
+
+      {/* アンロック状態（iOS時のみハイライト） */}
+      <div className={`mb-1 ${platform.isIOS ? (unlocked ? 'text-green-400' : 'text-red-400') : 'text-gray-600'}`}>
+        iOS unlock: {platform.isIOS ? (unlocked ? 'OK' : 'PENDING') : 'N/A'}
       </div>
 
       {/* 音声情報 */}

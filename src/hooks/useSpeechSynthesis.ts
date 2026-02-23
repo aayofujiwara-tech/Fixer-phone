@@ -255,6 +255,11 @@ function isIOS(): boolean {
   );
 }
 
+function isAndroid(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  return /Android/.test(navigator.userAgent);
+}
+
 function getPlatformLabel(): string {
   if (typeof navigator === 'undefined') return 'unknown';
   if (/iPhone/.test(navigator.userAgent)) return 'iPhone';
@@ -266,9 +271,17 @@ function getPlatformLabel(): string {
 // デバッグオーバーレイ用のイベントログ（モジュールレベル）
 export const _ttsDebugLog: { time: number; msg: string }[] = [];
 export function _isTtsUnlocked() { return _iosUnlocked; }
+export function _getPlatformInfo() {
+  return {
+    label: getPlatformLabel(),
+    isIOS: isIOS(),
+    isAndroid: isAndroid(),
+    cancelDelay: isIOS() ? IOS_CANCEL_SPEAK_DELAY : isAndroid() ? ANDROID_CANCEL_SPEAK_DELAY : 0,
+  };
+}
 
 function ttsLog(message: string, ...args: unknown[]) {
-  console.log(`[TTS-iOS] ${message}`, ...args);
+  console.log(`[TTS] ${message}`, ...args);
   _ttsDebugLog.push({ time: Date.now(), msg: message });
   if (_ttsDebugLog.length > 50) _ttsDebugLog.shift();
 }
@@ -334,6 +347,9 @@ setupIOSUnlock();
 // ======================================================
 
 const IOS_CANCEL_SPEAK_DELAY = 200;
+// Android Chrome でも cancel() 直後の speak() が無音になるケースがある。
+// iOS より軽度だが安全のため短い遅延を入れる。
+const ANDROID_CANCEL_SPEAK_DELAY = 50;
 
 // TTS制御フック
 export function useSpeechSynthesis() {
@@ -341,7 +357,7 @@ export function useSpeechSynthesis() {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const volumeRef = useRef(1.0);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
-  const iosSpeakTimerRef = useRef<number | null>(null);
+  const speakDelayTimerRef = useRef<number | null>(null);
 
   // ブラウザがTTSに対応しているか
   const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
@@ -406,10 +422,10 @@ export function useSpeechSynthesis() {
   // 読み上げ停止
   const stop = useCallback(() => {
     if (isSupported) {
-      // iOS用の遅延speakタイマーが残っていたらクリア
-      if (iosSpeakTimerRef.current !== null) {
-        clearTimeout(iosSpeakTimerRef.current);
-        iosSpeakTimerRef.current = null;
+      // 遅延speakタイマーが残っていたらクリア
+      if (speakDelayTimerRef.current !== null) {
+        clearTimeout(speakDelayTimerRef.current);
+        speakDelayTimerRef.current = null;
       }
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
@@ -421,10 +437,10 @@ export function useSpeechSynthesis() {
     (text: string, lang: 'ja' | 'en', onEnd?: () => void, rate?: number, pitch?: number) => {
       if (!isSupported) return;
 
-      // iOS用の遅延speakタイマーが残っていたらクリア
-      if (iosSpeakTimerRef.current !== null) {
-        clearTimeout(iosSpeakTimerRef.current);
-        iosSpeakTimerRef.current = null;
+      // 遅延speakタイマーが残っていたらクリア
+      if (speakDelayTimerRef.current !== null) {
+        clearTimeout(speakDelayTimerRef.current);
+        speakDelayTimerRef.current = null;
       }
 
       // 既存の読み上げを停止
@@ -540,12 +556,18 @@ export function useSpeechSynthesis() {
         }
       };
 
-      // iOS: cancel() の直後に speak() すると無音になるバグ回避
+      // cancel() 直後の speak() が無音になるバグ回避
+      // iOS: 200ms, Android: 50ms, その他: 遅延なし
       if (isIOS()) {
-        iosSpeakTimerRef.current = window.setTimeout(() => {
-          iosSpeakTimerRef.current = null;
+        speakDelayTimerRef.current = window.setTimeout(() => {
+          speakDelayTimerRef.current = null;
           doSpeak();
         }, IOS_CANCEL_SPEAK_DELAY);
+      } else if (isAndroid()) {
+        speakDelayTimerRef.current = window.setTimeout(() => {
+          speakDelayTimerRef.current = null;
+          doSpeak();
+        }, ANDROID_CANCEL_SPEAK_DELAY);
       } else {
         doSpeak();
       }
@@ -557,8 +579,8 @@ export function useSpeechSynthesis() {
   useEffect(() => {
     return () => {
       if (isSupported) {
-        if (iosSpeakTimerRef.current !== null) {
-          clearTimeout(iosSpeakTimerRef.current);
+        if (speakDelayTimerRef.current !== null) {
+          clearTimeout(speakDelayTimerRef.current);
         }
         window.speechSynthesis.cancel();
       }
