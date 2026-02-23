@@ -193,13 +193,13 @@ button {
     will-change: top;
   }
 
-  /* データストリーム — 大きく速く */
+  /* データストリーム — ランダム速度・多カラム */
   .deco-stream {
     position: absolute;
     inset: 0;
     display: flex;
     justify-content: space-around;
-    padding: 0 4px;
+    padding: 0 2px;
     overflow: hidden;
   }
   @keyframes deco-fall {
@@ -209,19 +209,15 @@ button {
   .deco-stream-col {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    color: rgba(0,200,60,0.35);
+    gap: 7px;
+    font-family: 'JetBrains Mono', 'Noto Sans JP', monospace, sans-serif;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: rgba(0,200,60,0.30);
     white-space: nowrap;
     animation: deco-fall 14s linear infinite;
     will-change: transform;
   }
-  .deco-stream-col-1 { animation-duration: 15s; }
-  .deco-stream-col-2 { animation-duration: 12s; animation-delay: -4s; }
-  .deco-stream-col-3 { animation-duration: 17s; animation-delay: -8s; }
-  .deco-stream-col-4 { animation-duration: 13s; animation-delay: -2s; }
 
   /* 座標・ステータス — 大きく */
   .deco-status {
