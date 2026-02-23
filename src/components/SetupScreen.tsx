@@ -11,6 +11,7 @@ import { FEATURES } from '../lib/features';
 import { safeGetItem, safeSetItem } from '../lib/storage';
 import { LeftDecoration } from './LeftDecoration';
 import { RightDecoration } from './RightDecoration';
+import { AboutPage } from './AboutPage';
 
 interface Props {
   onStart: (country: Country, mood: Mood, callMode: CallMode, scenarioIndex: number | null) => void;
@@ -34,6 +35,9 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
     const saved = safeGetItem('fixer-phone-speaker-mode');
     return saved === 'earpiece' ? 'earpiece' : 'speaker';
   });
+
+  // About（ブリーフィング）ページ表示
+  const [showAbout, setShowAbout] = useState(false);
 
   // 全ランダム: AUTO/PRACTICE選択モーダル用
   const [showRandomCallModeSelect, setShowRandomCallModeSelect] = useState(false);
@@ -125,6 +129,13 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
               >
                 {speakerMode === 'speaker' ? t('speakerMode') : t('earpieceMode')}
                 <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
+              </button>
+              <div className="h-4 w-px bg-gray-700" />
+              <button
+                onClick={() => setShowAbout(true)}
+                className="px-2 py-0.5 text-xs font-mono rounded transition-all pc-compact-btn text-gray-500 border border-gray-700 hover:text-accent hover:border-accent/50"
+              >
+                ?
               </button>
               <div className="h-4 w-px bg-gray-700" />
               <div className="flex gap-1">
@@ -464,11 +475,14 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             </div>
           </div>
         )}
+
+        {/* About ページ */}
+        {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
       </div>
     );
   }
 
-  // ===== スマホ版レイアウト（既存・変更なし） =====
+  // ===== スマホ版レイアウト =====
   return (
     <div className="min-h-dvh bg-dark flex flex-col">
       {/* ヘッダー */}
@@ -488,8 +502,14 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             <span className="text-sm">{speakerMode === 'speaker' ? '\u{1F50A}' : '\u{1F508}'}</span>
           </button>
         </div>
-        {/* 言語切替 */}
+        {/* 言語切替 + INFO */}
         <div className="absolute top-4 right-4 flex gap-1">
+          <button
+            onClick={() => setShowAbout(true)}
+            className="px-2 py-1 text-xs font-mono rounded transition-all text-gray-500 border border-gray-700 hover:text-accent hover:border-accent/50"
+          >
+            ?
+          </button>
           <button
             onClick={() => setLang('ja')}
             className={`px-2 py-1 text-xs font-mono rounded transition-all ${
@@ -838,6 +858,9 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
           </div>
         </div>
       )}
+
+      {/* About ページ */}
+      {showAbout && <AboutPage onClose={() => setShowAbout(false)} />}
     </div>
   );
 }
