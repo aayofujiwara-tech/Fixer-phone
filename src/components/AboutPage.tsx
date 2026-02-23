@@ -55,24 +55,24 @@ export function AboutPage({ onClose }: Props) {
           {/* 3. 遊び方 */}
           <section>
             <h2 className="about-heading">{ja ? 'MISSION BRIEFING // 遊び方' : 'MISSION BRIEFING'}</h2>
-            <ol className="list-none space-y-1.5 text-gray-300">
-              <li className="flex gap-2">
+            <div className="space-y-1.5 text-gray-300">
+              <div className="flex gap-2">
                 <span className="text-accent font-mono text-xs shrink-0 mt-0.5">01</span>
                 <span>{ja ? '通話相手の国を選択' : 'Select a target country'}</span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <span className="text-accent font-mono text-xs shrink-0 mt-0.5">02</span>
                 <span>{ja ? 'オペレーションモード（SERIOUS / COMEDY）を選択' : 'Choose operation mode (SERIOUS / COMEDY)'}</span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <span className="text-accent font-mono text-xs shrink-0 mt-0.5">03</span>
                 <span>{ja ? 'シナリオを選択（またはランダム）' : 'Pick a scenario (or go random)'}</span>
-              </li>
-              <li className="flex gap-2">
+              </div>
+              <div className="flex gap-2">
                 <span className="text-accent font-mono text-xs shrink-0 mt-0.5">04</span>
                 <span>{ja ? '通話モード（AUTO / PRACTICE）を選択して通話開始' : 'Select call mode (AUTO / PRACTICE) and start the call'}</span>
-              </li>
-            </ol>
+              </div>
+            </div>
           </section>
 
           {/* 4. モード説明 */}
