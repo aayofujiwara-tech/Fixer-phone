@@ -173,7 +173,7 @@ export function LeftDecoration() {
       el.textContent = text;
       const colWidth = 100 / COL_COUNT;
       el.style.left = `${col * colWidth + Math.random() * colWidth * 0.8}%`;
-      el.style.color = bright ? 'rgba(0,255,136,0.40)' : '';
+      el.style.color = bright ? 'rgba(0,255,136,0.70)' : '';
 
       // 前回のアニメーションをクリア
       animations[idx]?.cancel();
@@ -183,8 +183,8 @@ export function LeftDecoration() {
       const endY = containerH + 20;
       const anim = el.animate([
         { transform: `translateY(${startY}px)`, opacity: 0 },
-        { transform: `translateY(${startY + (endY - startY) * 0.05}px)`, opacity: 0.4, offset: 0.05 },
-        { transform: `translateY(${startY + (endY - startY) * 0.90}px)`, opacity: 0.4, offset: 0.90 },
+        { transform: `translateY(${startY + (endY - startY) * 0.05}px)`, opacity: 0.7, offset: 0.05 },
+        { transform: `translateY(${startY + (endY - startY) * 0.90}px)`, opacity: 0.7, offset: 0.90 },
         { transform: `translateY(${endY}px)`, opacity: 0 },
       ], {
         duration,
