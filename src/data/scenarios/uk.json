@@ -148,16 +148,6 @@
         },
         {
           "speaker": "leader",
-          "ja": "閣僚を犠牲にするのか？",
-          "en": "Sacrificing a cabinet minister?"
-        },
-        {
-          "speaker": "fixer",
-          "ja": "当該閣僚は来月辞任予定だった人物です。辞任理由が「個人的事情」から「汚職発覚」に変わるだけです。大きな犠牲ではありません。",
-          "en": "The minister in question was already scheduled to resign next month. The reason simply changes from \"personal matters\" to \"corruption exposed.\" Not a significant sacrifice."
-        },
-        {
-          "speaker": "leader",
           "ja": "写真自体の回収は？",
           "en": "What about recovering the photos themselves?"
         },
@@ -335,16 +325,6 @@
           "speaker": "fixer",
           "ja": "解決策があります。ハトをバッキンガム宮殿の新しい鳩舎に「王室移転」させます。「ロイヤル・ピジョン」として公式認定すれば、愛護団体も黙ります。",
           "en": "I have a solution. We relocate the pigeons to a new dovecote at Buckingham Palace as a \"Royal Transfer.\" Officially certify them as \"Royal Pigeons\" and the animal rights groups will be satisfied."
-        },
-        {
-          "speaker": "leader",
-          "ja": "ロイヤル・ピジョン…。王室はどう思うだろう。",
-          "en": "Royal Pigeons... What will the Royal Family think?"
-        },
-        {
-          "speaker": "fixer",
-          "ja": "実は、エリザベス女王（故人）がレース鳩を飼育されていた伝統があります。前例があるのです。グッズも作れます。「ロイヤル・ピジョン」のぬいぐるみは観光土産として売れるでしょう。",
-          "en": "Actually, there's a tradition — the late Queen Elizabeth bred racing pigeons. There's precedent. We can make merchandise too. \"Royal Pigeon\" plush toys would sell well as tourist souvenirs."
         },
         {
           "speaker": "leader",
