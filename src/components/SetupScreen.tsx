@@ -214,8 +214,9 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
             </div>
           </div>
 
-          {/* メインコンテンツ（スクロールなし1画面） */}
-          <div className="flex-1 min-h-0 flex flex-col justify-center px-4 py-3 gap-2.5 overflow-hidden">
+          {/* メインコンテンツ（小さい画面ではスクロール可能） */}
+          <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">
+           <div className="flex flex-col gap-2.5 min-h-full justify-center">
             {/* About / How to Play */}
             <section className="shrink-0">
               <button
@@ -470,6 +471,7 @@ export function SetupScreen({ onStart, jaSpeed, enSpeed, onJaSpeedChange, onEnSp
                 {selectedCountry ? t('startCall') : t('selectCountry')}
               </button>
             </div>
+           </div>
           </div>
         </div>
 
