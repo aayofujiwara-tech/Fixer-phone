@@ -166,14 +166,19 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
     // 0.1秒待ってリーダー読み上げ（選択言語のみ）
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
-      speak(text, ttsLang, () => {
-        if (!autoActiveRef.current) return;
-        // 読み上げ完了 → 0.2秒待ってフィクサーセリフを表示
-        addAutoTimer(() => {
+      speak(text, ttsLang, {
+        onEnd: () => {
           if (!autoActiveRef.current) return;
-          setShowFixerLine(true);
-        }, 200);
-      }, rate, vip.pitch);
+          // 読み上げ完了 → 0.2秒待ってフィクサーセリフを表示
+          addAutoTimer(() => {
+            if (!autoActiveRef.current) return;
+            setShowFixerLine(true);
+          }, 200);
+        },
+        rate,
+        pitch: vip.pitch,
+        skipCancel: true,
+      });
     }, 100);
 
     return () => clearAutoTimers();
@@ -196,7 +201,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
 
       addAutoTimer(() => {
         if (!autoActiveRef.current) return;
-        speak(text, ttsLang, undefined, rate);
+        speak(text, ttsLang, { rate, skipCancel: true });
       }, 200);
 
       return () => clearAutoTimers();
@@ -216,18 +221,22 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
     // 0.2秒待ってから選択言語のみ読み上げ
     addAutoTimer(() => {
       if (!autoActiveRef.current) return;
-      speak(text, ttsLang, () => {
-        if (!autoActiveRef.current) return;
-        // 読み上げ完了 → 0.5秒待って次へ
-        addAutoTimer(() => {
+      speak(text, ttsLang, {
+        onEnd: () => {
           if (!autoActiveRef.current) return;
-          if (lastPair) {
-            handleEndCallRef.current();
-          } else {
-            setCurrentLineIndex(prev => prev + 1);
-          }
-        }, 500);
-      }, rate);
+          // 読み上げ完了 → 0.5秒待って次へ
+          addAutoTimer(() => {
+            if (!autoActiveRef.current) return;
+            if (lastPair) {
+              handleEndCallRef.current();
+            } else {
+              setCurrentLineIndex(prev => prev + 1);
+            }
+          }, 500);
+        },
+        rate,
+        skipCancel: true,
+      });
     }, 200);
 
     return () => clearAutoTimers();
@@ -278,7 +287,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
   const speakJa = () => {
     if (pair.fixer) {
       clearAutoTimers();
-      speak(pair.fixer.ja, 'ja', undefined, SPEED_LEVELS[jaSpeed]);
+      speak(pair.fixer.ja, 'ja', { rate: SPEED_LEVELS[jaSpeed] });
     }
   };
 
@@ -286,7 +295,7 @@ export function CallScreen({ country, scenario, callMode, mood, onEnd, jaSpeed, 
   const speakEn = () => {
     if (pair.fixer) {
       clearAutoTimers();
-      speak(pair.fixer.en, 'en', undefined, SPEED_LEVELS[enSpeed]);
+      speak(pair.fixer.en, 'en', { rate: SPEED_LEVELS[enSpeed] });
     }
   };
 

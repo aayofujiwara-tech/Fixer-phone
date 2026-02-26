@@ -398,7 +398,7 @@ export function _getPlatformInfo() {
     label: getPlatformLabel(),
     isIOS: isIOS(),
     isAndroid: isAndroid(),
-    cancelDelay: isIOS() ? IOS_CANCEL_SPEAK_DELAY : isAndroid() ? ANDROID_CANCEL_SPEAK_DELAY : 0,
+    cancelDelay: 0, // setTimeout 遅延は廃止（ジェスチャーコンテキスト保持のため）
   };
 }
 
@@ -463,15 +463,16 @@ function setupIOSUnlock() {
 setupIOSUnlock();
 
 // ======================================================
-// iOS 安全な speak（cancel→遅延→speak）
-// iOS Safari では cancel() 直後の speak() が無音になるバグがある。
-// 200ms の遅延を入れて回避する。
+// cancel() → speak() 無音バグ対策
 // ======================================================
-
-const IOS_CANCEL_SPEAK_DELAY = 200;
-// Android Chrome でも cancel() 直後の speak() が無音になるケースがある。
-// iOS より軽度だが安全のため短い遅延を入れる。
-const ANDROID_CANCEL_SPEAK_DELAY = 50;
+// 従来: iOS 200ms / Android 50ms の setTimeout で cancel→speak 間に
+// 遅延を入れていたが、setTimeout はユーザージェスチャーコンテキストを
+// 破壊し、iOS Safari で speak() がブロックされる原因となっていた。
+//
+// 修正: setTimeout を廃止。cancel→speak 無音バグは以下で回避:
+//   1. 自動再生パス: skipCancel=true で cancel() 自体を省略
+//   2. 手動ボタンパス: cancel() 直後に同期 doSpeak() + resume() で回復
+//   3. iOS kick-start (pause→resume @100ms) で追加回復
 
 // TTS制御フック
 export function useSpeechSynthesis() {
@@ -479,7 +480,6 @@ export function useSpeechSynthesis() {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const volumeRef = useRef(1.0);
   const [voicesLoaded, setVoicesLoaded] = useState(false);
-  const speakDelayTimerRef = useRef<number | null>(null);
 
   // ブラウザがTTSに対応しているか
   const isSupported = typeof window !== 'undefined' && 'speechSynthesis' in window;
@@ -544,33 +544,40 @@ export function useSpeechSynthesis() {
   // 読み上げ停止
   const stop = useCallback(() => {
     if (isSupported) {
-      // 遅延speakタイマーが残っていたらクリア
-      if (speakDelayTimerRef.current !== null) {
-        clearTimeout(speakDelayTimerRef.current);
-        speakDelayTimerRef.current = null;
-      }
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
     }
   }, [isSupported]);
 
   // テキスト読み上げ
+  //
+  // options.skipCancel:
+  //   true  = cancel() を省略（自動再生チェーン用）。
+  //           iOS ではジェスチャーコンテキスト外の cancel() が
+  //           オーディオセッションを破壊し、後続 speak() が無音になる。
+  //           onEnd コールバックからの連鎖では前の utterance は終了済みなので
+  //           cancel() は不要。
+  //   false = cancel() を実行（手動ボタン用、デフォルト）。
+  //           ユーザージェスチャー内で同期実行するため setTimeout は使わない。
   const speak = useCallback(
-    (text: string, lang: 'ja' | 'en', onEnd?: () => void, rate?: number, pitch?: number) => {
+    (text: string, lang: 'ja' | 'en', options?: {
+      onEnd?: () => void;
+      rate?: number;
+      pitch?: number;
+      skipCancel?: boolean;
+    }) => {
       if (!isSupported) return;
 
-      // 遅延speakタイマーが残っていたらクリア
-      if (speakDelayTimerRef.current !== null) {
-        clearTimeout(speakDelayTimerRef.current);
-        speakDelayTimerRef.current = null;
-      }
+      const { onEnd, rate, pitch, skipCancel } = options ?? {};
 
-      // 既存の読み上げを停止
-      window.speechSynthesis.cancel();
+      // skipCancel=false (default): 既存の読み上げを停止
+      if (!skipCancel) {
+        window.speechSynthesis.cancel();
+      }
 
       const ttsText = lang === 'ja' ? fixJaReading(text) : text;
 
-      ttsLog(`Speak called: "${text.slice(0, 30)}..." [${lang}] unlocked=${_iosUnlocked}`);
+      ttsLog(`Speak called: "${text.slice(0, 30)}..." [${lang}] unlocked=${_iosUnlocked} skipCancel=${!!skipCancel}`);
 
       const doSpeak = () => {
         // iOS: cancel() 後に resume() しないと speak() が無音になるバグを回避
@@ -586,6 +593,9 @@ export function useSpeechSynthesis() {
 
         if (maleVoice) {
           utterance.voice = maleVoice;
+        } else if (window.speechSynthesis.getVoices().length === 0) {
+          // 仮説3対策: voices が非同期ロード未完了の場合はシステムデフォルトで続行
+          ttsLog('Warning: voices not yet loaded, using system default');
         }
 
         // --- 音声パラメータ ---
@@ -626,6 +636,12 @@ export function useSpeechSynthesis() {
         };
 
         window.speechSynthesis.speak(utterance);
+
+        // speak() 直後に resume() でキック（cancel→speak 無音バグの追加対策）
+        // cancel() 後にキューに入った utterance を即座に再生開始させる。
+        if (isIOS()) {
+          window.speechSynthesis.resume();
+        }
 
         // speak() 直後の状態ログ
         {
@@ -678,21 +694,9 @@ export function useSpeechSynthesis() {
         }
       };
 
-      // cancel() 直後の speak() が無音になるバグ回避
-      // iOS: 200ms, Android: 50ms, その他: 遅延なし
-      if (isIOS()) {
-        speakDelayTimerRef.current = window.setTimeout(() => {
-          speakDelayTimerRef.current = null;
-          doSpeak();
-        }, IOS_CANCEL_SPEAK_DELAY);
-      } else if (isAndroid()) {
-        speakDelayTimerRef.current = window.setTimeout(() => {
-          speakDelayTimerRef.current = null;
-          doSpeak();
-        }, ANDROID_CANCEL_SPEAK_DELAY);
-      } else {
-        doSpeak();
-      }
+      // 全プラットフォームで同期実行（setTimeout 遅延廃止）
+      // cancel→speak 無音バグは resume() + kick-start で回避
+      doSpeak();
     },
     [isSupported, voicesLoaded]
   );
@@ -701,9 +705,6 @@ export function useSpeechSynthesis() {
   useEffect(() => {
     return () => {
       if (isSupported) {
-        if (speakDelayTimerRef.current !== null) {
-          clearTimeout(speakDelayTimerRef.current);
-        }
         window.speechSynthesis.cancel();
       }
     };
